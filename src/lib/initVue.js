@@ -1,0 +1,5 @@
+const initVue = {
+  init() {
+
+  }
+}
