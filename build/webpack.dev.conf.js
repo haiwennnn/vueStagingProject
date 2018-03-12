@@ -13,6 +13,10 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
+
+// var devConfig = require('../config/dev.env')
+// devConfig.apiServer = '"'+process.env.NODE_ENV+'"'
+// return
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })

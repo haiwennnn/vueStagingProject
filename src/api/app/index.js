@@ -1,12 +1,15 @@
-import Http from '../../lib/http'
+import Vue from 'vue'
+
+var http = new Vue().http
+console.log(http)
 const urls = {
-  getProducts: 'gateway1/productClient'
+  getProducts: 'gateway/productClient'
 }
 
-const getChinaRegion = () => {
-  return Http.get(urls.getProducts)
+const getProducts = () => {
+  return http.get(urls.getProducts)
 }
 
 export default {
-  getChinaRegion
+  getProducts
 }

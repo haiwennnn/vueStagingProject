@@ -9,7 +9,7 @@
 export default {
   name: 'App',
   created() {
-    this.$api.getChinaRegion().then(res => {
+    this.$api.getProducts().then(res => {
       console.log(res)
     }).catch(err => {
       console.log(err)
