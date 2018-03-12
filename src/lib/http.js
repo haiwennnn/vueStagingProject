@@ -1,5 +1,8 @@
 import Axios from 'axios'
 import Server from './server.js'
+// import Vue from 'vue'
+// var vm = window.vm
+// console.log(vm.test)
 
 let API_ENV = process.env.API_ENV
 let server = Server.get(API_ENV)

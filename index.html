@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>vue-staging-project</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>vue-staging-project</title>
+  <script type="text/javascript">
+    var __root = document.documentElement
+    var viewport = __root.querySelector("meta[name='viewport']")
+    var scale = 1 / window.devicePixelRatio
+    var content = 'width=device-width,initial-scale=' + scale + ',maximum-scale=' + scale + ',minimum-scale=' + scale + ',user-scalable=0'
+    var baseWidth = 750
+    var baseFontSize = 100
+    var calFontSize = (parseInt(__root.clientWidth) / baseWidth * baseFontSize) * window.devicePixelRatio
+    viewport.setAttribute('content', content)
+    __root.style.fontSize = calFontSize + 'px'
+  </script>
+</head>
+
+<body>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+</body>
+
 </html>

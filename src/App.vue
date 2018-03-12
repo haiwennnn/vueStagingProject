@@ -1,7 +1,15 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <div class="zz-page">
+      <router-view/>
+      <!-- <div class="zz-page-body">
+        <div class="zz-tab">
+          <z-header>测试标题</z-header>
+          <div class="zz-tab__panel zz-tab__panel_hastabbar"></div>
+        </div>
+      </div> -->
+    </div>
+    <div class="zz-page-content"></div>
   </div>
 </template>
 
@@ -9,6 +17,7 @@
 export default {
   name: 'App',
   created() {
+    console.log(this.$test)
     this.$api.getProducts().then(res => {
       console.log(res)
     }).catch(err => {
@@ -18,4 +27,6 @@ export default {
 }
 </script>
 
-<style lang="less"></style>
+<style lang="less">
+@import "./styles/index.less";
+</style>

@@ -1,0 +1,23 @@
+@import "button_base";
+@import "button_mini";
+@import "button_disabled";
+@import "button_default";
+@import "button_warn";
+@import "button_loading";
+
+button,
+input[type='button'] {
+  &.zz-btn {
+    // width: 100%;
+    border-width: 0;
+    outline: 0;
+    -webkit-appearance: none;
+    &:focus {
+      outline: 0;
+    }
+  }
+}
+
+.zz-btn+.zz-btn {
+  margin-top: .2rem;
+}

@@ -4,6 +4,7 @@ const urls = {
 }
 
 const getProducts = () => {
+  console.log(this)
   return Http.get(urls.getProducts)
 }
 
