@@ -1,10 +1,14 @@
 import Axios from 'axios'
+import Server from './server.js'
+
+let API_ENV = process.env.API_ENV
+let server = Server.get(API_ENV)
 
 // 创建异步请求实例
 const instance = Axios.create({
   timeout: 8000,
   withCredentials: false,
-  baseURL: 'https://app.chinacreditech.com/'
+  baseURL: server.base
 })
 
 instance.interceptors.request.use((config) => {

@@ -5,7 +5,6 @@ import App from './App'
 import router from './router'
 import FastClick from 'fastclick'
 import VConsole from 'vconsole'
-import http from './plugins/http'
 import api from './api'
 
 if ('addEventListener' in document) {
@@ -18,14 +17,11 @@ Vue.config.productionTip = false
 
 let env = process.env.NODE_ENV
 
-console.log('--apiServer--' + process.env.API_ENV)
-
-if (env === 'production') {
+if (env !== 'production') {
   /* eslint-disable no-new */
   new VConsole()
 }
 
-Vue.use(http)
 Vue.use(api)
 
 /* eslint-disable no-new */

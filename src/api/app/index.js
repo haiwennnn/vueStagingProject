@@ -1,13 +1,10 @@
-import Vue from 'vue'
-
-var http = new Vue().http
-console.log(http)
+import Http from '../../lib/http'
 const urls = {
   getProducts: 'gateway/productClient'
 }
 
 const getProducts = () => {
-  return http.get(urls.getProducts)
+  return Http.get(urls.getProducts)
 }
 
 export default {
