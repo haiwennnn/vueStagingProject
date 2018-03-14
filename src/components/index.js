@@ -1,7 +1,9 @@
 import Header from './header'
+import Toast from './toast'
 
 const components = {
-  Header
+  Header,
+  Toast
 }
 
 const install = function (Vue, opts = {}) {

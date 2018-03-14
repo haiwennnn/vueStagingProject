@@ -4,26 +4,30 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import FastClick from 'fastclick'
-// import VConsole from 'vconsole'
-import api from './api'
+import VConsole from 'vconsole'
+import Api from './api'
 import Zui from '@/components/index.js'
+
+import FJ from '@/lib/fj'
+
+window.FJ = FJ
 
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', function () {
     FastClick.attach(document.body)
   }, false)
 }
-
+Vue.prototype.test = 11
 Vue.config.productionTip = false
 
 let env = process.env.NODE_ENV
 
-if (env !== 'production') {
+if (env === 'production') {
   /* eslint-disable no-new */
-  // new VConsole()
+  new VConsole()
 }
 Vue.use(Zui)
-Vue.use(api)
+Vue.use(Api)
 
 /* eslint-disable no-new */
 window.vm = new Vue({

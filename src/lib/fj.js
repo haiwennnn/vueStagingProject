@@ -94,4 +94,66 @@ FJ.exec = function (name, succ, fail, options) {
   }
 }
 
+FJ.setStore = function (key, obj) {
+  localStorage.setItem(key, JSON.stringify(obj))
+}
+
+FJ.fromStore = function (key, obj) {
+  var store = FJ.getStore(key)
+  if (typeof store === 'object' && store != null) {
+    Object.keys(store).forEach(function (v, k) {
+      obj[v] = store[v]
+    })
+  }
+  return obj
+}
+
+FJ.toStore = function (key, obj) {
+  var store = FJ.getStore(key)
+  if (typeof store === 'object' && store != null) {
+    Object.keys(obj).forEach(function (v, k) {
+      store[v] = obj[v]
+    })
+  } else {
+    store = obj
+  }
+  this.setStore(key, store)
+  return store
+}
+
+FJ.removeStore = function (key) {
+  localStorage.removeItem(key)
+}
+
+FJ.clearStore = function () {
+  localStorage.clear()
+}
+
+FJ.getStore = function (key) {
+  var obj = localStorage.getItem(key)
+  if (obj) {
+    try {
+      obj = JSON.parse(obj)
+    } catch (e) {
+
+    }
+  }
+  return obj
+}
+
+FJ.setSessionStore = function (key, obj) {
+  sessionStorage.setItem(key, JSON.stringify(obj))
+}
+FJ.getSessionStore = function (key) {
+  var obj = sessionStorage.getItem(key)
+  if (obj) {
+    try {
+      obj = JSON.parse(obj)
+    } catch (e) {
+
+    }
+  }
+  return obj
+}
+
 export default FJ

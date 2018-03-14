@@ -96,6 +96,13 @@ export default {
             _d.push(-1)
             _d.push(0)
           })
+          this.$api.signature({
+            pictureBase64: this.signature.split(',')[1],
+            trajectoryData: _d.toString(),
+            type: 'sourceMoney'
+          }).then((res) => {
+            console.log(res)
+          })
           // TODO:签名图片上传比对
           // this.$toast({
           //   icon: 'loading',

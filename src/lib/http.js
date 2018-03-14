@@ -1,7 +1,9 @@
 import Axios from 'axios'
 import Server from './server.js'
-// import Vue from 'vue'
-// var vm = window.vm
+
+const vm = window.vm
+
+// var vm = new Vue()
 // console.log(vm.test)
 
 let API_ENV = process.env.API_ENV
@@ -34,9 +36,17 @@ export default {
         url,
         params: params
       }).then(res => {
-        resolve(res)
+        // console.log(res)
+        console.log('----res----')
+        let status = res.status
+        if (status === 200) {
+          // TODO:统一事件处理 [未登录，登录失效，维护等]
+          resolve(res.data)
+        } else {
+
+        }
       }).catch(err => {
-        console.log(err)
+        console.log('----err----')
         reject(err)
       })
     })
@@ -47,6 +57,14 @@ export default {
         method: 'post',
         url,
         data: params
+      }).then(res => {
+        console.log('----res----')
+        
+        resolve(res)
+      }).catch(err => {
+        console.log('----err----')
+        console.log('---' + vm.test + '---')
+        reject(err)
       })
     })
   }

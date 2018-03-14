@@ -17,6 +17,15 @@
 .zz-nav__panel {
     position: relative;
     height: 100%;
+    &:after {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        content: "";
+        width: 100%;
+        height: 1px;
+        background-color: #DDDDDD;
+    }
 }
 
 //导航左侧右侧基础样式
@@ -24,7 +33,7 @@
 .zz-nav__right {
     position: absolute;
     top: 50%;
-    font-size: .32rem;
+    font-size: .3rem;
     transform: translateY(-50%);
 }
 
