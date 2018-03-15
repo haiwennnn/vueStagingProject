@@ -23,5 +23,3 @@ export default {
 <style lang="less" scoped>
 
 </style>
-
-

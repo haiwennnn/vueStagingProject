@@ -5,7 +5,6 @@ const vm = window.vm
 
 // var vm = new Vue()
 // console.log(vm.test)
-
 let API_ENV = process.env.API_ENV
 let server = Server.get(API_ENV)
 
@@ -59,7 +58,7 @@ export default {
         data: params
       }).then(res => {
         console.log('----res----')
-        
+
         resolve(res)
       }).catch(err => {
         console.log('----err----')
