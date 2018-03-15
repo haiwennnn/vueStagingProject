@@ -26,7 +26,7 @@
   </div>
 </template>
 <script>
-var sp = require('@/lib/signature_pad.js')
+var sp = require('@/lib/signature-pad.js')
 export default {
   data() {
     return {
@@ -34,7 +34,8 @@ export default {
       beginSignature: true,
       sdb: null,
       signature: '',
-      type: ''
+      type: '',
+      redirectUrl: ''
     }
   },
   methods: {
@@ -67,10 +68,7 @@ export default {
       imgData = ctx.getImageData(0, 0, drawingBoard.width, drawingBoard.height)
       hasData = this.checkDraw(imgData)
       if (hasData === 0) {
-        // this.$toast({
-        //   content: '您未签名，请签名'
-        // })
-        alert('请还未签名')
+        this.$zzz.toast.text('您未签名，请签名', '', '90')
         return
       }
       this.signature = this.sdb.toDataURL()
@@ -96,42 +94,34 @@ export default {
             _d.push(-1)
             _d.push(0)
           })
+
+          this.$zzz.toast.show({
+            text: '正在校验签名',
+            type: 'loading',
+            position: 'middle',
+            time: 0,
+            isShowMask: true,
+            direction: '90'
+          })
+
           this.$api.signature({
             pictureBase64: this.signature.split(',')[1],
-            trajectoryData: _d.toString(),
-            type: 'sourceMoney'
+            trajectoryData: _d.toString()
           }).then((res) => {
-            console.log(res)
+            if (+res.errorCode === -16) {
+              this.$zzz.toast.text(res.message, '', '90')
+            }
+            if (+res.errorCode === 0) {
+              this.$zzz.toast.text('恭喜完成签名认证', '', '90')
+              location.href = this.redirectUrl
+            }
           })
-          // TODO:签名图片上传比对
-          // this.$toast({
-          //   icon: 'loading',
-          //   content: '正在提交签名',
-          //   autoClose: false,
-          //   position: 'center',
-          //   modal: true
-          // })
-          // this.$fetch({
-          //   url: this.$api.userInter.Signature,
-          //   timeout: 50000,
-          //   method: 'post',
-          //   data: {
-          //     pictureBase64: this.signature.split(',')[1],
-          //     trajectoryData: _d.toString(),
-          //     type: this.type
-          //   }
-          // }, data => {
-          //   this.routerBack(-2)
-          // }, data => {
-          //   if (data.errorCode * 1 === -16) {
-          //     // this.$toast({
-          //     //   content:"您的签名与您的姓名不匹配请重签"
-          //     // });
-          //   }
-          // })
         }
       })
     }
+  },
+  created() {
+    this.redirectUrl = this.$route.query.redirect || ''
   },
   mounted() {
     this.$nextTick(() => {

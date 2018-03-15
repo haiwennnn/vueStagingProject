@@ -23,7 +23,7 @@ const getToken = (sId) => {
  * @param {String} type 区分不同签名场景
  */
 const signature = (params) => {
-  return Http.post(urls.getProducts, params)
+  return Http.post(urls.signature, params)
 }
 
 const getProducts = () => {
