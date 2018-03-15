@@ -15,16 +15,38 @@
 export default {
   data() {
     return {
-
+      ssjLoanId: ''
     }
   },
   created() {
-    this.$api.getToken('N153521352658220').then(res => {
-      console.log(res)
+    this.ssjLoanId = this.$route.query.sid || 'N153521352658220'
+    this.$zzz.toast.show({
+      text: '正在获取用户信息',
+      time: 0,
+      type: 'loading',
+      position: 'middle'
+    })
+    this.$api.getToken(this.ssjLoanId).then(res => {
+      if (+res.errorCode === 0) {
+        let data = res.data
+        window.FJ.setStore('userInfo', {
+          accessToken: data.accessToken,
+          idFintechUmUser: data.idFintechUmUser
+        })
+        setTimeout(() => {
+          this.$zzz.toast.hide()
+          this.$router.push({
+            name: 'signature',
+            query: {
+              redirect: 'https://www.baidu.com'
+            }
+          })
+        }, 1500)
+      } else {
+      }
     }).catch(err => {
       console.log(err)
     })
-    console.log('---' + this.test + '---')
   }
 }
 </script>

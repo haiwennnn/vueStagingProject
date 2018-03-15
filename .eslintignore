@@ -2,4 +2,4 @@
 /config/
 /dist/
 /*.js
-/src/lib/signature_pad.js
+/src/lib/signature-pad.js

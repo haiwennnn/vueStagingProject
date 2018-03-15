@@ -8,6 +8,8 @@ import VConsole from 'vconsole'
 import Api from './api'
 import Zui from '@/components/index.js'
 
+import plugins from '@/plugins'
+
 import FJ from '@/lib/fj'
 
 window.FJ = FJ
@@ -26,8 +28,11 @@ if (env === 'production') {
   /* eslint-disable no-new */
   new VConsole()
 }
+
 Vue.use(Zui)
 Vue.use(Api)
+
+Vue.use(plugins.ToastPlugin)
 
 /* eslint-disable no-new */
 window.vm = new Vue({
