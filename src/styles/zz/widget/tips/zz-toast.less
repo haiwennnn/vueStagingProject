@@ -1,56 +1,48 @@
 .zz-toast {
-    position: fixed;
-    left: 50%;
-    bottom: 50%;
-    min-width: 1.4rem;
-    padding: .12rem .3rem;
-    border-radius: .1rem;
-    text-align: center;
-    color: #fff;
-    background: rgba(17, 17, 17, 0.7);
-    transform: translate(-50%, 50%);
-    z-index: 3010;
+  position: fixed;
+  left: 50%;
+  bottom: 50%;
+  min-width: 1.4rem;
+  padding: .12rem .3rem;
+  border-radius: .1rem;
+  text-align: center;
+  color: #fff;
+  background: rgba(17, 17, 17, 0.7);
+  transform: translate(-50%, 50%);
+  z-index: 3010;
 }
 
 .zz-toast__hint {
-    bottom: 1.2rem;
+  bottom: 1.2rem;
 }
 
 .zz-toast-icon {
-    display: block; // width: .6rem;
-    margin: .05rem auto 0;
-    &+.zz-toast-content {
-        padding-top: .15rem;
-        padding-bottom: .15rem;
-    }
+  display: block; // width: .6rem;
+  font-size: .48rem;
+  margin: .05rem auto 0;
+  &+.zz-toast-content {
+    padding-top: .15rem;
+    padding-bottom: .15rem;
+  }
 }
 
 .zz-toast-loading {
-    // height: .6rem;
-    background-size: 100%;
-    font-size: .48rem;
-    transform-origin: 50%;
-    animation: toastLoading .9s steps(12, end) infinite;
+  // height: .6rem;
+  background-size: 100%;
+  font-size: .48rem;
+  transform-origin: 50%;
+  animation: rotate360 .9s steps(12, end) infinite;
 }
 
 .zz-toast-icon.icon {
-    line-height: .8rem;
+  line-height: .8rem;
 }
 
 .zz-toast-done {
-    font-size: .74rem;
+  font-size: .74rem;
 }
 
 .zz-toast-content {
-    // padding-top: .1rem;
-    font-size: .28rem;
-}
-
-@keyframes toastLoading {
-    0% {
-        transform: rotate3d(0, 0, 1, 0deg);
-    }
-    100% {
-        transform: rotate3d(0, 0, 1, 360deg);
-    }
+  // padding-top: .1rem;
+  font-size: .28rem;
 }

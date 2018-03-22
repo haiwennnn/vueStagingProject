@@ -34,6 +34,11 @@
 .zz-grids_4 {
   .zz-grid {
     width: 25%;
+    &:nth-child(3n) {
+      &:before {
+        display: block;
+      }
+    }
     &:nth-child(4n) {
       &:before {
         display: none;
