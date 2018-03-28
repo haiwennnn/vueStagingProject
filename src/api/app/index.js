@@ -1,4 +1,8 @@
 import Http from '../../lib/http'
+
+/**
+ * 接口请求地址对象
+ */
 const urls = {
   getToken: 'gateway/third/getToken',
   getProducts: 'gateway/productClient',

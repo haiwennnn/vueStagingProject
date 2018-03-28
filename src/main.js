@@ -13,7 +13,6 @@ import plugins from '@/plugins'
 import FJ from '@/lib/fj'
 
 window.FJ = FJ
-console.log(process.env.NODE_ENV + '----')
 if ('addEventListener' in document) {
   document.addEventListener('DOMContentLoaded', function () {
     FastClick.attach(document.body)

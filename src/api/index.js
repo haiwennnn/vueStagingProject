@@ -8,6 +8,6 @@ export default {
   install(Vue) {
     Vue.prototype.$api = Api
     Vue.api = Api
-  },
-  $api: Api
+  }
+  // $api: Api
 }

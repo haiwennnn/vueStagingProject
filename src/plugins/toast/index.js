@@ -1,7 +1,6 @@
 import ToastComponent from '@/components/toast/index.vue'
 import { mergeOptions } from '@/lib/plugin-helper'
 let $vm
-// let watcher
 
 const plugin = {
   install(Vue, options = {}) {

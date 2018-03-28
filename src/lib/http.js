@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import Server from './server.js'
 
-let API_ENV = process.env.API_ENV
+let API_ENV = process.env.API_ENV || 'uat'
 let server = Server.get(API_ENV)
 
 // 创建异步请求实例
