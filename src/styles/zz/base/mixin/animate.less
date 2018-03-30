@@ -1,12 +1,51 @@
+.animated {
+  animation-duration: .4s;
+  animation-fill-mode: both;
+}
+
+.zoomIn {
+  animation-name: zoomIn;
+}
+
+.zoomOut {
+  animation-name: zoomOut;
+}
+
 //icon旋转动画
 @keyframes rotate360 {
   0% {
     transform-origin: 50% 50%;
     transform: rotate3d(0, 0, 1, 0deg);
   }
-
   100% {
     transform-origin: 50% 50%;
     transform: rotate3d(0, 0, 1, 360deg);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform-origin: 50% 50%;
+    transform:translate(-50%, -50%) scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    transform-origin: 50% 50%;
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  from {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale3d(0.3, 0.3, 0.3);
+  }
+
+  to {
+    opacity: 0;
   }
 }

@@ -1,9 +1,11 @@
 import Header from './header'
 import Toast from './toast'
+import Zdialog from './z-dialog'
 
 const components = {
   Header,
-  Toast
+  Toast,
+  Zdialog
 }
 
 const install = function (Vue, opts = {}) {

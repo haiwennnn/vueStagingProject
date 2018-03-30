@@ -1,13 +1,14 @@
 <template>
   <div class="zz-page-body signature-page">
     <div class="zz-page-body">
-      <div class="zz-tab">
+      <div class="zz-tab zz-tab_inios">
         <z-header>测试标题</z-header>
         <div class="zz-tab__panel zz-tab__panel_hastabbar">
           <p>flexbox</p>
           <div class="zz-flex">
             <div class="zz-flex-item">
-              <div class="demo-flex-item">1</div>
+              <div class="demo-flex-item"
+                @click="dialogStatus = true">{{dialogStatus}}</div>
             </div>
             <div class="zz-flex-item">
               <div class="demo-flex-item">2</div>
@@ -55,12 +56,18 @@
           <div class="zz-divider zz-divider_dot"></div>
           <!-- 基本按钮 -->
           <p>基本按钮</p>
-          <input class="zz-btn" type="button" name="" value="zz-btn_button">
+          <input class="zz-btn"
+            type="button"
+            name=""
+            value="zz-btn_button">
           <button class="zz-btn zz-btn_default">default_button</button>
           <button class="zz-btn zz-btn_warn">warn_button</button>
           <!-- disabled 按钮 -->
           <p>disabled按钮</p>
-          <input class="zz-btn zz-btn_disabled" type="button" name="" value="disabled_button">
+          <input class="zz-btn zz-btn_disabled"
+            type="button"
+            name=""
+            value="disabled_button">
           <button class="zz-btn zz-btn_default zz-btn_disabled">disabled_default_button</button>
           <button class="zz-btn zz-btn_warn zz-btn_disabled">disabled_warn_button</button>
           <p>iconfont按钮</p>
@@ -89,7 +96,8 @@
               </div>
             </div>
             <div class="zz-cell zz-cell_swiped">
-              <div class="zz-cell__bd" style="transform: translateX(-1.2rem)">
+              <div class="zz-cell__bd"
+                style="transform: translateX(-1.2rem)">
                 <div class="zz-cell">
                   <div class="zz-cell__hd">标题文字</div>
                   <div class="zz-cell__bd">
@@ -114,7 +122,8 @@
             </div>
             <div class="zz-cell">
               <div class="zz-cell__hd">
-                <img src="../assets/demo/icon_tabbar.png" style="display: block;width: .6rem;">
+                <img src="../assets/demo/icon_tabbar.png"
+                  style="display: block;width: .6rem;">
               </div>
               <div class="zz-cell__bd">
                 <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
@@ -123,7 +132,8 @@
             </div>
             <div class="zz-cell zz-cell_access">
               <div class="zz-cell__hd">
-                <img src="../assets/demo/icon_tabbar.png" style="display: block;width: .8rem;">
+                <img src="../assets/demo/icon_tabbar.png"
+                  style="display: block;width: .8rem;">
               </div>
               <div class="zz-cell__bd">
                 <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
@@ -132,7 +142,8 @@
             </div>
             <div class="zz-cell">
               <div class="zz-cell__hd">
-                <img src="../assets/demo/icon_tabbar.png" style="display: block;width: .8rem;">
+                <img src="../assets/demo/icon_tabbar.png"
+                  style="display: block;width: .8rem;">
               </div>
               <div class="zz-cell__bd">
                 <p>内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字文字</p>
@@ -144,34 +155,52 @@
         <div class="zz-tabbar">
           <div class="zz-tabbar__item zz-tabbar__item_active">
             <div>
-              <img src="../assets/demo/icon_tabbar.png" alt="">
+              <img src="../assets/demo/icon_tabbar.png"
+                alt="">
               <span class="zz-badge">1</span>
             </div>
             <p>首页</p>
           </div>
           <div class="zz-tabbar__item">
             <div>
-              <img src="../assets/demo/icon_tabbar.png" alt="">
+              <img src="../assets/demo/icon_tabbar.png"
+                alt="">
               <span class="zz-badge">99+</span>
             </div>
             <p>首页</p>
           </div>
           <div class="zz-tabbar__item">
             <div>
-              <img src="../assets/demo/icon_tabbar.png" alt="">
+              <img src="../assets/demo/icon_tabbar.png"
+                alt="">
               <span class="zz-badge">88</span>
             </div>
             <p>首页</p>
           </div>
           <div class="zz-tabbar__item">
             <div>
-              <img src="../assets/demo/icon_tabbar.png" alt="">
+              <img src="../assets/demo/icon_tabbar.png"
+                alt="">
               <span class="zz-badge zz-badge_dot"></span>
             </div>
             <p>首页</p>
           </div>
         </div>
       </div>
+      <z-dialog v-model="dialogStatus">
+        <div class="zz-dialog__hd">
+          <div class="zz-dialog-title">dialog标题</div>
+        </div>
+        <div class="zz-dialog__bd">
+          dialog body
+        </div>
+        <div class="zz-dialog__ft">
+          <div class="zz-dialog-btn"
+            @click="dialogStatus = false">
+            dialogBtn
+          </div>
+        </div>
+      </z-dialog>
     </div>
   </div>
 </template>
@@ -179,6 +208,7 @@
   export default {
     data() {
       return {
+        dialogStatus: false
       }
     },
     methods: {
@@ -198,6 +228,7 @@
       //   time: 0,
       //   isShowMask: true
       // })
+
     },
     mounted() {
       this.$nextTick(() => {
