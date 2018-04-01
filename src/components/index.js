@@ -1,11 +1,15 @@
 import Header from './header'
 import Toast from './toast'
 import Zdialog from './z-dialog'
+import Alert from './alert'
+import Confirm from './confirm'
 
 const components = {
   Header,
   Toast,
-  Zdialog
+  Zdialog,
+  Alert,
+  Confirm
 }
 
 const install = function (Vue, opts = {}) {
@@ -22,6 +26,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
-  ...components,
+  // ...components,
   install
 }

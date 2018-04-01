@@ -1,7 +1,9 @@
 import ToastPlugin from './toast'
+import AlertPlugin from './alert'
 
 const Plugins = {
-  ToastPlugin
+  ToastPlugin,
+  AlertPlugin
 }
 
 export default Plugins

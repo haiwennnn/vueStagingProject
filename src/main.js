@@ -32,6 +32,7 @@ Vue.use(Zui)
 Vue.use(Api)
 
 Vue.use(plugins.ToastPlugin)
+Vue.use(plugins.AlertPlugin)
 
 /* eslint-disable no-new */
 window.vm = new Vue({

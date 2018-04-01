@@ -8,13 +8,15 @@
           <div class="zz-flex">
             <div class="zz-flex-item">
               <div class="demo-flex-item"
-                @click="dialogStatus = true">{{dialogStatus}}</div>
+                @click="alertStatus = true">{{alertStatus}}</div>
             </div>
             <div class="zz-flex-item">
-              <div class="demo-flex-item">2</div>
+              <div class="demo-flex-item"
+                @click="callPluginAlert">plugin Alert</div>
             </div>
-            <div class="zz-flex-item">
-              <div class="demo-flex-item">2</div>
+            <div class="zz-flex-item"
+              @click="confirmStatus = true">
+              <div class="demo-flex-item">confirm:{{confirmStatus}}</div>
             </div>
           </div>
           <div class="zz-flex">
@@ -187,7 +189,7 @@
           </div>
         </div>
       </div>
-      <z-dialog v-model="dialogStatus">
+      <!-- <z-dialog v-model="dialogStatus">
         <div class="zz-dialog__hd">
           <div class="zz-dialog-title">dialog标题</div>
         </div>
@@ -200,67 +202,119 @@
             dialogBtn
           </div>
         </div>
-      </z-dialog>
+      </z-dialog> -->
+      <alert v-model="alertStatus"
+        title="alert标题"
+        button-text="按钮文本"
+        @on-show="alertOnShow">
+        传入的alert内容
+      </alert>
+      <confirm v-model="confirmStatus"
+        title="confirmDomTitle"
+        cancel-text="取消按钮"
+        confirm-text="确定按钮"
+        @on-show="confirmOnShow"
+        @on-hide="confirmOnHide"
+        @on-cancel="confirmOnCancel"
+        @on-confirm="confirmOnConfirm">
+        传入的confirm content部分
+      </confirm>
     </div>
   </div>
 </template>
 <script>
-  export default {
-    data() {
-      return {
-        dialogStatus: false
-      }
+export default {
+  data() {
+    return {
+      dialogStatus: false,
+      alertStatus: false,
+      confirmStatus: false
+    }
+  },
+  methods: {
+    confirmOnShow() {
+      console.log('----confirmOnShow----')
     },
-    methods: {
+    confirmOnHide() {
+      console.log('----confirmOnHide----')
     },
-    created() {
-      // this.$zzz.toast.show({
-      //   text: '正在校验签名',
-      //   type: 'loading',
-      //   position: 'middle',
-      //   time: 0,
-      //   isShowMask: true
-      // })
-      // this.$zzz.toast.show({
-      //   text: '签名成功',
-      //   type: 'done',
-      //   position: 'middle',
-      //   time: 0,
-      //   isShowMask: true
-      // })
-
+    confirmOnCancel() {
+      console.log('----confirmOnCancel----')
     },
-    mounted() {
-      this.$nextTick(() => {
-        console.log(this.$el)
+    confirmOnConfirm() {
+      console.log('----confirmOnConfirm----')
+    },
+    alertOnShow() {
+      console.log('alert on show')
+    },
+    alertEvent(text) {
+      console.log(text)
+    },
+    callPluginAlert() {
+      this.$zzz.alert.show({
+        title: 'plugin title',
+        content: 'content内容部分',
+        buttonText: 'by plugin ok ?',
+        onShow: () => {
+          console.log('hahaha show in alert plugin')
+        },
+        onHide: () => {
+          console.log(this)
+          setTimeout(() => {
+            this.alertStatus = true
+          }, 2000)
+        }
       })
     }
+  },
+  created() {
+    // this.$zzz.toast.show({
+    //   text: '正在校验签名',
+    //   type: 'loading',
+    //   position: 'middle',
+    //   time: 0,
+    //   isShowMask: true
+    // })
+    // this.$zzz.toast.show({
+    //   text: '签名成功',
+    //   type: 'done',
+    //   position: 'middle',
+    //   time: 0,
+    //   isShowMask: true
+    // })
+
+  },
+  mounted() {
+    this.$nextTick(() => {
+      console.log(this.$el)
+    })
   }
+}
 </script>
 <style lang="less" scoped>
-  .zz-grid {
-    height: 0.8rem;
-    line-height: 0.8rem;
-    text-align: center;
+.zz-grid {
+  height: 0.8rem;
+  line-height: 0.8rem;
+  text-align: center;
+}
+.zz-tab__panel {
+  & > p {
+    line-height: 0.6rem;
+    padding: 0.3rem 0 0.1rem 0.3rem;
+    font-size: 0.22rem;
   }
-  .zz-tab__panel {
-    & > p {
-      line-height: 0.6rem;
-      padding: 0.3rem 0 0.1rem 0.3rem;
-      font-size: 0.22rem;
-    }
-  }
+}
 
-  .zz-flex {
-    width: 7rem;
-    height: 0.8rem;
-    margin: 0.15rem auto 0;
-  }
-  .demo-flex-item {
-    margin: 0.1rem;
-    padding: 0.05rem 0.2rem;
-    background-color: coral;
-    text-align: center;
-    border-radius: 10px;
-  }
+.zz-flex {
+  width: 7rem;
+  height: 0.8rem;
+  margin: 0.15rem auto 0;
+}
+.demo-flex-item {
+  margin: 0.1rem;
+  padding: 0.05rem 0.2rem;
+  background-color: coral;
+  text-align: center;
+  border-radius: 10px;
+}
 </style>
