@@ -3,13 +3,15 @@ import Toast from './toast'
 import Zdialog from './z-dialog'
 import Alert from './alert'
 import Confirm from './confirm'
+import Popup from './popup'
 
 const components = {
   Header,
   Toast,
   Zdialog,
   Alert,
-  Confirm
+  Confirm,
+  Popup
 }
 
 const install = function (Vue, opts = {}) {

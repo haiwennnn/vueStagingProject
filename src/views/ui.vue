@@ -4,6 +4,81 @@
       <div class="zz-tab zz-tab_inios">
         <z-header>测试标题</z-header>
         <div class="zz-tab__panel zz-tab__panel_hastabbar">
+          <p>popup</p>
+          <div class="zz-flex">
+            <div class="zz-flex-item">
+              <div class="demo-flex-item"
+                @click="popupStatus = true">popup:{{popupStatus}}</div>
+            </div>
+          </div>
+          <popup v-model="popupStatus">
+            <div class="zz-cells">
+              <div class="zz-cell">
+                <div class="zz-cell__hd">标题文字</div>
+                <div class="zz-cell__bd">
+                  <p>内容文字</p>
+                </div>
+                <div class="zz-cell__ft">说明文字
+                  <span class="zz-badge zz-badge_dot"></span>
+                </div>
+              </div>
+              <div class="zz-cell zz-cell_swiped">
+                <div class="zz-cell__bd"
+                  style="transform: translateX(-1.2rem)">
+                  <div class="zz-cell">
+                    <div class="zz-cell__hd">标题文字</div>
+                    <div class="zz-cell__bd">
+                      <p>内容文字</p>
+                    </div>
+                    <div class="zz-cell__ft">说明文字</div>
+                  </div>
+                </div>
+                <div class="zz-cell__ft">
+                  <div class="zz-swiped-btn zz-swiped-btn_default">删除</div>
+                  <div class="zz-swiped-btn zz-swiped-btn_warn">删除</div>
+                </div>
+              </div>
+              <div class="zz-cell zz-cell_access">
+                <div class="zz-cell__hd">标题文字</div>
+                <div class="zz-cell__bd">
+                  <p>内容文字</p>
+                </div>
+                <div class="zz-cell__ft">说明文字
+                  <span class="zz-badge zz-badge_dot"></span>
+                </div>
+              </div>
+              <div class="zz-cell">
+                <div class="zz-cell__hd">
+                  <img src="../assets/demo/icon_tabbar.png"
+                    style="display: block;width: .6rem;">
+                </div>
+                <div class="zz-cell__bd">
+                  <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
+                </div>
+                <div class="zz-cell__ft">footer</div>
+              </div>
+              <div class="zz-cell zz-cell_access">
+                <div class="zz-cell__hd">
+                  <img src="../assets/demo/icon_tabbar.png"
+                    style="display: block;width: .8rem;">
+                </div>
+                <div class="zz-cell__bd">
+                  <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
+                </div>
+                <div class="zz-cell__ft">footer</div>
+              </div>
+              <div class="zz-cell">
+                <div class="zz-cell__hd">
+                  <img src="../assets/demo/icon_tabbar.png"
+                    style="display: block;width: .8rem;">
+                </div>
+                <div class="zz-cell__bd">
+                  <p>内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字文字</p>
+                </div>
+                <div class="zz-cell__ft">footer</div>
+              </div>
+            </div>
+          </popup>
           <p>flexbox</p>
           <div class="zz-flex">
             <div class="zz-flex-item">
@@ -228,7 +303,8 @@ export default {
     return {
       dialogStatus: false,
       alertStatus: false,
-      confirmStatus: false
+      confirmStatus: false,
+      popupStatus: false
     }
   },
   methods: {
