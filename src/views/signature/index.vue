@@ -254,6 +254,7 @@ export default {
   }
   .signature__foot {
     .cache-img {
+      display: none;
       position: absolute;
       bottom: 0;
       left: 50%;

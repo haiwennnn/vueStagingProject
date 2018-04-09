@@ -10,7 +10,6 @@
       </div> -->
     </div>
     <div class="zz-page-content">
-      <z-toast></z-toast>
       <!-- <div class="zz-dialog">
         <div class="zz-dialog-hd">
           <span>dialog标题</span>

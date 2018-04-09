@@ -334,7 +334,6 @@ export default {
       console.log('alert on show')
     },
     alertEvent(text) {
-      console.log(text)
     },
     callPluginAlert() {
       this.$zzz.alert.show({
@@ -342,10 +341,8 @@ export default {
         content: 'content内容部分',
         buttonText: 'by plugin ok ?',
         onShow: () => {
-          console.log('hahaha show in alert plugin')
         },
         onHide: () => {
-          console.log(this)
           setTimeout(() => {
             this.alertStatus = true
           }, 2000)
@@ -372,7 +369,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(this.$el)
     })
   }
 }
