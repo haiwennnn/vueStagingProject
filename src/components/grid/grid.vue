@@ -20,14 +20,15 @@ export default {
     }
   },
   methods: {
-    countColumn() {
+    calColumn() {
       this.childrenSize = this.$children.length
     }
+  },
+  created() {
   }
 }
 </script>
 <style lang="less" scoped>
-
 </style>
 
 

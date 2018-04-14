@@ -1,6 +1,9 @@
 <template>
   <div class="zz-grid"
-    :style="styles">
+    ref="gridItem"
+    :class="gridItemClassName"
+    :style="gridItemStyles"
+    @click="onClick">
     <slot></slot>
   </div>
 </template>
@@ -13,19 +16,23 @@ export default {
     }
   },
   computed: {
-    styles() {
+    gridItemStyles() {
       let column = this.$parent.column
-      if (!column || column === 3) {
-        return
-      }
       let styles = {}
       styles.width = `${100 / column}%`
       return styles
+    },
+    gridItemClassName() {
+    }
+  },
+  methods: {
+    onClick() {
+      this.$emit('on-item-click')
     }
   },
   created() {
     if (!this.$parent.column) {
-      this.$parent.countColumn()
+      this.$parent.calColumn()
     }
   }
 }

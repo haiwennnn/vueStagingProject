@@ -3,6 +3,16 @@
     <div class="zz-tab zz-tab_inios">
       <z-header>测试标题</z-header>
       <div class="zz-tab__panel zz-tab__panel_hastabbar">
+        <p>grids</p>
+        <grid :cols="4">
+          <grid-item v-for="x in 5"
+            :key="x" @on-item-click="popupStatus = true">grid:{{x}}</grid-item>
+          <!-- <grid-item>grid:1</grid-item>
+          <grid-item>grid:1</grid-item>
+          <grid-item>grid:1</grid-item>
+          <grid-item>grid:1</grid-item>
+          <grid-item>grid:1</grid-item> -->
+        </grid>
         <p>popup</p>
         <div class="zz-flex">
           <div class="zz-flex-item">
@@ -10,96 +20,29 @@
               @click="popupStatus = true">popup:{{popupStatus}}</div>
           </div>
         </div>
-        <popup v-model="popupStatus">
-          <div class="zz-cells">
-            <div class="zz-cell">
-              <div class="zz-cell__hd">标题文字</div>
-              <div class="zz-cell__bd">
-                <p>内容文字</p>
-              </div>
-              <div class="zz-cell__ft">说明文字
-                <span class="zz-badge zz-badge_dot"></span>
-              </div>
-            </div>
-            <div class="zz-cell zz-cell_swiped">
-              <div class="zz-cell__bd"
-                style="transform: translateX(-1.2rem)">
-                <div class="zz-cell">
-                  <div class="zz-cell__hd">标题文字</div>
-                  <div class="zz-cell__bd">
-                    <p>内容文字</p>
-                  </div>
-                  <div class="zz-cell__ft">说明文字</div>
-                </div>
-              </div>
-              <div class="zz-cell__ft">
-                <div class="zz-swiped-btn zz-swiped-btn_default">删除</div>
-                <div class="zz-swiped-btn zz-swiped-btn_warn">删除</div>
-              </div>
-            </div>
-            <div class="zz-cell zz-cell_access">
-              <div class="zz-cell__hd">标题文字</div>
-              <div class="zz-cell__bd">
-                <p>内容文字</p>
-              </div>
-              <div class="zz-cell__ft">说明文字
-                <span class="zz-badge zz-badge_dot"></span>
-              </div>
-            </div>
-            <div class="zz-cell">
-              <div class="zz-cell__hd">
-                <img src="../assets/demo/icon_tabbar.png"
-                  style="display: block;width: .6rem;">
-              </div>
-              <div class="zz-cell__bd">
-                <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
-              </div>
-              <div class="zz-cell__ft">footer</div>
-            </div>
-            <div class="zz-cell zz-cell_access">
-              <div class="zz-cell__hd">
-                <img src="../assets/demo/icon_tabbar.png"
-                  style="display: block;width: .8rem;">
-              </div>
-              <div class="zz-cell__bd">
-                <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
-              </div>
-              <div class="zz-cell__ft">footer</div>
-            </div>
-            <div class="zz-cell">
-              <div class="zz-cell__hd">
-                <img src="../assets/demo/icon_tabbar.png"
-                  style="display: block;width: .8rem;">
-              </div>
-              <div class="zz-cell__bd">
-                <p>内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字文字</p>
-              </div>
-              <div class="zz-cell__ft">footer</div>
-            </div>
-          </div>
-        </popup>
         <p>component flexbox</p>
-        <flexbox>
+        <flexbox :gutter="50">
           <flexbox-item v-for="i in 4"
+            :flex="'1'"
             :key="i">
             <div class="demo-flex-item">{{'index:'+ i}}</div>
           </flexbox-item>
         </flexbox>
         <p>flexbox</p>
-        <div class="zz-flex">
-          <div class="zz-flex-item">
+        <flexbox>
+          <flexbox-item :flex="'1'">
             <div class="demo-flex-item"
               @click="alertStatus = true">{{alertStatus}}</div>
-          </div>
-          <div class="zz-flex-item">
+          </flexbox-item>
+          <flexbox-item :flex="'1'">
             <div class="demo-flex-item"
               @click="callPluginAlert">plugin Alert</div>
-          </div>
-          <div class="zz-flex-item"
-            @click="confirmStatus = true">
-            <div class="demo-flex-item">confirm:{{confirmStatus}}</div>
-          </div>
-        </div>
+          </flexbox-item>
+          <flexbox-item :flex="'1'">
+            <div class="demo-flex-item"
+              @click="confirmStatus = true">confirm:{{confirmStatus}}</div>
+          </flexbox-item>
+        </flexbox>
         <div class="zz-flex">
           <div class="zz-flex-item">
             <div class="demo-flex-item">1</div>
@@ -115,10 +58,10 @@
           </div>
         </div>
         <p>component grids</p>
-        <grid :cols="3">
+        <!-- <grid :cols="3">
           <grid-item v-for="i in 5"
             :key="i">{{i}}</grid-item>
-        </grid>
+        </grid> -->
         <p>grids</p>
         <div class="zz-grids zz-grids_4">
           <div class="zz-grid">1</div>
@@ -289,6 +232,74 @@
           </div>
         </div>
       </z-dialog> -->
+    <popup v-model="popupStatus">
+      <div class="zz-cells">
+        <div class="zz-cell">
+          <div class="zz-cell__hd">标题文字</div>
+          <div class="zz-cell__bd">
+            <p>内容文字</p>
+          </div>
+          <div class="zz-cell__ft">说明文字
+            <span class="zz-badge zz-badge_dot"></span>
+          </div>
+        </div>
+        <div class="zz-cell zz-cell_swiped">
+          <div class="zz-cell__bd"
+            style="transform: translateX(-1.2rem)">
+            <div class="zz-cell">
+              <div class="zz-cell__hd">标题文字</div>
+              <div class="zz-cell__bd">
+                <p>内容文字</p>
+              </div>
+              <div class="zz-cell__ft">说明文字</div>
+            </div>
+          </div>
+          <div class="zz-cell__ft">
+            <div class="zz-swiped-btn zz-swiped-btn_default">删除</div>
+            <div class="zz-swiped-btn zz-swiped-btn_warn">删除</div>
+          </div>
+        </div>
+        <div class="zz-cell zz-cell_access">
+          <div class="zz-cell__hd">标题文字</div>
+          <div class="zz-cell__bd">
+            <p>内容文字</p>
+          </div>
+          <div class="zz-cell__ft">说明文字
+            <span class="zz-badge zz-badge_dot"></span>
+          </div>
+        </div>
+        <div class="zz-cell">
+          <div class="zz-cell__hd">
+            <img src="../assets/demo/icon_tabbar.png"
+              style="display: block;width: .6rem;">
+          </div>
+          <div class="zz-cell__bd">
+            <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
+          </div>
+          <div class="zz-cell__ft">footer</div>
+        </div>
+        <div class="zz-cell zz-cell_access">
+          <div class="zz-cell__hd">
+            <img src="../assets/demo/icon_tabbar.png"
+              style="display: block;width: .8rem;">
+          </div>
+          <div class="zz-cell__bd">
+            <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
+          </div>
+          <div class="zz-cell__ft">footer</div>
+        </div>
+        <div class="zz-cell">
+          <div class="zz-cell__hd">
+            <img src="../assets/demo/icon_tabbar.png"
+              style="display: block;width: .8rem;">
+          </div>
+          <div class="zz-cell__bd">
+            <p>内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字文字</p>
+          </div>
+          <div class="zz-cell__ft">footer</div>
+        </div>
+      </div>
+    </popup>
     <alert v-model="alertStatus"
       title="alert标题"
       button-text="按钮文本"
@@ -397,7 +408,7 @@ export default {
   margin: 0.15rem auto 0;
 }
 .demo-flex-item {
-  margin: 0.1rem;
+  // margin: 0.1rem;
   padding: 0.05rem 0.2rem;
   background-color: coral;
   text-align: center;
