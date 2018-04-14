@@ -21,7 +21,6 @@ const plugin = {
         el: document.createElement('div')
       })
       document.body.appendChild($vm.$el)
-      console.log($vm.$el)
     }
 
     const toast = {

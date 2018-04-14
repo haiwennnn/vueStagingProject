@@ -15,14 +15,12 @@ const plugin = {
         el: document.createElement('div')
       })
       document.body.appendChild($vm.$el)
-      console.log($vm)
     }
     const alert = {
       show(options = {}) {
         mergeOptions($vm, options)
         this.watcher && this.watcher()
         this.watcher = $vm.$watch('show', (val) => {
-          console.log(val + ' in plugin')
           val && options.onShow && options.onShow($vm)
           if (val === false && options.onHide) {
             options.onHide($vm)

@@ -23,7 +23,7 @@ Vue.config.productionTip = false
 
 let env = process.env.NODE_ENV
 
-if (env === 'production') {
+if (env !== 'production') {
   /* eslint-disable no-new */
   new VConsole()
 }

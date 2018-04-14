@@ -61,7 +61,6 @@
     },
     watch: {
       show(val) {
-        console.log(val)
         if (val) {
           this.$emit('input', true)
           this.$emit('on-show')
@@ -79,7 +78,6 @@
         this.show = val
       },
       time(val) {
-        console.log(val)
         clearTimeout(this.timeout)
         if (val <= 0) {
         } else {

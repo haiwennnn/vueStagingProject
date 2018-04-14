@@ -311,7 +311,6 @@ SignaturePad.prototype._strokeEnd = function (event) {
       });
     }
   }
-  console.log(this._data);
   if (typeof this.onEnd === 'function') {
     this.onEnd(event);
   }
