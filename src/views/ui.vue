@@ -3,17 +3,52 @@
     <div class="zz-tab zz-tab_inios">
       <z-header>测试标题</z-header>
       <div class="zz-tab__panel zz-tab__panel_hastabbar">
-        <p>grids</p>
+        <p>component button</p>
+        <div style="margin: .1rem .3rem;">
+          <z-button>按钮 default</z-button>
+          <z-button status="loading">default loading</z-button>
+          <z-button status="disabled">default disabled</z-button>
+          <z-button type="primary">按钮 primary</z-button>
+          <z-button type="primary"
+            status="loading">primary loading</z-button>
+          <z-button type="primary"
+            status="disabled"
+            :disabled="true">primary disabled</z-button>
+          <z-button type="warn">按钮 wran</z-button>
+          <z-button type="warn"
+            status="loading">按钮 wran</z-button>
+          <z-button type="warn"
+            status="disabled">按钮 wran</z-button>
+        </div>
+        <p>button group</p>
+        <button-group>
+          <z-button mini>按钮 default</z-button>
+          <z-button status="loading"
+            mini>default loading</z-button>
+          <z-button status="disabled"
+            mini>default disabled</z-button>
+          <z-button type="primary"
+            mini>按钮 primary</z-button>
+          <z-button type="primary"
+            mini
+            status="loading">primary loading</z-button>
+          <z-button mini
+            type="primary"
+            status="disabled"
+            :disabled="true">primary disabled</z-button>
+        </button-group>
+        <p>component grids</p>
         <grid :cols="4">
           <grid-item v-for="x in 5"
-            :key="x" @on-item-click="popupStatus = true">grid:{{x}}</grid-item>
+            :key="x"
+            @on-item-click="popupStatus = true">grid:{{x}}</grid-item>
           <!-- <grid-item>grid:1</grid-item>
           <grid-item>grid:1</grid-item>
           <grid-item>grid:1</grid-item>
           <grid-item>grid:1</grid-item>
           <grid-item>grid:1</grid-item> -->
         </grid>
-        <p>popup</p>
+        <p>component popup</p>
         <div class="zz-flex">
           <div class="zz-flex-item">
             <div class="demo-flex-item"
@@ -28,7 +63,7 @@
             <div class="demo-flex-item">{{'index:'+ i}}</div>
           </flexbox-item>
         </flexbox>
-        <p>flexbox</p>
+        <p>component flexbox</p>
         <flexbox>
           <flexbox-item :flex="'1'">
             <div class="demo-flex-item"
