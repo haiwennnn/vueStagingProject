@@ -113,7 +113,7 @@ export default {
             }
             if (+res.errorCode === 0) {
               this.$zzz.toast.text('恭喜完成签名认证', '', '90')
-              location.href = this.redirectUrl
+              // location.href = this.redirectUrl
             }
           })
         }

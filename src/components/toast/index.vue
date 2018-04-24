@@ -1,14 +1,20 @@
 <template>
   <div>
     <!-- <div class="zz-mask"></div> -->
-    <div class="zz-mask zz-mask_transparent" v-if="isShowMask && show"></div>
-    <div class="zz-toast" v-show="show" :class="toastClass">
-      <i class="zz-toast-icon iconfont icon-loading iconfont_rotate" v-if="type === 'loading'"></i>
-      <i class="zz-toast-icon iconfont icon-done" v-if="type === 'done'"></i>
+    <div class="zz-mask zz-mask_transparent"
+      v-if="isShowMask && show"></div>
+    <div class="zz-toast"
+      v-show="show"
+      :class="toastClass">
+      <i class="zz-toast-icon iconfont icon-loading iconfont_rotate"
+        v-if="type === 'loading'"></i>
+      <i class="zz-toast-icon iconfont icon-done"
+        v-if="type === 'done'"></i>
       <div class="zz-toast__content">
         <slot></slot>
       </div>
-      <div class="zz-toast__content" v-if="text">{{ text }}</div>
+      <div class="zz-toast__content"
+        v-if="text">{{ text }}</div>
     </div>
   </div>
 </template>
