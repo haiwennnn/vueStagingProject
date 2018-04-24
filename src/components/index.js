@@ -8,8 +8,11 @@ import Popup from './popup'
 import Grid from './grid/grid.vue'
 import GridItem from './grid/grid-item.vue'
 
-import flexbox from './flexbox/flexbox.vue'
-import flexboxItem from './flexbox/flexbox-item.vue'
+import Flexbox from './flexbox/flexbox.vue'
+import FlexboxItem from './flexbox/flexbox-item.vue'
+
+import Zbutton from './z-button'
+import ButtonGroup from './z-button/button-group.vue'
 
 const components = {
   Header,
@@ -20,8 +23,10 @@ const components = {
   Popup,
   Grid,
   GridItem,
-  flexbox,
-  flexboxItem
+  Flexbox,
+  FlexboxItem,
+  Zbutton,
+  ButtonGroup
 }
 
 const install = function (Vue, opts = {}) {
