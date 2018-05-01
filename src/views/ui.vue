@@ -3,6 +3,24 @@
     <div class="zz-tab zz-tab_inios">
       <z-header>测试标题</z-header>
       <div class="zz-tab__panel zz-tab__panel_hastabbar">
+        <p>component cell</p>
+        <cells>
+          <cell value="文本值">
+            <p slot="hd">标题文字</p>
+            <div slot="bd">
+              <p>内容文字</p>
+              <span style="font-size:.24rem;color:#ababab;">描述内容xxxx123213</span>
+            </div>
+            <!-- <div>
+              期望恶趣味<span class="zz-badge">6</span>
+            </div> -->
+          </cell>
+          <div>
+            <p>123123123</p>
+            <p>432432qweqweqw</p>
+            <p>诶剧情请我地就回去我i额239 爱丽丝肯定会</p>
+          </div>
+        </cells>
         <p>component button</p>
         <div style="margin: .1rem .3rem;">
           <z-button>按钮 default</z-button>
