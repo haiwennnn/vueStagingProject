@@ -8,6 +8,9 @@ import Popup from './popup'
 import Grid from './grid/grid.vue'
 import GridItem from './grid/grid-item.vue'
 
+import Cells from './cell/cells.vue'
+import Cell from './cell'
+
 import Flexbox from './flexbox/flexbox.vue'
 import FlexboxItem from './flexbox/flexbox-item.vue'
 
@@ -23,6 +26,8 @@ const components = {
   Popup,
   Grid,
   GridItem,
+  Cell,
+  Cells,
   Flexbox,
   FlexboxItem,
   Zbutton,
