@@ -50,6 +50,19 @@
       }).catch(err => {
         console.log(err)
       })
+    },
+    mounted() {
+      document.getElementsByTagName('title')[0].innerText = '第三方入口'
+      var bol = false
+      const call = (uri) => {
+        console.log(uri)
+        let iframe = document.createElement('iframe')
+        iframe.setAttribute('src', uri)
+        document.body.appendChild(iframe)
+        iframe.parentNode.removeChild(iframe)
+        iframe = null
+      }
+      call(`cardniu://app/webview/config?isCanPullRefresh=${bol}`)
     }
   }
 </script>

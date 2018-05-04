@@ -133,6 +133,7 @@
       this.redirectUrl = this.$route.query.redirect || ''
     },
     mounted() {
+      document.getElementsByTagName('title')[0].innerText = '签名'
       this.$nextTick(() => {
         let signatureMain, drawingBg, drawingBoard, signatureTool, signatureMainStyle
 
@@ -150,6 +151,8 @@
         signatureTool.style.width = signatureMainStyle.height
         signatureTool.style.left = signatureMainStyle.width
         // 设置画布背景高宽
+        console.log(signatureMainStyle.height)
+        console.log(signatureMainStyle.width)
         drawingBg.setAttribute('height', signatureMainStyle.height)
         drawingBg.setAttribute('width', signatureMainStyle.width)
         // 设置canvas宽高
@@ -176,10 +179,11 @@
       .signature-drawing-bg {
         position: absolute;
         top: 0;
-        transform-origin: 0 0;
+        transform-origin: 0% 0%;
         transform: rotate(90deg);
         background-image: url("../../assets/sign/sign-bg.png");
         background-repeat: no-repeat;
+        background-size: cover;
       }
 
       .signature-drawing-board {
@@ -221,7 +225,7 @@
       position: absolute;
       height: 0.9rem;
       top: 0;
-      transform-origin: 0 0;
+      transform-origin: 0% 0%;
       transform: rotate(90deg);
       z-index: 10;
       .back {
