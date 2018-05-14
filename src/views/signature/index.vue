@@ -97,8 +97,8 @@
             let _d = []
             d.forEach(function (d1, index) {
               d1.forEach(function (point, index) {
-                _d.push(point.y)
-                _d.push(300 - point.x)
+                _d.push(point.y / window.devicePixelRatio)
+                _d.push(300 - point.x / window.devicePixelRatio)
               })
               _d.push(-1)
               _d.push(0)
@@ -161,7 +161,12 @@
         drawingBoard.setAttribute('width', signatureMainStyle.width)
 
         setTimeout(() => {
-          this.sdb = new sp.SignaturePad(drawingBoard)
+          this.sdb = new sp.SignaturePad(drawingBoard, {
+            lineColor: '#000',
+            // lineSize: 24,
+            minWidth: 0.7,
+            boardColor: 'transparent'
+          })
         }, 500)
       })
     }
