@@ -117,12 +117,12 @@
               pictureBase64: this.signature.split(',')[1],
               trajectoryData: _d.toString()
             }).then((res) => {
-              if (+res.errorCode === -16) {
+              if (+res.errorCode !== 0) {
                 this.$zzz.toast.text(res.message, '', '90')
               }
               if (+res.errorCode === 0) {
                 this.$zzz.toast.text('恭喜完成签名认证', '', '90')
-                // location.href = this.redirectUrl
+                location.href = decodeURIComponent(this.redirectUrl)
               }
             })
           }
@@ -131,6 +131,7 @@
     },
     created() {
       this.redirectUrl = this.$route.query.redirect || ''
+      console.log(this.redirectUrl)
     },
     mounted() {
       document.getElementsByTagName('title')[0].innerText = '签名'
