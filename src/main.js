@@ -4,9 +4,12 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import FastClick from 'fastclick'
-import VConsole from 'vconsole'
+// import VConsole from 'vconsole'
 import Api from './api'
 import Zui from '@/components/index.js'
+
+// 引入测试directive
+import DireTest from '@/directives/directives-test'
 
 import plugins from '@/plugins'
 
@@ -25,11 +28,12 @@ let env = process.env.NODE_ENV
 
 if (env !== 'production') {
   /* eslint-disable no-new */
-  new VConsole()
+  // new VConsole()
 }
 
 Vue.use(Zui)
 Vue.use(Api)
+Vue.use(DireTest)
 
 Vue.use(plugins.ToastPlugin)
 Vue.use(plugins.AlertPlugin)
