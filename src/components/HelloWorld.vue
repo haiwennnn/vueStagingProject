@@ -14,7 +14,7 @@
     name: 'HelloWorld',
     data() {
       return {
-        msg: 'Welcome',
+        msg: '',
         testStatus: true,
         testBtnTest: 'test',
         exp: 'test'

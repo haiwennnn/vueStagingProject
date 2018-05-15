@@ -44,7 +44,8 @@
         sdb: null,
         signature: '',
         type: '',
-        redirectUrl: ''
+        redirectUrl: '',
+        canvasWidth: 300
       }
     },
     methods: {
@@ -71,6 +72,7 @@
        * 获取图片
        */
       getImg: function () {
+        let vm = this
         let drawingBoard, ctx, imgData, hasData
         drawingBoard = this.$refs.drawingBoard
         ctx = drawingBoard.getContext('2d')
@@ -94,11 +96,17 @@
             this.signature = cas.toDataURL('image/png', 0.5)
 
             let d = this.sdb.toData()
+            console.log(d)
             let _d = []
             d.forEach(function (d1, index) {
               d1.forEach(function (point, index) {
-                _d.push(point.y / window.devicePixelRatio)
-                _d.push(300 - point.x / window.devicePixelRatio)
+                if (index % (5 * window.devicePixelRatio) === 0) {
+                  _d.push(parseInt(point.y))
+                  _d.push(parseInt(vm.canvasWidth - point.x))
+                } else if (index === d1.length - 1) {
+                  _d.push(parseInt(point.y))
+                  _d.push(parseInt(vm.canvasWidth - point.x))
+                }
               })
               _d.push(-1)
               _d.push(0)
@@ -157,6 +165,7 @@
         drawingBg.setAttribute('height', signatureMainStyle.height)
         drawingBg.setAttribute('width', signatureMainStyle.width)
         // 设置canvas宽高
+        this.canvasWidth = parseInt(signatureMainStyle.width)
         drawingBoard.setAttribute('height', signatureMainStyle.height)
         drawingBoard.setAttribute('width', signatureMainStyle.width)
 

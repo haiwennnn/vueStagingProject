@@ -13,9 +13,6 @@ const portfinder = require('portfinder')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
-console.log(process.env.API_ENV)
-// return
-
 // var devConfig = require('../config/dev.env')
 // devConfig.apiServer = '"'+process.env.NODE_ENV+'"'
 // return

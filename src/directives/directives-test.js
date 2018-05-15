@@ -5,6 +5,7 @@ const install = function (Vue, opts = {}) {
       console.log(el)
       console.log(binding)
       console.log(vnode)
+      console.log(vnode.context.test)
       console.log('---bind:end---')
     },
     inserted: function (el, binding, vnode) {

@@ -2,6 +2,12 @@
 // Template version: 1.3.1
 // see http://vuejs-templates.github.io/webpack for documentation.
 
+process.env.NODE_APISER = process.env.NODE_ENV === 'production' ? 'put' : 'uat'
+process.env.NODE_APISER = process.env.npm_config_apiser ? process.env.npm_config_apiser : process.env.NODE_APISER
+
+console.log('===== ' + process.env.NODE_ENV)
+console.log('===== ' + process.env.NODE_APISER)
+
 const path = require('path')
 
 module.exports = {
