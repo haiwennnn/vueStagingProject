@@ -10,13 +10,15 @@ const Ui = r => require.ensure([], () => r(require('@/views/ui')), 'ui')
 
 const RepayIndex = r => require.ensure([], () => r(require('@/views/repay')), 'repay')
 
+const Form = r => require.ensure([], () => r(require('@/views/form')), 'form')
+
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'HelloWorld',
+      path: '/hello-world',
+      name: 'helloWorld',
       component: HelloWorld
     },
     {
@@ -38,6 +40,11 @@ export default new Router({
       path: '/third-loan-enter',
       name: 'third-loan-enter',
       component: ThirdLoanEnter
+    },
+    {
+      path: '/form',
+      name: 'form',
+      component: Form
     }
   ]
 })

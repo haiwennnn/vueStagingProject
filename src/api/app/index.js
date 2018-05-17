@@ -22,9 +22,9 @@ const getToken = (sId) => {
 /**
  * 提交签名数据
  * @param {Object} params 上传参数 {
- *   @param {String} pictureBase64 图片资源
- *   @param {Array} trajectoryData 笔记轨迹
- *   @param {String} type 区分不同签名场景
+ * @param {String} pictureBase64 图片资源
+ * @param {Array} trajectoryData 笔记轨迹
+ * @param {String} type 区分不同签名场景
  * }
  */
 const signature = (params) => {

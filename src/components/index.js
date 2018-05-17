@@ -14,6 +14,9 @@ import Cell from './cell'
 import Flexbox from './flexbox/flexbox.vue'
 import FlexboxItem from './flexbox/flexbox-item.vue'
 
+import ZFormCom from './form'
+import FormItem from './form/form-item.vue'
+
 import Zbutton from './z-button'
 import ButtonGroup from './z-button/button-group.vue'
 
@@ -30,6 +33,8 @@ const components = {
   Cells,
   Flexbox,
   FlexboxItem,
+  ...ZFormCom,
+  FormItem,
   Zbutton,
   ButtonGroup
 }

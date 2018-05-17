@@ -1,11 +1,11 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <input type="text">
+    <!-- <input type="text">
     <div v-if="testStatus"
       v-test:foo.a.b.c="exp">{{testBtnTest}}</div>
     <z-button @click.native="btnClick">更改test</z-button>
-    <z-button @click.native="testStatus=false">删除test</z-button>
+    <z-button @click.native="testStatus=false">删除test</z-button> -->
   </div>
 </template>
 
