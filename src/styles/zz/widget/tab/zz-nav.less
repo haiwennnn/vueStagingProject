@@ -1,4 +1,8 @@
 @import "../../base/fn";
+@navBgcolor: #F9CA1A;
+@navTitleColor: #222;
+@navIconbtnColor: @navTitleColor;
+@navTextbtnColor: @navTitleColor;
 //顶部导航工具栏
 //nav层 层级500-1000
 .zz-nav {
@@ -8,7 +12,7 @@
   width: 100%;
   height: .85rem;
   z-index: 100; // font-size: 0;
-  background-color: #fff;
+  background-color: @navBgcolor;
   &+.zz-tab__panel {
     padding-top: .85rem;
   }
@@ -17,15 +21,15 @@
 .zz-nav__panel {
   position: relative;
   height: 100%;
-  &:after {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    content: "";
-    width: 100%;
-    height: 1px;
-    background-color: #DDDDDD;
-  }
+  // &:after {
+  //   position: absolute;
+  //   left: 0;
+  //   bottom: 0;
+  //   content: "";
+  //   width: 100%;
+  //   height: 1px;
+  //   background-color: #DDDDDD;
+  // }
 }
 
 //导航左侧右侧基础样式
@@ -48,6 +52,7 @@
 .zz-nav__iconbtn {
   font-size: .48rem;
   vertical-align: middle;
+  color: @navIconbtnColor;
   &:before {
     width: .65rem;
     line-height: .85rem;
@@ -59,6 +64,7 @@
 .zz-nav__textbtn {
   padding: .1rem .15rem;
   vertical-align: middle;
+  color: @navTextbtnColor;
 }
 
 //iconbtn textbtn active样式
@@ -75,9 +81,9 @@
   margin: 0 2rem;
   font-size: .34rem;
   text-align: center;
+  color: @navTitleColor;
   span {
     display: inline-block;
-    vertical-align: top;
-    // .ellipsisLn(1);
+    vertical-align: top; // .ellipsisLn(1);
   }
 }

@@ -1,5 +1,11 @@
 <template>
-  <div></div>
+  <div class="zz-page-body">
+    <div class="zz-tab">
+      <z-header>信用钱包</z-header>
+      <router-view></router-view>
+    </div>
+  </div>
+
 </template>
 <script>
   /**
