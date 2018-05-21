@@ -56,7 +56,8 @@
           </cells>
           <p class="descript">*请核对信息,如识别有误可再次拍照识别,核对无误后请点击下一步</p>
         </div>
-        <div class="next-btn">
+        <div class="next-btn"
+          @click="goAddInfo">
           <z-button type="primary">下一步</z-button>
         </div>
       </div>
@@ -70,6 +71,13 @@
   export default {
     data() {
       return {}
+    },
+    methods: {
+      goAddInfo() {
+        this.$router.push({
+          name: 'addInfo'
+        })
+      }
     }
   }
 </script>
