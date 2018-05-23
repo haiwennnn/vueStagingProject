@@ -6,9 +6,9 @@
     <div class="zz-toast"
       v-show="show"
       :class="toastClass">
-      <i class="zz-toast-icon iconfont icon-loading iconfont_rotate"
+      <i class="zz-toast-icon ion ion-load-c iconfont_rotate"
         v-if="type === 'loading'"></i>
-      <i class="zz-toast-icon iconfont icon-done"
+      <i class="zz-toast-icon ion ion-checkmark-round"
         v-if="type === 'done'"></i>
       <div class="zz-toast__content">
         <slot></slot>

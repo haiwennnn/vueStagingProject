@@ -35,7 +35,15 @@
         this.$router.push({
           name: 'realnameAuth'
         })
+      },
+      getUserWalletStatus() {
+        this.$http.get(this.$api.walletQueryNode).then((res) => {
+          console.log(res)
+        })
       }
+    },
+    created() {
+      this.getUserWalletStatus()
     }
   }
 </script>

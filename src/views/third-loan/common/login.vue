@@ -35,6 +35,10 @@
   </div>
 </template>
 <script>
+  /**
+   * 登录页面
+   * TODO:未传手机号码的情况
+   */
   import commonLayout from '../components/commonLayout'
   import Reg from '@/lib/reg'
   export default {
@@ -67,9 +71,26 @@
        */
       openWalletService() {
         let smsCode = this.smsCode
+        // TODO:未传手机号情况
         if (smsCode.sent && (smsCode.value.length >= 4 && smsCode.value.length <= 6)) {
-          this.$router.push({
-            name: 'main'
+          this.$http.post(this.$api.walletLogin, {
+            data: {
+              mobileNum: this.smsCode.phone,
+              validCode: this.smsCode.value,
+              fjChnlCode: 'test'
+            }
+          }).then((res) => {
+            if (+res.errorCode === 0) {
+              // 登录成功
+              let userInfo = res.data
+              window.FJ.setStore('userInfo', userInfo)
+              this.$router.push({
+                name: 'main'
+              })
+            } else {
+              // 登录失败
+              this.$zzz.toast.text(res.message)
+            }
           })
         } else {
           this.$zzz.toast.text('请先获取验证码')
@@ -91,6 +112,13 @@
           this.$zzz.toast.text('请先获取验证码')
           return
         }
+        this.$zzz.toast.show({
+          text: '正在获取验证码',
+          type: 'loading',
+          position: 'middle',
+          time: 0,
+          isShowMask: true
+        })
         // 调用获取验证码接口
         this.$http.post(this.$api.getSmsCode, {
           data: {
@@ -122,6 +150,11 @@
     },
     created() {
       this.smsCode.phone = this.$route.query.phone || '13076965109'
+      // TODO:增加自动获取验证码开关
+      if (this.smsCode.phone) {
+        // 存在手机号自动调用获取验证码接口
+        this.getSmsCode()
+      }
     }
   }
 </script>

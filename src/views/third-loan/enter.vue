@@ -1,5 +1,5 @@
 <template>
-  <div>Third loan enter</div>
+  <div>第三方贷款入口</div>
 </template>
 <script>
   /**
@@ -11,7 +11,41 @@
    */
   export default {
     data() {
-      return {}
+      return {
+        query: null
+      }
+    },
+    methods: {
+      checkToken() {
+        let query = this.query
+        this.$http.post(this.$api.walletEnterTokenValidator, {
+          data: {
+            token: query.token || '',
+            mobileNum: query.mobileNum || '',
+            fjChnlCode: query.fjChnlCode || '',
+            sign: query.sign || '',
+            timestamp: query.timestamp || ''
+          }
+        }).then((res) => {
+          if (+res.errorCode === 0) {
+            this.$router.push({
+              name: 'login',
+              query: {
+                phone: query.phone || '13076965109'
+              }
+            })
+          } else {
+            this.$zzz.toast.text(res.message)
+            // this.$router.push({
+            //   name: '404'
+            // })
+          }
+        })
+      }
+    },
+    created() {
+      this.query = this.$route.query || {}
+      this.checkToken()
     }
   }
 </script>

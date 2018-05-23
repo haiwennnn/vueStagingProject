@@ -103,7 +103,30 @@
         })
       },
       /**
-       * 用户选择图片回调
+       * 根据扫描类型的不同对数据进行相应的处理
+       */
+      transformOcrData() {
+
+      },
+      /**
+       * 图片转换成base64提交到后台识别
+       */
+      uploadImgToOcr(Imgcontent) {
+        this.$http.post(this.$api.userIdCardOcr, {
+          data: {
+            imageContent: Imgcontent,
+            ocrMode: this.currentTriggerType
+          }
+        }).then((res) => {
+          if (+res.errorCode === 0) {
+            this.transformOcrData(res.data)
+          } else {
+
+          }
+        })
+      },
+      /**
+       * 用户选择后图片回调
        * 1.使用FileReader加载文件
        * 2.文件加载完成，创建Img对象加载文件对象结果
        * 3.img对象加载图片成功，画入canvas导出高度1280(宽度按原图比例缩放)尺寸图片
@@ -131,6 +154,7 @@
             } else {
               vm.backIdCardBase64 = dataUrl
             }
+            // TODO:调用服务器接口进行身份证识别
           }
           setTimeout(function () {
             img.src = that.result

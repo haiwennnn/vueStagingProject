@@ -6,12 +6,17 @@ import Server from '../api-server'
 // console.log(Server)
 // 创建异步请求实例
 const instance = Axios.create({
-  timeout: 10000,
+  timeout: 5000,
   withCredentials: false,
   baseURL: Server.path.base
 })
 
 instance.interceptors.request.use((config) => {
+  let userInfo = window.FJ.getStore('userInfo') || {}
+  config.headers.walletToken = userInfo.accessToken || ''
+  config.headers.idFintechUmUser = userInfo.idFintechUmUser || ''
+  config.headers.timeStamp = (new Date()).getTime() + ''
+  console.log(config)
   return config
 }, (error) => {
   return Promise.reject(error)
@@ -53,13 +58,13 @@ function catchAjaxError(err) {
 export default {
   get(url, params, config) {
     let vm = window.vm
-    let userInfo = window.FJ.getStore('userInfo') || {}
+    // let userInfo = window.FJ.getStore('userInfo') || {}
 
-    let headers = {
-      'accessToken': userInfo.accessToken || '',
-      'idFintechUmUser': userInfo.idFintechUmUser || '',
-      'timeStamp': (new Date()).getTime() + ''
-    }
+    // let headers = {
+    //   'walletToken': userInfo.accessToken || '',
+    //   'idFintechUmUser': userInfo.idFintechUmUser || '',
+    //   'timeStamp': (new Date()).getTime() + ''
+    // }
     if (config && config.toast !== false) {
       vm.$zzz.toast.show({
         text: '正在请求',
@@ -74,7 +79,7 @@ export default {
       instance({
         method: 'get',
         url,
-        headers: headers,
+        // headers: headers,
         params: params
       }).then(res => {
         vm.$zzz.toast.hide()
@@ -94,13 +99,13 @@ export default {
   },
   post(url, params, config) {
     var vm = window.vm
-    let userInfo = window.FJ.getStore('userInfo') || {}
+    // let userInfo = window.FJ.getStore('userInfo') || {}
 
-    let headers = {
-      'accessToken': userInfo.accessToken || '',
-      'idFintechUmUser': userInfo.idFintechUmUser || '',
-      'timeStamp': (new Date()).getTime() + ''
-    }
+    // let headers = {
+    //   'walletToken': userInfo.accessToken || '',
+    //   'idFintechUmUser': userInfo.idFintechUmUser || '',
+    //   'timeStamp': (new Date()).getTime() + ''
+    // }
     if (config && config.toast !== false) {
       vm.$zzz.toast.show({
         text: '正在请求',
@@ -114,7 +119,7 @@ export default {
       instance({
         method: 'post',
         url,
-        headers: headers,
+        // headers: headers,
         data: params.data
       }).then(res => {
         let status = res.status
