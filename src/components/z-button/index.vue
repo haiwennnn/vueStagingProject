@@ -54,7 +54,7 @@
       }
     },
     created() {
-      console.log(this.disabled)
+      // console.log(this.disabled)
     }
   }
 </script>

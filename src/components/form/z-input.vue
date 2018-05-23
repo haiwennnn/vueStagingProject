@@ -8,6 +8,7 @@
   export default {
     name: 'z-input',
     props: {
+      value: String,
       placeholder: String
     },
     data() {

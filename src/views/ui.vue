@@ -3,6 +3,77 @@
     <div class="zz-tab zz-tab_inios">
       <z-header>测试标题</z-header>
       <div class="zz-tab__panel zz-tab__panel_hastabbar">
+        <div>
+          <popup v-model="popupStatus1">
+            <div class="zz-cells">
+              <div class="zz-cell">
+                <div class="zz-cell__hd">标题文字</div>
+                <div class="zz-cell__bd">
+                  <p>内容文字</p>
+                </div>
+                <div class="zz-cell__ft">说明文字
+                  <span class="zz-badge zz-badge_dot"></span>
+                </div>
+              </div>
+              <div class="zz-cell zz-cell_swiped">
+                <div class="zz-cell__bd"
+                  style="transform: translateX(-1.2rem)">
+                  <div class="zz-cell">
+                    <div class="zz-cell__hd">标题文字</div>
+                    <div class="zz-cell__bd">
+                      <p>内容文字</p>
+                    </div>
+                    <div class="zz-cell__ft">说明文字</div>
+                  </div>
+                </div>
+                <div class="zz-cell__ft">
+                  <div class="zz-swiped-btn zz-swiped-btn_default">删除</div>
+                  <div class="zz-swiped-btn zz-swiped-btn_warn">删除</div>
+                </div>
+              </div>
+              <div class="zz-cell zz-cell_access">
+                <div class="zz-cell__hd">标题文字</div>
+                <div class="zz-cell__bd">
+                  <p>内容文字</p>
+                </div>
+                <div class="zz-cell__ft">说明文字
+                  <span class="zz-badge zz-badge_dot"></span>
+                </div>
+              </div>
+              <div class="zz-cell">
+                <div class="zz-cell__hd">
+                  <img src="../assets/demo/icon_tabbar.png"
+                    style="display: block;width: .6rem;">
+                </div>
+                <div class="zz-cell__bd">
+                  <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
+                </div>
+                <div class="zz-cell__ft">footer</div>
+              </div>
+              <div class="zz-cell zz-cell_access">
+                <div class="zz-cell__hd">
+                  <img src="../assets/demo/icon_tabbar.png"
+                    style="display: block;width: .8rem;">
+                </div>
+                <div class="zz-cell__bd">
+                  <p>内容文字内容文字内容文字内容文字内容文字内容文字</p>
+                </div>
+                <div class="zz-cell__ft">footer</div>
+              </div>
+              <div class="zz-cell">
+                <div class="zz-cell__hd">
+                  <img src="../assets/demo/icon_tabbar.png"
+                    style="display: block;width: .8rem;">
+                </div>
+                <div class="zz-cell__bd">
+                  <p>内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字内容文字文字</p>
+                </div>
+                <div class="zz-cell__ft">footer</div>
+              </div>
+            </div>
+          </popup>
+        </div>
+
         <p>component cell</p>
         <cells>
           <cell value="文本值">
@@ -23,7 +94,7 @@
         </cells>
         <p>component button</p>
         <div style="margin: .1rem .3rem;">
-          <z-button>按钮 default</z-button>
+          <z-button @click.native="popupStatus1 = true">按钮 default</z-button>
           <z-button status="loading">default loading</z-button>
           <z-button status="disabled">default disabled</z-button>
           <z-button type="primary">按钮 primary</z-button>
@@ -372,95 +443,96 @@
   </div>
 </template>
 <script>
-export default {
-  data() {
-    return {
-      dialogStatus: false,
-      alertStatus: false,
-      confirmStatus: false,
-      popupStatus: false
-    }
-  },
-  methods: {
-    confirmOnShow() {
-      console.log('----confirmOnShow----')
+  export default {
+    data() {
+      return {
+        dialogStatus: false,
+        alertStatus: false,
+        confirmStatus: false,
+        popupStatus: false,
+        popupStatus1: false
+      }
     },
-    confirmOnHide() {
-      console.log('----confirmOnHide----')
+    methods: {
+      confirmOnShow() {
+        console.log('----confirmOnShow----')
+      },
+      confirmOnHide() {
+        console.log('----confirmOnHide----')
+      },
+      confirmOnCancel() {
+        console.log('----confirmOnCancel----')
+      },
+      confirmOnConfirm() {
+        console.log('----confirmOnConfirm----')
+      },
+      alertOnShow() {
+        console.log('alert on show')
+      },
+      alertEvent(text) {
+      },
+      callPluginAlert() {
+        this.$zzz.alert.show({
+          title: 'plugin title',
+          content: 'content内容部分',
+          buttonText: 'by plugin ok ?',
+          onShow: () => {
+          },
+          onHide: () => {
+            setTimeout(() => {
+              this.alertStatus = true
+            }, 2000)
+          }
+        })
+      }
     },
-    confirmOnCancel() {
-      console.log('----confirmOnCancel----')
+    created() {
+      // this.$zzz.toast.show({
+      //   text: '正在校验签名',
+      //   type: 'loading',
+      //   position: 'middle',
+      //   time: 0,
+      //   isShowMask: true
+      // })
+      // this.$zzz.toast.show({
+      //   text: '签名成功',
+      //   type: 'done',
+      //   position: 'middle',
+      //   time: 0,
+      //   isShowMask: true
+      // })
+
     },
-    confirmOnConfirm() {
-      console.log('----confirmOnConfirm----')
-    },
-    alertOnShow() {
-      console.log('alert on show')
-    },
-    alertEvent(text) {
-    },
-    callPluginAlert() {
-      this.$zzz.alert.show({
-        title: 'plugin title',
-        content: 'content内容部分',
-        buttonText: 'by plugin ok ?',
-        onShow: () => {
-        },
-        onHide: () => {
-          setTimeout(() => {
-            this.alertStatus = true
-          }, 2000)
-        }
+    mounted() {
+      this.$nextTick(() => {
       })
     }
-  },
-  created() {
-    // this.$zzz.toast.show({
-    //   text: '正在校验签名',
-    //   type: 'loading',
-    //   position: 'middle',
-    //   time: 0,
-    //   isShowMask: true
-    // })
-    // this.$zzz.toast.show({
-    //   text: '签名成功',
-    //   type: 'done',
-    //   position: 'middle',
-    //   time: 0,
-    //   isShowMask: true
-    // })
-
-  },
-  mounted() {
-    this.$nextTick(() => {
-    })
   }
-}
 </script>
 <style lang="less" scoped>
-.zz-grid {
-  height: 0.8rem;
-  line-height: 0.8rem;
-  text-align: center;
-}
-.zz-tab__panel {
-  & > p {
-    line-height: 0.6rem;
-    padding: 0.3rem 0 0.1rem 0.3rem;
-    font-size: 0.22rem;
+  .zz-grid {
+    height: 0.8rem;
+    line-height: 0.8rem;
+    text-align: center;
   }
-}
+  .zz-tab__panel {
+    & > p {
+      line-height: 0.6rem;
+      padding: 0.3rem 0 0.1rem 0.3rem;
+      font-size: 0.22rem;
+    }
+  }
 
-.zz-flex {
-  width: 7rem;
-  height: 0.8rem;
-  margin: 0.15rem auto 0;
-}
-.demo-flex-item {
-  // margin: 0.1rem;
-  padding: 0.05rem 0.2rem;
-  background-color: coral;
-  text-align: center;
-  border-radius: 10px;
-}
+  .zz-flex {
+    width: 7rem;
+    height: 0.8rem;
+    margin: 0.15rem auto 0;
+  }
+  .demo-flex-item {
+    // margin: 0.1rem;
+    padding: 0.05rem 0.2rem;
+    background-color: coral;
+    text-align: center;
+    border-radius: 10px;
+  }
 </style>

@@ -5,11 +5,21 @@
       <div class="zz-tab__panel">
         <div class="scan-area">
           <flexbox :gutter="60">
-            <flexbox-item :flex="'1'">
-              <div class="scan-trigger-area"></div>
+            <flexbox-item :flex="'1'"
+              @on-item-click="scanFront">
+              <div class="scan-trigger-area">
+                <img v-if="frontIdCardBase64"
+                  :src="frontIdCardBase64"
+                  alt="">
+              </div>
             </flexbox-item>
-            <flexbox-item :flex="'1'">
-              <div class="scan-trigger-area"></div>
+            <flexbox-item :flex="'1'"
+              @on-item-click="scanBack">
+              <div class="scan-trigger-area">
+                <img v-if="backIdCardBase64"
+                  :src="backIdCardBase64"
+                  alt="">
+              </div>
             </flexbox-item>
           </flexbox>
         </div>
@@ -60,6 +70,13 @@
           @click="goAddInfo">
           <z-button type="primary">下一步</z-button>
         </div>
+        <canvas ref="canvas"
+          style="display:none;"></canvas>
+        <input type="file"
+          name="file"
+          ref="uploadFile"
+          style="display:none;"
+          @change="userChooseImage">
       </div>
     </div>
   </div>
@@ -70,13 +87,77 @@
    */
   export default {
     data() {
-      return {}
+      return {
+        // 正面base64
+        frontIdCardBase64: '',
+        // 反面base64
+        backIdCardBase64: '',
+        // 扫描类型 [1,2] => [正面,背面]
+        currentTriggerType: 0
+      }
     },
     methods: {
       goAddInfo() {
         this.$router.push({
           name: 'addInfo'
         })
+      },
+      /**
+       * 用户选择图片回调
+       * 1.使用FileReader加载文件
+       * 2.文件加载完成，创建Img对象加载文件对象结果
+       * 3.img对象加载图片成功，画入canvas导出高度1280(宽度按原图比例缩放)尺寸图片
+       */
+      userChooseImage(e) {
+        let vm = this
+        let target = e.target
+        let files = target.files
+        let canvas = this.$refs.canvas
+        // let uploadType = this.uploadType
+        let scale = 0.7
+        let baseWidth = 1280
+        let reader = new FileReader()
+        reader.onload = function (e) {
+          var that = this
+          var img = new Image()
+          img.onload = function () {
+            canvas.width = baseWidth
+            canvas.height = this.height * (1280 / this.width)
+            let ctxs = canvas.getContext('2d')
+            ctxs.drawImage(img, 0, 0, this.width, this.height, 0, 0, baseWidth, this.height * (1280 / this.width))
+            var dataUrl = canvas.toDataURL('image/jpeg', scale)
+            if (vm.currentTriggerType === 1) {
+              vm.frontIdCardBase64 = dataUrl
+            } else {
+              vm.backIdCardBase64 = dataUrl
+            }
+          }
+          setTimeout(function () {
+            img.src = that.result
+          }, 800)
+        }
+        reader.readAsDataURL(files[0])
+      },
+      /**
+       * 扫描银行卡正面
+       */
+      scanFront() {
+        this.currentTriggerType = 1
+        this.triggerFileInput()
+      },
+      /**
+       * 扫描身份证背面
+       */
+      scanBack() {
+        this.currentTriggerType = 2
+        this.triggerFileInput()
+      },
+      /**
+       * 触发fileinput节点，用户选择资源
+       */
+      triggerFileInput() {
+        this.$refs.uploadFile.click()
+        this.$refs.uploadFile.click()
       }
     }
   }
@@ -90,8 +171,18 @@
     margin: 0.2rem auto 0;
   }
   .scan-trigger-area {
+    position: relative;
     height: 2rem;
     background-color: #ccc;
+    overflow: hidden;
+    img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: auto;
+      transform: translate(-50%, -50%);
+    }
   }
   .scan-example {
     position: relative;

@@ -45,19 +45,22 @@
 </template>
 
 <script>
-export default {
-  name: 'App',
-  created() {
-    // console.log(this.$test)
-    // this.$api.getToken('N153521352658220').then(res => {
-    //   console.log(res)
-    // }).catch(err => {
-    //   console.log(err)
-    // })
+  export default {
+    name: 'App',
+    data() {
+      return {}
+    },
+    created() {
+      // console.log(this.$test)
+      // this.$api.getToken('N153521352658220').then(res => {
+      //   console.log(res)
+      // }).catch(err => {
+      //   console.log(err)
+      // })
+    }
   }
-}
 </script>
 
 <style lang="less">
-@import "./styles/index.less";
+  @import "./styles/index.less";
 </style>
