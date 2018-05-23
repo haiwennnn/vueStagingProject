@@ -1,6 +1,7 @@
 <template>
   <button class="zz-btn"
-    :class="btnClass">
+    :class="btnClass"
+    @click="$emit('click')">
     <i class="iconfont icon-loading iconfont_rotate"
       v-if="status === 'loading'"></i>
     <slot></slot>

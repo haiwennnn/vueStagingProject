@@ -4,11 +4,19 @@
       <div class="user-amount-panel"
         v-if="uap">
         <div class="loop-bar"></div>
-        <div class="amount-detail">
-          <span class="rate">日利率0.12%</span>
-          <span class="amount">&yen;5000</span>
-          <span class="desc">最高额度</span>
-        </div>
+         <z-circle
+          :percent="80"
+          :stroke-width="6"
+          :trail-width="6"
+          trail-color="rgba(0,0,0,.4)"
+          stroke-color="rgba(44,44,44,1)">
+          <div class="amount-detail">
+            <span class="rate">{{text1}}</span>
+            <span class="amount">&yen;{{text2}}</span>
+            <span class="desc">{{text3}}</span>
+          </div>
+        </z-circle>
+        <div v-if="button.length>0"><z-button class="btn">{{button}}</z-button></div>
       </div>
       <slot name="hd"></slot>
     </div>
@@ -21,15 +29,35 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'common-layout',
-    props: {
-      uap: Boolean
+import ZCircle from './circle'
+export default {
+  name: 'common-layout',
+  props: {
+    uap: Boolean,
+    text1: {
+      type: String,
+      default: ''
     },
-    data() {
-      return {}
+    text2: {
+      type: String,
+      default: ''
+    },
+    text3: {
+      type: String,
+      default: ''
+    },
+    button: {
+      type: String,
+      default: ''
     }
+  },
+  components: {
+    ZCircle
+  },
+  data() {
+    return {}
   }
+}
 </script>
 <style lang="less" scoped>
   .common-layout {
@@ -52,8 +80,6 @@
     width: 3rem;
     height: 3rem;
     margin: 0.6rem auto 0;
-    border-radius: 50%;
-    background-color: #ccc;
   }
   .loop-bar {
   }
@@ -61,13 +87,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 1.6rem;
     margin: 0 auto;
     text-align: center;
     color: #444444;
     transform: translate(-50%, -50%);
     span {
-      display: block;
+      display: inline-block;
       line-height: 1.1;
     }
     .rate {
@@ -75,15 +100,25 @@
     }
     .amount {
       line-height: 0.66rem;
-      padding: 0 0 0.1rem 0;
-      border-bottom: 1px solid #444;
+      padding: 0 0 0 0;
       font-size: 0.56rem;
     }
     .desc {
+      width: 1.6rem;
       line-height: 0.28rem;
       margin-top: 0.08rem;
       font-size: 0.2rem;
+      padding-top: 0.1rem;
+      border-top: .01rem solid #444;
     }
+  }
+  .btn{
+    background: #444444;
+    border-radius: 90px;
+    color: #F9CA1A ;
+    width: 1.96rem;
+    height: .56rem;
+    line-height: .56rem;
   }
 </style>
 
