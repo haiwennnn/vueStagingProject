@@ -3,7 +3,9 @@ const ThirdLoan = r => require.ensure([], () => r(require('@/views/third-loan/en
 const Login = r => require.ensure([], () => r(require('@/views/third-loan/common/login')), 'third-loan-common')
 const Main = r => require.ensure([], () => r(require('@/views/third-loan/common/main')), 'third-loan-common')
 // 实名认证
-const RealnameAuth = r => require.ensure([], () => r(require('@/views/third-loan/calculate-amount/realname-auth')), 'third-loan-common')
+const RealnameAuth = r => require.ensure([], () => r(require('@/views/third-loan/common/realname-auth')), 'third-loan-common')
+// 实名认证
+const AddBankcard = r => require.ensure([], () => r(require('@/views/third-loan/common/bankcard/add-bankcard')), 'third-loan-common')
 
 export default [
   {
@@ -22,8 +24,13 @@ export default [
     component: Main
   },
   {
-    path: '/third-loan/calc/realname-auth',
+    path: '/third-loan/realname-auth',
     name: 'realnameAuth',
     component: RealnameAuth
+  },
+  {
+    path: '/third-loan/bankcard/add-bankcard',
+    name: 'addBankcard',
+    component: AddBankcard
   }
 ]

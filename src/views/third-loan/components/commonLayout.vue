@@ -5,7 +5,7 @@
         v-if="uap">
         <div class="loop-bar"></div>
          <z-circle
-          :percent="80"
+          :percent="50"
           :stroke-width="6"
           :trail-width="6"
           trail-color="rgba(0,0,0,.4)"
@@ -20,6 +20,7 @@
       </div>
       <slot name="hd"></slot>
     </div>
+    <z-wave></z-wave>
     <div class="common-layout__bd">
       <slot name="bd"></slot>
     </div>
@@ -30,6 +31,7 @@
 </template>
 <script>
 import ZCircle from './circle'
+import ZWave from './wave'
 export default {
   name: 'common-layout',
   props: {
@@ -52,7 +54,8 @@ export default {
     }
   },
   components: {
-    ZCircle
+    ZCircle,
+    ZWave
   },
   data() {
     return {}

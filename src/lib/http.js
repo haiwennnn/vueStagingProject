@@ -13,7 +13,8 @@ const instance = Axios.create({
 
 instance.interceptors.request.use((config) => {
   let userInfo = window.FJ.getStore('userInfo') || {}
-  config.headers.walletToken = userInfo.accessToken || ''
+  config.headers.accessToken = userInfo.accessToken || ''
+  config.headers.walletToken = userInfo.token || ''
   config.headers.idFintechUmUser = userInfo.idFintechUmUser || ''
   config.headers.timeStamp = (new Date()).getTime() + ''
   console.log(config)

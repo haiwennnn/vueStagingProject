@@ -77,12 +77,20 @@
             data: {
               mobileNum: this.smsCode.phone,
               validCode: this.smsCode.value,
-              fjChnlCode: 'test'
+              fjChnlCode: 'O695534HRuuf'
             }
           }).then((res) => {
             if (+res.errorCode === 0) {
               // 登录成功
-              let userInfo = res.data
+              let userInfo = {}
+              if (typeof res.data === 'string') {
+                userInfo.token = res.data
+                userInfo.phone = this.smsCode.phone
+              } else {
+                userInfo = res.data
+                userInfo.phone = this.smsCode.phone
+              }
+              userInfo.accessToken = ''
               window.FJ.setStore('userInfo', userInfo)
               this.$router.push({
                 name: 'main'
