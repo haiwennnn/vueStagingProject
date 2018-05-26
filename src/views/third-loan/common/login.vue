@@ -71,7 +71,10 @@
        */
       openWalletService() {
         let smsCode = this.smsCode
-        // TODO:未传手机号情况
+        if (!smsCode.disabled) {
+          this.$zzz.toast.text('请先获取验证码')
+          return
+        }
         if (smsCode.sent && (smsCode.value.length >= 4 && smsCode.value.length <= 6)) {
           this.$http.post(this.$api.walletLogin, {
             data: {
@@ -116,10 +119,6 @@
           this.$zzz.toast.text('请输入正确的手机号码')
           return
         }
-        if (smsCode.disabled) {
-          this.$zzz.toast.text('请先获取验证码')
-          return
-        }
         this.$zzz.toast.show({
           text: '正在获取验证码',
           type: 'loading',
@@ -161,7 +160,7 @@
       // TODO:增加自动获取验证码开关
       if (this.smsCode.phone) {
         // 存在手机号自动调用获取验证码接口
-        this.getSmsCode()
+        // this.getSmsCode()
       }
     }
   }

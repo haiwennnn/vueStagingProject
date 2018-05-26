@@ -1,12 +1,21 @@
-// import Http from '../../lib/http'
+import Server from '@/api-server'
 
-// /**
-//  * 接口请求地址对象
-//  */
 const urls = {
-  getToken: 'gateway/third/getToken',
-  getProducts: 'gateway/productClient',
-  signature: 'gateway/yzy/client/signature'
+
+  /**
+   * 获取ykdtoken
+   * @method post
+   * @param {String} ssjLoanId 第三方loanId
+   */
+  getToken: Server.path.ykdGw + 'third/getToken',
+
+  /**
+   * 提交签名数据
+   * @param {String} pictureBase64 图片资源
+   * @param {Array} trajectoryData 笔记轨迹
+   * @param {String} type 区分不同签名场景
+   */
+  signature: Server.path.ykdGw + 'yzy/client/signature'
 }
 
 // /**
@@ -29,10 +38,6 @@ const urls = {
 //  */
 // const signature = (params) => {
 //   return Http.post(urls.signature, params)
-// }
-
-// const getProducts = () => {
-//   return Http.get(urls.getProducts)
 // }
 
 export default urls

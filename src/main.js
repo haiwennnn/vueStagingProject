@@ -12,6 +12,7 @@ import Zui from '@/components/index.js'
 import DireTest from '@/directives/directives-test'
 
 import plugins from '@/plugins'
+import filter from '@/filter'
 
 import FJ from '@/lib/fj'
 
@@ -37,6 +38,8 @@ Vue.use(DireTest)
 
 Vue.use(plugins.ToastPlugin)
 Vue.use(plugins.AlertPlugin)
+
+filter.init(Vue)
 
 /* eslint-disable no-new */
 window.vm = new Vue({

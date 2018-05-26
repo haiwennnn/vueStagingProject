@@ -5,21 +5,29 @@
       <div class="zz-tab__panel">
         <div class="face-identify-panel">
           <div class="demo-1">
-            <p>请正对手机，进行人脸验证</p>
+            <p>录制一段朗读如下数字的视频</p>
+            <ul>
+              <li>请使用<b>前置摄像头</b></li>
+              <li>请用<b>普通话</b>读<b>一遍</b></li>
+              <li>视频时长<b>3-5秒</b></li>
+            </ul>
+            <div>6659</div>
           </div>
           <div class="demo-2">
             <div class="demo-2-item">
               <span></span>
-              <p>请不要戴眼镜和帽子</p>
+              <p>&nbsp;</p>
             </div>
             <div class="demo-2-item">
               <span></span>
-              <p>光线不要太暗</p>
+              <p>查看<span>录制须知</span></p>
             </div>
           </div>
         </div>
         <div class="next-btn">
-          <z-button type="primary">下一步</z-button>
+            <label class="zz-btn zz-btn_default primary">开始验证<input name='video' type='file' id='video-input'
+                           accept='video/*'
+                           capture='camcorder'/></label>
         </div>
       </div>
     </div>
@@ -37,9 +45,37 @@
 </script>
 <style lang="less" scoped>
   .demo-1 {
-    width: 3.5rem;
-    height: 4.88rem;
+    width: 6.5rem;
+    height: 4.48rem;
     margin: 0.6rem auto;
+    border: .10rem solid #EAEAEA;
+    border-radius: .40rem;
+    background-color: #FDFDFD;
+    font-size: .32rem;
+    color: #525252;
+
+    p{
+      line-height: 3em;
+      text-align: center;
+    }
+    ul{
+      margin-left: 3.30rem; 
+      color: #7A7A7A;
+      line-height: 1.8em;
+
+      b{
+        color: #E9646B;
+      }
+    }
+    &>div{
+      text-align: center;
+      font-size: 1.50rem;
+      line-height: 1.2em;
+      font-family: Arial;
+      font-weight: 600;
+      letter-spacing: .10rem;
+      color: #444;
+    }
   }
   .demo-2 {
     overflow: hidden;
@@ -50,10 +86,18 @@
     }
   }
   .next-btn {
-    height: 1rem;
+    padding: .30rem 1rem;
+    height: .84rem;
     margin-top: .8rem;
     .zz-btn {
       height: 100%;
+      border-radius: 2em;
+      background-color: #F9CA1A;
+      color: #444444;
+
+      input{
+        display: none;
+      }
     }
   }
 </style>

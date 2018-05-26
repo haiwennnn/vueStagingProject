@@ -10,7 +10,7 @@
         v-if="type === 'loading'"></i>
       <i class="zz-toast-icon ion ion-checkmark-round"
         v-if="type === 'done'"></i>
-      <div class="zz-toast__content">
+      <div v-if="!text" class="zz-toast__content">
         <slot></slot>
       </div>
       <div class="zz-toast__content"

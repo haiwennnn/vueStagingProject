@@ -11,8 +11,11 @@ const server = {
     // base: 'http://test-app.chinacreditech.com/',
     base: 'http://10.0.11.80:8085/',
     um: 'um/',
+    gw: 'malldoor/',
     attachment: 'gateway/',
-    gw: 'malldoor/'
+    ykdBase: 'https://test-app.chinacreditech.com/',
+    ykdUm: 'um/',
+    ykdGw: 'gateway/'
   }
 }
 

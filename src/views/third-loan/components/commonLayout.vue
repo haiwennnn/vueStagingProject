@@ -2,21 +2,24 @@
   <div class="common-layout">
     <div class="common-layout__hd">
       <div class="user-amount-panel"
+        @click="onUserAmountPanelEvent"
         v-if="uap">
         <div class="loop-bar"></div>
-         <z-circle
-          :percent="50"
+        <z-circle :percent="percent"
           :stroke-width="6"
           :trail-width="6"
           trail-color="rgba(0,0,0,.4)"
           stroke-color="rgba(44,44,44,1)">
           <div class="amount-detail">
-            <span class="rate">{{text1}}</span>
-            <span class="amount">&yen;{{text2}}</span>
-            <span class="desc">{{text3}}</span>
+            <span class="rate">{{loanInfo.repayDateStr}}</span>
+            <span class="amount">&yen;{{loanInfo.amount}}</span>
+            <span class="desc">{{loanInfo.tenorStr}}</span>
           </div>
         </z-circle>
-        <div v-if="button.length>0"><z-button class="btn">{{button}}</z-button></div>
+        <div v-if="button.length>0">
+          <z-button class="btn">{{button}}</z-button>
+        </div>
+        <!-- <slot name="hd__btn"></slot> -->
       </div>
       <slot name="hd"></slot>
     </div>
@@ -30,37 +33,65 @@
   </div>
 </template>
 <script>
-import ZCircle from './circle'
-import ZWave from './wave'
-export default {
-  name: 'common-layout',
-  props: {
-    uap: Boolean,
-    text1: {
-      type: String,
-      default: ''
+  import ZCircle from './circle'
+  import ZWave from './wave'
+  export default {
+    name: 'common-layout',
+    components: {
+      ZCircle,
+      ZWave
     },
-    text2: {
-      type: String,
-      default: ''
+    props: {
+      uap: Boolean,
+      productInfo: {
+        type: Object,
+        default: function () {
+          return {
+            amount: 5000
+          }
+        }
+      },
+      loanInfo: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      },
+      text1: {
+        type: String,
+        default: ''
+      },
+      text2: {
+        type: String,
+        default: ''
+      },
+      text3: {
+        type: String,
+        default: ''
+      },
+      button: {
+        type: String,
+        default: ''
+      }
     },
-    text3: {
-      type: String,
-      default: ''
+    computed: {
+      percent() {
+        if (!this.loanInfo.amount || typeof this.loanInfo.amount !== 'number') {
+          return 0
+        } else {
+          return (this.loanInfo.amount / this.productInfo.amount) * 100
+        }
+      }
     },
-    button: {
-      type: String,
-      default: ''
+    methods: {
+      onUserAmountPanelEvent() {
+        this.$emit('on-user-amount-panel-click')
+      }
+    },
+    data() {
+      return {}
     }
-  },
-  components: {
-    ZCircle,
-    ZWave
-  },
-  data() {
-    return {}
   }
-}
 </script>
 <style lang="less" scoped>
   .common-layout {
@@ -112,16 +143,16 @@ export default {
       margin-top: 0.08rem;
       font-size: 0.2rem;
       padding-top: 0.1rem;
-      border-top: .01rem solid #444;
+      border-top: 0.01rem solid #444;
     }
   }
-  .btn{
+  .btn {
     background: #444444;
     border-radius: 90px;
-    color: #F9CA1A ;
+    color: #f9ca1a;
     width: 1.96rem;
-    height: .56rem;
-    line-height: .56rem;
+    height: 0.56rem;
+    line-height: 0.56rem;
   }
 </style>
 

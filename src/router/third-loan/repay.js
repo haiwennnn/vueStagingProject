@@ -1,4 +1,5 @@
-
+// 第三方还款-入口
+const ThirdRepayEnter = r => require.ensure([], () => r(require('@/views/third-loan/repay/enter')), 'third-repay')
 // 第三方还款-主页
 const ThirdRepayIndex = r => require.ensure([], () => r(require('@/views/third-loan/repay/index')), 'third-repay')
 // 第三方还款-提前结清
@@ -16,7 +17,12 @@ const ThirdRepayAloan = r => require.ensure([], () => r(require('@/views/third-l
 
 export default [
   {
-    path: '/third-loan/repay',
+    path: '/third-loan/repay/enter',
+    name: 'thirdRepayEnter',
+    component: ThirdRepayEnter
+  },
+  {
+    path: '/third-loan/repay/index',
     name: 'thirdRepayIndex',
     component: ThirdRepayIndex
   },
@@ -37,12 +43,12 @@ export default [
   },
   {
     path: '/third-loan/repay/bill',
-    name: 'tthirdRepayBill',
+    name: 'thirdRepayBill',
     component: ThirdRepayBill
   },
   {
     path: '/third-loan/repay/detail',
-    name: 'tthirdRepayDetail',
+    name: 'thirdRepayDetail',
     component: ThirdRepayDetail
   },
   {

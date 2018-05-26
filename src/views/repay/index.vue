@@ -50,9 +50,7 @@
               <p>更多还款方式
                 <span class="iconfont icon-arrow-down"></span>
               </p>
-
             </div>
-
             <!-- <div class="zz-cells zz-cells-radio" style="margin-top: 0;">
               <label class="zz-cell zz-check-label" for="rr1">
                 <div class="zz-cell-hd">

@@ -1,8 +1,11 @@
 <template>
-  <div></div>
+  <div class="form-title">
+    <slot></slot>
+  </div>
 </template>
 <script>
 export default {
+  name: 'cells-title',
   data() {
     return {}
   }

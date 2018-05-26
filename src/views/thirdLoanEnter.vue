@@ -22,18 +22,25 @@
     created() {
       this.ssjLoanId = this.$route.query.sid || 'N153521352658220'
       this.rurl = this.$route.query.rurl
-      this.$zzz.toast.show({
-        text: '正在获取用户信息',
-        time: 0,
-        type: 'loading',
-        position: 'middle'
-      })
-      this.$api.getToken(this.ssjLoanId).then(res => {
+      this.$http.ykdPost(
+        this.$api.getToken,
+        {
+          data: {
+            ssjLoanId: this.ssjLoanId
+          }
+        },
+        {
+          toastText: '正在获取用户信息'
+        }
+      ).then((res) => {
         if (+res.errorCode === 0) {
           let data = res.data
           window.FJ.setStore('userInfo', {
             accessToken: data.accessToken,
-            idFintechUmUser: data.idFintechUmUser
+            idFintechUmUser: data.idFintechUmUser,
+            phone: '',
+            token: '',
+            username: ''
           })
           setTimeout(() => {
             this.$zzz.toast.hide()
@@ -43,17 +50,16 @@
                 redirect: this.rurl
               }
             })
-          }, 1500)
+          }, 1000)
         } else {
           this.$zzz.toast.text('获取用户信息失败', '')
         }
-      }).catch(err => {
-        console.log(err)
       })
     },
     mounted() {
-      document.getElementsByTagName('title')[0].innerText = '第三方入口'
+      // document.getElementsByTagName('title')[0].innerText = '第三方入口'
       var bol = false
+      // 设置卡牛不允许下拉刷新
       const call = (uri) => {
         console.log(uri)
         let iframe = document.createElement('iframe')
@@ -67,5 +73,4 @@
   }
 </script>
 <style lang="less" scoped>
-
 </style>

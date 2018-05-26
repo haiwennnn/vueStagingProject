@@ -5,7 +5,7 @@ const Main = r => require.ensure([], () => r(require('@/views/third-loan/common/
 // 实名认证
 const RealnameAuth = r => require.ensure([], () => r(require('@/views/third-loan/common/realname-auth')), 'third-loan-common')
 // 实名认证
-const AddBankcard = r => require.ensure([], () => r(require('@/views/third-loan/common/bankcard/add-bankcard')), 'third-loan-common')
+const BindBankcard = r => require.ensure([], () => r(require('@/views/third-loan/common/bankcard/bind-bankcard')), 'third-loan-common')
 
 export default [
   {
@@ -29,8 +29,8 @@ export default [
     component: RealnameAuth
   },
   {
-    path: '/third-loan/bankcard/add-bankcard',
-    name: 'addBankcard',
-    component: AddBankcard
+    path: '/third-loan/bankcard/bind-bankcard',
+    name: 'bindBankcard',
+    component: BindBankcard
   }
 ]

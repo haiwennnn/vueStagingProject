@@ -16,7 +16,7 @@
       </div>
       <div class="signature__tool"
         ref="signatureTool">
-        <div class="back">后退</div>
+        <!-- <div class="back">后退</div> -->
         <div class="refresh"
           @click="clear">重签</div>
         <div class="confirm-sign"
@@ -112,27 +112,38 @@
               _d.push(0)
             })
 
-            this.$zzz.toast.show({
-              text: '正在校验签名',
-              type: 'loading',
-              position: 'middle',
-              time: 0,
-              isShowMask: true,
-              direction: '90'
-            })
-
-            this.$api.signature({
-              pictureBase64: this.signature.split(',')[1],
-              trajectoryData: _d.toString()
-            }).then((res) => {
-              if (+res.errorCode !== 0) {
-                this.$zzz.toast.text(res.message, '', '90')
+            this.$http.ykdPost(
+              this.$api.signature,
+              {
+                data: {
+                  pictureBase64: this.signature.split(',')[1],
+                  trajectoryData: _d.toString()
+                }
+              },
+              {
+                toastText: '正在校验签名',
+                direction: '90'
               }
+            ).then((res) => {
               if (+res.errorCode === 0) {
                 this.$zzz.toast.text('恭喜完成签名认证', '', '90')
                 location.href = decodeURIComponent(this.redirectUrl)
+              } else {
+                this.$zzz.toast.text(res.message, '', '90')
               }
             })
+            // this.$api.signature({
+            //   pictureBase64: this.signature.split(',')[1],
+            //   trajectoryData: _d.toString()
+            // }).then((res) => {
+            //   if (+res.errorCode !== 0) {
+            //     this.$zzz.toast.text(res.message, '', '90')
+            //   }
+            //   if (+res.errorCode === 0) {
+            //     this.$zzz.toast.text('恭喜完成签名认证', '', '90')
+            //     location.href = decodeURIComponent(this.redirectUrl)
+            //   }
+            // })
           }
         })
       }

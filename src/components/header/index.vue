@@ -5,7 +5,8 @@
       <div class="zz-nav__left">
         <!-- 存在两种形式按钮 文本和icon 最多两个 -->
         <!-- <span class="zz-nav__iconbtn iconfont icon-back"></span> -->
-          <span class="zz-nav__iconbtn ionicons ion-ios-arrow-back"></span>
+        <span class="zz-nav__iconbtn ionicons ion-ios-arrow-back"
+          @click="onHeaderBackEvent"></span>
         <!-- <span class="zz-nav__textbtn">按钮</span> -->
       </div>
       <div class="zz-nav__title">
@@ -25,12 +26,26 @@
 <script>
   export default {
     name: 'z-header',
+    props: {
+
+    },
     data() {
       return {
       }
+    },
+    methods: {
+      onHeaderBackEvent() {
+        let listeners = this.$listeners
+        if (listeners['on-header-left-event']) {
+          this.$emit('on-header-left-event')
+        } else {
+          this.$router.back()
+        }
+      }
+    },
+    created() {
     }
   }
 </script>
 <style lang="less" scoped>
-
 </style>
