@@ -13,6 +13,10 @@ npm run dev
 
 # build for production with minification
 npm run build
+npm run dev --apuser=uat
+npm run dev --apuser=put
+npm run build --apiser=uat
+npm run build --apiser=put
 
 # build for production and view the bundle analyzer report
 npm run build --report

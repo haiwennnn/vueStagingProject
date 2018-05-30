@@ -36,7 +36,7 @@
                   <span>应还利息</span>
                 </p>
                 <p slot="ft">
-                  <b>¥{{repayBillDetail.repaymentList[4].amount}}</b>
+                  <b>¥{{repayBillDetail.repaymentList[4].amount | toFixed2}}</b>
                 </p>
               </cell>
               <!-- <cell class="panel-cell">
@@ -55,7 +55,7 @@
               <cell>
                 <p slot="hd">合计(第1期)</p>
                 <p slot="ft">¥
-                  <span class="amount">{{total}}</span>
+                  <span class="amount">{{total | toFixed2}}</span>
                 </p>
               </cell>
             </z-button>

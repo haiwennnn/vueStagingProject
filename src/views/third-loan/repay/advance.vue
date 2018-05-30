@@ -2,7 +2,7 @@
   <div class="zz-page-body repay-index-page">
     <div class="zz-page-body">
       <div class="zz-tab">
-        <z-header>提前结清</z-header>
+        <z-header>{{currentRepayInfo.text}}</z-header>
         <div class="zz-tab__panel">
           <cells noTopLine>
             <div class="amount">
@@ -10,7 +10,7 @@
                 <span>{{currentRepayInfo.text}}</span>
               </p>
               <p>
-                <i>¥</i>{{currentRepayInfo.amount}}</p>
+                <i>¥</i>{{currentRepayInfo.amount| toFixed2}}</p>
             </div>
           </cells>
           <div slot="bd"
@@ -58,7 +58,7 @@
           <div slot="ft"
             class="footer">
             <z-button @click="triggerRepayment">立即还款 ¥
-              <span>{{currentRepayInfo.amount}}</span>
+              <span>{{currentRepayInfo.amount| toFixed2}}</span>
             </z-button>
           </div>
         </div>
@@ -111,7 +111,7 @@
           type: currentRepayInfo.type,
           bankName: bankcard.bankName,
           tradeName: currentRepayInfo.tradeName,
-          amount: currentRepayInfo.amount,
+          amount: parseFloat(currentRepayInfo.amount).toString(),
           custBankAccountNo: bankcard.bankCardNo,
           custBindPhoneNo: '',
           custName: '',
@@ -126,34 +126,36 @@
           customerId: userRepayInfo.customerId,
           contractId: userRepayInfo.contractId
         }
-        // this.$zzz.alert.show({
-        //   content: '还款成功<br>您还可以在"我的"-"还款记录"中查看详情。'
-        // })
+        console.log(repaymentInfo)
         // return
-        this.$http.ykdPost(this.$api.triggerRepayment, {
-          data: repaymentInfo
-        }).then((res) => {
-          if (+res.errorCode === 0) {
-            this.$zzz.alert.show({
-              content: '恭喜还款成功',
-              onHide() {
-                this.$router.back()
-              }
-            })
-          } else if (+res.errorCode === 1) {
-            this.$zzz.alert.show({
-              content: '还款失败,请核实后再进行还款操作'
-            })
-          } else if (+res.errorCode === 2) {
-            this.$zzz.alert.show({
-              content: '还款申请已提交成功<br>稍后在还款记录中查看进度'
-            })
-          } else {
-            this.$zzz.alert.show({
-              content: res.message
-            })
-          }
-        })
+        this.$http.ykdPost(
+          this.$api.triggerRepayment,
+          {
+            data: repaymentInfo,
+            timeout: 70000
+          })
+          .then((res) => {
+            if (+res.errorCode === 0) {
+              this.$zzz.alert.show({
+                content: '恭喜还款成功',
+                onHide() {
+                  this.$router.back()
+                }
+              })
+            } else if (+res.errorCode === 1) {
+              this.$zzz.alert.show({
+                content: '还款失败,请核实后再进行还款操作'
+              })
+            } else if (+res.errorCode === 2) {
+              this.$zzz.alert.show({
+                content: '还款申请已提交成功<br>稍后在还款记录中查看进度'
+              })
+            } else {
+              this.$zzz.alert.show({
+                content: res.message
+              })
+            }
+          })
       }
     },
     created() {
@@ -162,11 +164,15 @@
       this.userRepayInfo = userRepayInfo
       // 获取还款类型 还当期  还全部
       this.repayType = this.$route.query.repayType
+      let currentRepayInfo = this.currentRepayInfo
       if (this.userRepayInfo) {
         // 处理当前还款详情
-        let currentRepayInfo = {
-          amount: this.userRepayInfo.currentReturnMoney || this.userRepayInfo.nextPeriodsReturnMoney,
-          text: '当前应还'
+        // currentRepayInfo.amount = this.userRepayInfo.currentReturnMoney || this.userRepayInfo.nextPeriodsReturnMoney
+        if (this.userRepayInfo.currentReturnMoney) {
+          currentRepayInfo.amount = this.userRepayInfo.currentReturnMoney
+        } else {
+          currentRepayInfo.type = 'A005'
+          currentRepayInfo.amount = this.userRepayInfo.nextPeriodsReturnMoney
         }
         if (this.repayType === 'all') {
           // 当前还款为提前结清

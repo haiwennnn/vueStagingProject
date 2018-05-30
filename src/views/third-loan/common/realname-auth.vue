@@ -32,43 +32,45 @@
               <div class="scan-result-label"
                 slot="hd">姓名</div>
               <div slot="bd">
-                <p>李四</p>
+                <p>{{userIdcardInfo.name}}</p>
               </div>
             </cell>
             <cell>
               <div class="scan-result-label"
                 slot="hd">身份证号</div>
               <div slot="bd">
-                <p>李四</p>
+                <p>{{userIdcardInfo.id}}</p>
               </div>
             </cell>
             <cell>
               <div class="scan-result-label"
                 slot="hd">地址</div>
               <div slot="bd">
-                <p>李四</p>
+                <p>{{userIdcardInfo.address}}</p>
               </div>
             </cell>
             <cell>
               <div class="scan-result-label"
                 slot="hd">签发机构</div>
               <div slot="bd">
-                <p>李四</p>
+                <p>{{userIdcardInfo.authority}}</p>
               </div>
             </cell>
             <cell>
               <div class="scan-result-label"
                 slot="hd">有效期</div>
               <div slot="bd">
-                <p>李四</p>
+                <p>{{userIdcardInfo.validity}}</p>
               </div>
             </cell>
           </cells>
           <p class="descript">*请核对信息,如识别有误可再次拍照识别,核对无误后请点击下一步</p>
         </div>
         <div class="next-btn"
-          @click="goAddInfo">
-          <z-button type="primary">下一步</z-button>
+          @click="saveRealnameInfo">
+          <z-button class=""
+            :status="(!frontIdCardBase64 || !backIdCardBase64) ? 'disabled' : ''"
+            type="primary">下一步</z-button>
         </div>
         <canvas ref="canvas"
           style="display:none;"></canvas>
@@ -93,7 +95,12 @@
         // 反面base64
         backIdCardBase64: '',
         // 扫描类型 [1,2] => [正面,背面]
-        currentTriggerType: 0
+        currentTriggerType: 0,
+        ocrScanInfo: {
+          front: {},
+          back: {}
+        },
+        userIdcardInfo: {}
       }
     },
     methods: {
@@ -102,11 +109,112 @@
           name: 'addInfo'
         })
       },
+      clearInputIdinfo() {
+        this.frontIdCardBase64 = ''
+        this.backIdCardBase64 = ''
+        this.ocrScanInfo = {
+          front: {},
+          back: {}
+        }
+        this.userIdcardInfo = {}
+      },
+      /**
+       * 保存实名认证信息
+       */
+      saveRealnameInfo() {
+        if (!this.frontIdCardBase64 || !this.backIdCardBase64) {
+          this.$zzz.toast.text('请先拍照识别身份证证件')
+          return
+        }
+        let userIdcardInfo = this.userIdcardInfo
+        this.$http.post(this.$api.addRealAuth, {
+          data: {
+            identityCardNo: userIdcardInfo.id,
+            realName: userIdcardInfo.name,
+            address: userIdcardInfo.address,
+            nation: userIdcardInfo.nation || '',
+            sex: userIdcardInfo.sex === '男' ? 1 : 0,
+            authority: userIdcardInfo.authority,
+            validityfrom: userIdcardInfo.validDateBegin,
+            validityto: userIdcardInfo.validDateEnd,
+            idcardimg1: userIdcardInfo.idcardimg1,
+            idcardimg2: userIdcardInfo.idcardimg2,
+            photo: '',
+            userType: '2',
+            validCode: ''
+          }
+        }).then((res) => {
+          if (+res.errorCode === 0) {
+            this.$zzz.toast.text('恭喜认证成功')
+            setTimeout(() => {
+              this.$router.back()
+            }, 1000)
+          } else {
+            this.clearInputIdinfo()
+            this.$zzz.toast.text(res.message)
+          }
+        })
+      },
       /**
        * 根据扫描类型的不同对数据进行相应的处理
        */
-      transformOcrData() {
-
+      transformOcrData(ocrResult, Imgcontent) {
+        let userIdcardInfo = this.userIdcardInfo
+        if (this.currentTriggerType === 1) {
+          this.$http.ykdFileUpload(Imgcontent).then((res) => {
+            if (+res.errorCode === 0) {
+              // 图片上传成功，继续识别成功后流程
+              this.frontIdCardBase64 = Imgcontent
+              // 处理人像面数据
+              let uinfo = Object.assign(userIdcardInfo, {
+                address: ocrResult.address,
+                birthday: ocrResult.birthday.replace(/\./g, ''),
+                id: ocrResult.citizenId,
+                name: ocrResult.name,
+                nation: ocrResult.nation,
+                sex: ocrResult.gender,
+                frontAvatar: '',
+                idcardimg1: res.data.path
+              })
+              this.userIdcardInfo = JSON.parse(JSON.stringify(uinfo))
+              // this.$set(this, 'userIdcardInfo', uinfo)
+            } else {
+              this.$zzz.toast.text(res.message)
+            }
+          })
+        } else {
+          // 处理国徽面数据
+          let endTime = new Date(window.FJ.formatDate(ocrResult.validDateEnd, 'yyyy/MM/dd') + ' 00:00:00').getTime()
+          let now = new Date().getTime()
+          if (endTime < now) {
+            this.$zzz.toast.show({
+              text: '您的身份证已经过期不符合要求',
+              time: 4000
+            })
+            // 清空数据
+            this.clearInputIdinfo()
+            return
+          }
+          this.$http.ykdFileUpload(Imgcontent).then((res) => {
+            if (+res.errorCode === 0) {
+              // 图片上传成功，继续识别成功后流程
+              this.backIdCardBase64 = Imgcontent
+              // 设置银行卡图片数据
+              let uinfo = Object.assign(userIdcardInfo, {
+                authority: ocrResult.agency,
+                validity: ocrResult.validDateBegin + '-' + ocrResult.validDateEnd,
+                validDateBegin: ocrResult.validDateBegin,
+                validDateEnd: ocrResult.validDateEnd,
+                idcardimg2: res.data.path
+              }, {})
+              this.userIdcardInfo = JSON.parse(JSON.stringify(uinfo))
+              console.log(this.userIdcardInfo)
+            } else {
+              this.$zzz.toast.text(res.message)
+            }
+          })
+        }
+        // this.userIdcardInfo = userIdcardInfo
       },
       /**
        * 图片转换成base64提交到后台识别
@@ -114,12 +222,22 @@
       uploadImgToOcr(Imgcontent) {
         this.$http.post(this.$api.userIdCardOcr, {
           data: {
-            imageContent: Imgcontent,
+            imageContent: Imgcontent.split(',')[1],
             ocrMode: this.currentTriggerType
           }
         }).then((res) => {
           if (+res.errorCode === 0) {
-            this.transformOcrData(res.data)
+            let idcardOcrResult = res.data.idcardOcrResult
+            if (idcardOcrResult.idcardType * 1 === -1) {
+              this.$zzz.toast.text('身份证识别失败，请重新拍照上传')
+              return
+            }
+            // if (this.currentTriggerType === 1) {
+            //   this.frontIdCardBase64 = Imgcontent
+            // } else {
+            //   this.backIdCardBase64 = Imgcontent
+            // }
+            this.transformOcrData(idcardOcrResult, Imgcontent)
           } else {
 
           }
@@ -149,12 +267,9 @@
             let ctxs = canvas.getContext('2d')
             ctxs.drawImage(img, 0, 0, this.width, this.height, 0, 0, baseWidth, this.height * (1280 / this.width))
             var dataUrl = canvas.toDataURL('image/jpeg', scale)
-            if (vm.currentTriggerType === 1) {
-              vm.frontIdCardBase64 = dataUrl
-            } else {
-              vm.backIdCardBase64 = dataUrl
-            }
-            // TODO:调用服务器接口进行身份证识别
+            // 调用服务器接口进行身份证识别
+            vm.uploadImgToOcr(dataUrl)
+            vm.$refs.uploadFile.value = ''
           }
           setTimeout(function () {
             img.src = that.result

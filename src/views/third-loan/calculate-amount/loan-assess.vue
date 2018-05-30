@@ -3,7 +3,8 @@
     <div class="zz-tab">
       <z-header>额度审批</z-header>
       <div class="zz-tab__panel">
-        <common-layout :uap="true">
+        <common-layout :loan-info="loanInfo"
+          :uap="true">
           <!-- <div slot="bd"
             class="main-enter-btn"
             @click="goRealAuth">测试额度</div> -->
@@ -54,8 +55,14 @@
          * 额度获取状态
          * 1:获取中
          * 2:获取失败
-         * 3：获取成功
+         * 3:获取成功
          */
+        loanInfo: {
+          amount: 10000,
+          currentRepayAmount: 5000,
+          repayDateStr: '',
+          tenorStr: ''
+        },
         amountProgressStatus: 3
       }
     },
@@ -66,10 +73,29 @@
         })
       },
       goCash() {
-        alert(1)
+        // alert(1)
         this.$router.push({
           name: 'completeCashInfo'
         })
+      },
+      /**
+       * 通过决策后获取钱包额度
+       */
+      walletShowQuota() {
+        this.$http.get(this.$api.walletShowQuota).then((res) => {
+          if (+res.errorCode === 0) {
+            this.loanInfo.currentRepayAmount = res.data.limitAmount
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
+        })
+      }
+    },
+    created() {
+      let query = this.$route.query
+      this.amountProgressStatus = +query
+      if (query === 3) {
+        this.walletShowQuota()
       }
     }
   }

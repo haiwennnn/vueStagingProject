@@ -19,7 +19,7 @@ const ykdInstance = Axios.create({
 })
 
 instance.interceptors.request.use((config) => {
-  let userInfo = window.FJ.getStore('userInfo') || {}
+  let userInfo = window.FJ.getStore('walletUserInfo') || {}
   config.headers.accessToken = userInfo.accessToken || ''
   config.headers.walletToken = userInfo.token || ''
   config.headers.idFintechUmUser = userInfo.idFintechUmUser || ''
@@ -37,7 +37,7 @@ instance.interceptors.response.use((res) => {
 })
 
 ykdInstance.interceptors.request.use((config) => {
-  let userInfo = window.FJ.getStore('userInfo') || {}
+  let userInfo = window.FJ.getStore('walletUserInfo') || {}
   config.headers.accessToken = userInfo.accessToken || ''
   config.headers.idFintechUmUser = userInfo.idFintechUmUser || ''
   config.headers.timeStamp = (new Date()).getTime() + ''
@@ -93,7 +93,7 @@ export default {
   get(url, params, config) {
     let vm = window.vm
     config = config || {}
-    // let userInfo = window.FJ.getStore('userInfo') || {}
+    // let userInfo = window.FJ.getStore('walletUserInfo') || {}
 
     // let headers = {
     //   'walletToken': userInfo.accessToken || '',

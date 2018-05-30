@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <div class="zz-page">
+      <div class="test-class">
+      </div>
       <router-view/>
       <!-- <div class="zz-page-body">
         <div class="zz-tab">
@@ -61,6 +63,7 @@
   }
 </script>
 
-<style lang="less">
-  @import "./styles/index.less";
+<style lang="less" scoped>
+  .test-class {
+  }
 </style>

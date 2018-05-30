@@ -10,18 +10,18 @@
       let query = this.$route.query
       let accessToken = query.accessToken
       let idFintechUmUser = query.idFintechUmUser
-      let userInfo = {}
+      let walletUserInfo = {}
       console.log(accessToken)
       console.log(idFintechUmUser)
       if (accessToken && idFintechUmUser) {
-        userInfo = {
+        walletUserInfo = {
           accessToken: accessToken,
           idFintechUmUser: idFintechUmUser,
-          phone: '13076965109',
+          phone: '',
           token: '',
-          username: '晏海文'
+          username: ''
         }
-        window.FJ.setStore('userInfo', userInfo)
+        window.FJ.setStore('walletUserInfo', walletUserInfo)
         // 需要增加获取详细用户信息操作
         this.$router.replace({
           name: 'thirdRepayIndex'

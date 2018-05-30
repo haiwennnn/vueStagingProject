@@ -13,6 +13,7 @@
               slot="hd">
               <button-group v-if="getRepayInfoStatus">
                 <z-button mini
+                  style="margin-right:0;"
                   @click="goRepayment">还款记录</z-button>
               </button-group>
             </div>
@@ -36,9 +37,10 @@
                   <p slot="bd">{{repayMethodStr(userRepayInfo)}}</p>
                 </cell>
                 <cell class="panel-info">
-                  <span slot="bd"
-                    class="repaly-date">每月21日凌晨自动扣款</span>
+                  <!-- <span slot="bd"
+                    class="repaly-date">每月21日凌晨自动扣款</span> -->
                   <span slot="ft"
+                    @click="repayCurrent"
                     class="repaly-txt">如何提前手动还款？</span>
                 </cell>
               </cells>
@@ -90,6 +92,9 @@
        * 去当期还款明细页面
        */
       goCurrentRepayBill() {
+        if (!this.getRepayInfoStatus) {
+          return
+        }
         this.$router.push({
           name: 'thirdRepayBill',
           params: {
@@ -133,6 +138,9 @@
        * 还当期
        */
       repayCurrent() {
+        if (!this.checkIsRepay()) {
+          return
+        }
         this.$router.push({
           name: 'thirdRepayAdvance',
           params: {
@@ -145,6 +153,9 @@
        * 提前结清
        */
       repayAll() {
+        if (!this.checkIsRepay()) {
+          return
+        }
         this.$router.push({
           name: 'thirdRepayAdvance',
           query: {
@@ -160,28 +171,82 @@
           name: 'thirdRepayLoan'
         })
       },
+      /**
+       * 查询还款信息
+       */
       getRepayInfo() {
         this.$http.ykdGet(this.$api.getRepaymentInfoNew).then((res) => {
           // console.log(res)
           if (+res.errorCode === 0) {
             // TODO:多笔还款的处理
             let userRepayInfo = res.data[0]
+            let tenor = userRepayInfo.tenor ? userRepayInfo.tenor : userRepayInfo.nextTenor
             let loanInfo = {
               amount: userRepayInfo.applyMoney,
+              currentRepayAmount: 0,
               repayDateStr: this.getRepayDateStr(userRepayInfo) + '应还',
-              tenorStr: `当前第${userRepayInfo.tenor}期`
+              tenorStr: `当前第${tenor}期`
+            }
+            if (userRepayInfo.currentReturnMoney !== 0) {
+              // 根据当前还款是否为0判断展示的还款详情是否是当期信息
+              loanInfo.currentRepayAmount = userRepayInfo.currentReturnMoney
+            } else {
+              loanInfo.currentRepayAmount = userRepayInfo.nextPeriodsReturnMoney
             }
             this.loanInfo = loanInfo
             this.userRepayInfo = userRepayInfo
             window.FJ.setStore('userRepayInfo', userRepayInfo)
             this.getRepayInfoStatus = true
+            // 查到还款信息后获取用户基本信息
+            this.getUserInfo()
           } else {
             this.loanInfo = {
-              amount: '---',
+              amount: '0',
+              currentRepayAmount: '0',
               repayDateStr: '',
               tenorStr: ''
             }
           }
+        })
+      },
+      /**
+       * 判断是否允许进行主动还款
+       */
+      checkIsRepay() {
+        let status = true
+        if (!this.userRepayInfo) {
+          status = false
+        } else {
+          status = this.userRepayInfo.isSubmit
+        }
+        if (!status) {
+          this.$zzz.toast.text('当前订单有笔还款正在处理中,请稍后重试')
+        }
+        return status
+      },
+      /**
+       * 获取用户基本信息
+       */
+      getUserInfo() {
+        this.$http.ykdPost(this.$api.getUserInfo).then((res) => {
+          console.log(res)
+          // TODO:处理用户信息
+          if (+res.errorCode === 0) {
+            let userInfo = window.FJ.getStore('walletUserInfo')
+            let user = res.data.user
+            userInfo = {
+              accessToken: userInfo.accessToken,
+              idFintechUmUser: userInfo.idFintechUmUser,
+              phone: user.mobileNo,
+              token: '',
+              username: user.realName
+            }
+            window.FJ.setStore('walletUserInfo', userInfo)
+          } else {
+            this.$zzz.toast.text('读取用户基本信息失败')
+          }
+        }, (e) => {
+          this.$zzz.toast.text('读取用户基本信息失败')
         })
       }
     },
@@ -238,6 +303,7 @@
       .repaly-txt {
         color: #376ce9;
         margin-right: -0.2rem;
+        // background: url('../../../assets/sign/sign-bg.png')
       }
     }
   }

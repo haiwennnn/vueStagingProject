@@ -26,11 +26,24 @@ const urls = {
   walletLogin: Server.path.gw + 'wallet/datapush/login',
   /**
    * 获取用户状态节点
+   * @method get
+   * @return {
+   *  W01--未实名认证
+   *  W02--个人资料未完成
+   *  W03--运营商认证未完成
+   *  W04--个人资料或者运营商认证成功--还未调决策
+   *  W05--个人资料或者运营商认证成功--调决策未出额度
+   *  W06--额度获取成功--等待提现
+   *  W07--额度获取失败
+   *  W09--人脸视别成功
+   *  W10--等待放款
+   *  W11--成功放款(进件成功)
+   * }
    */
   walletQueryNode: Server.path.gw + 'wallet/node/queryNode',
   /**
    * 用户身份证识别
-   * @param {Base64} imageContent
+   * @param {Base64} imageContent (逗号分割后的数据)
    * @param {Number} ocrMode [1,2] ['正面','背面']
    */
   userIdCardOcr: Server.path.gw + 'wallet/quota/idNoOcrUniversal',
@@ -56,7 +69,9 @@ const urls = {
    */
   walletCheckDataComplete: Server.path.gw + 'wallet/quota/checkDataComplete',
   /**
-   * 输入默写验证码开始默写认证
+   * 输入默写验证码开始魔蝎认证
+   * @method post
+   * @param {String} password 服务密码
    */
   walletMoxie: Server.path.gw + 'wallet/quota/moxie',
   /**
@@ -71,6 +86,22 @@ const urls = {
    * 保存个人资料
    */
   walletSavePersonalData: Server.path.gw + 'wallet/quota/savePersonalData',
+  /**
+   * 钱包申请决策1
+   * 录入资料完成后点击下一步调用此接口
+   * 此接口会产生运营商数据未获取成功需等待的情况，一旦调用成功接着调用决策接口2结果一定即时返回
+   */
+  walletDecisionApplyEvent: Server.path.gw + 'wallet/decision/applyevent',
+  /**
+   * 钱包申请决策2
+   * 决策1调用成功后调用决策2
+   * 决策审批事件
+   */
+  walletDecisionApproveEvent: Server.path.gw + 'wallet/decision/kangaroojumpevent',
+  /**
+   * 提现环节，绑卡后
+   */
+  walletDecisionTienocardevent: Server.path.gw + 'wallet/decision/tienocardevent',
   /**
    * 当前获取的额度信息及额度获取状态
    */

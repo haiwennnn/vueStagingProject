@@ -3,10 +3,11 @@
     <div class="zz-tab">
       <z-header>信用钱包</z-header>
       <div class="zz-tab__panel">
-        <common-layout :uap="true">
+        <common-layout :uap="true"
+          :loan-info="loanInfo">
           <div slot="bd"
             class="main-enter-btn"
-            @click="goRealAuth">测试额度</div>
+            @click="enterBtnEvent">{{enterBtnText}}</div>
         </common-layout>
       </div>
     </div>
@@ -28,17 +29,83 @@
       commonLayout
     },
     data() {
-      return {}
+      return {
+        loanInfo: {
+          amount: 10000,
+          currentRepayAmount: 5000,
+          repayDateStr: '',
+          tenorStr: ''
+        },
+        // 用户当前状态,
+        userStatus: '',
+        enterBtnText: ''
+      }
     },
     methods: {
+      // 去实名认证
       goRealAuth() {
         this.$router.push({
           name: 'realnameAuth'
         })
       },
+      // 去完成资料
+      goAddinfo() {
+        this.$router.push({
+          name: 'addInfo'
+        })
+      },
+      /**
+       * 入口按钮事件
+       */
+      enterBtnEvent() {
+        switch (this.userStatus) {
+          case 'W01':
+            this.goRealAuth()
+            break
+          case 'W02':
+          case 'W03':
+            this.goAddinfo()
+            break
+          case 'W04':
+          case 'W05':
+            break
+          case 'W06':
+            break
+          default:
+            break
+        }
+      },
       getUserWalletStatus() {
         this.$http.get(this.$api.walletQueryNode).then((res) => {
           console.log(res)
+          if (+res.errorCode === 0) {
+            let node = res.data.node
+            switch (node) {
+              case 'W01':
+                this.userStatus = node
+                this.enterBtnText = '完成实名认证'
+                break
+              case 'W02':
+              case 'W03':
+                this.userStatus = node
+                this.enterBtnText = '完善个人资料'
+                break
+              case 'W04':
+              case 'W05':
+                this.userStatus = node
+                this.enterBtnText = '查看额度'
+                break
+              case 'W06':
+                this.userStatus = node
+                this.enterBtnText = '去提现'
+                break
+              default:
+                this.userStatus = node
+                break
+            }
+          } else {
+
+          }
         })
       }
     },

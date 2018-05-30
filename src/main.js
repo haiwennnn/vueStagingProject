@@ -15,6 +15,7 @@ import plugins from '@/plugins'
 import filter from '@/filter'
 
 import FJ from '@/lib/fj'
+import './styles/index.less'
 
 window.FJ = FJ
 if ('addEventListener' in document) {
@@ -25,12 +26,13 @@ if ('addEventListener' in document) {
 Vue.prototype.test = 11
 Vue.config.productionTip = false
 
-let env = process.env.NODE_ENV
-
-if (env !== 'production') {
-  /* eslint-disable no-new */
-  new VConsole()
-}
+// let env = process.env.NODE_ENV
+/* eslint-disable no-new */
+new VConsole()
+// if (env !== 'production') {
+//   /* eslint-disable no-new */
+//   new VConsole()
+// }
 
 Vue.use(Zui)
 Vue.use(Api)

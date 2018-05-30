@@ -35,7 +35,7 @@
       ).then((res) => {
         if (+res.errorCode === 0) {
           let data = res.data
-          window.FJ.setStore('userInfo', {
+          window.FJ.setStore('walletUserInfo', {
             accessToken: data.accessToken,
             idFintechUmUser: data.idFintechUmUser,
             phone: '',

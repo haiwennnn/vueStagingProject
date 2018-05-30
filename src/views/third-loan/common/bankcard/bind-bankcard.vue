@@ -149,7 +149,7 @@
         userInfo: null,
 
         smsCode: {
-          phone: '',
+          phone: '18677837372',
           value: '',
           text: '获取验证码',
           sent: false,
@@ -440,13 +440,12 @@
     created() {
       // 读取银行卡类型 默认增加储蓄卡
       this.bankcardType = this.$route.query.bankcardType || 1
-      this.userInfo = window.FJ.getStore('userInfo')
+      this.userInfo = window.FJ.getStore('walletUserInfo')
     }
   }
 </script>
 <style lang="less" scoped>
   .zz-tab__panel {
-    // background-color: #fff;
   }
   .scan-area {
     width: 7rem;

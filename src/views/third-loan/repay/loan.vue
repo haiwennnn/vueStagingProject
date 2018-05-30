@@ -20,11 +20,11 @@
                     <p>
                       <em>银行信息(2341)</em>
                     </p>
-                    <p>信用卡</p>
+                    <!-- <p>信用卡</p> -->
                     <p>
-                      <b>10000.00</b>
+                      <b>&yen;{{item.apply_money}}</b>
                     </p>
-                    <p>每期还款：3405.33<br/>手续费：720</p>
+                    <!-- <p>每期还款：3405.33<br/>手续费：720</p> -->
                   </div>
                 </flexbox-item>
                 <flexbox-item :flex="'1'">
@@ -122,7 +122,7 @@
       .left-col {
         background-color: #f9ca1a;
         width: 1.8rem;
-        height: 3rem;
+        height: 2rem;
         border-top-left-radius: 0.08rem;
         border-bottom-left-radius: 0.08rem;
         text-align: center;
@@ -136,7 +136,7 @@
           display: block;
         }
         b {
-          padding: 0.6rem 0;
+          padding: 0.3rem 0;
           font-size: 0.32rem;
           font-weight: 500;
         }
@@ -145,7 +145,7 @@
         }
       }
       .mid-col {
-        height: 2.6rem;
+        height: 1.6rem;
         padding-top: 0.4rem;
         p {
           font-size: 0.24rem;

@@ -42,6 +42,8 @@ const urls = {
   /**
    * 发起还款
    * @method post
+   * 茫茫多的数据 TODO:接口详情
+   * @param {String} type [A002还当期，A003提前结清，A005还下期]
    */
   triggerRepayment: Server.path.ykdGw + 'clientRepayment/repaymentNoMobile',
 
@@ -72,8 +74,12 @@ const urls = {
    * @method post
    * 参数与获取验证码接口相同
    */
-  saveBankcardNew: Server.path.ykdGw + 'bankCard/saveNew'
+  saveBankcardNew: Server.path.ykdGw + 'bankCard/saveNew',
 
+  /**
+   * 根据获取到的ykd token获取用户信息
+   */
+  getUserInfo: Server.path.ykdGw + 'h5payment/getUserInfo'
 }
 
 export default urls

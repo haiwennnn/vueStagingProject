@@ -12,7 +12,7 @@
           stroke-color="rgba(44,44,44,1)">
           <div class="amount-detail">
             <span class="rate">{{loanInfo.repayDateStr}}</span>
-            <span class="amount">&yen;{{loanInfo.amount}}</span>
+            <span class="amount">&yen;{{loanInfo.currentRepayAmount | toFixed2}}</span>
             <span class="desc">{{loanInfo.tenorStr}}</span>
           </div>
         </z-circle>
@@ -47,7 +47,7 @@
         type: Object,
         default: function () {
           return {
-            amount: 5000
+            amount: 10000
           }
         }
       },
@@ -76,10 +76,10 @@
     },
     computed: {
       percent() {
-        if (!this.loanInfo.amount || typeof this.loanInfo.amount !== 'number') {
+        if (!this.loanInfo.currentRepayAmount || typeof this.loanInfo.currentRepayAmount !== 'number') {
           return 0
         } else {
-          return (this.loanInfo.amount / this.productInfo.amount) * 100
+          return (this.loanInfo.currentRepayAmount / this.productInfo.currentRepayAmount) * 100
         }
       }
     },
@@ -135,7 +135,7 @@
     .amount {
       line-height: 0.66rem;
       padding: 0 0 0 0;
-      font-size: 0.56rem;
+      font-size: 0.46rem;
     }
     .desc {
       width: 1.6rem;

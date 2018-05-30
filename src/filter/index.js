@@ -8,6 +8,9 @@ export default {
       return window.FJ.formatDate(d, fmt)
     })
     Vue.filter('toFixed2', function (v) {
+      if (!v) {
+        return '---'
+      }
       return parseFloat(v).toFixed(2)
     })
     Vue.filter('hideFullName', function (n) {

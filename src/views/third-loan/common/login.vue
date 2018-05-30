@@ -53,7 +53,7 @@
           text: '获取验证码',
           sent: false,
           disabled: false,
-          resend: 10
+          resend: 15
         }
       }
     },
@@ -71,8 +71,12 @@
        */
       openWalletService() {
         let smsCode = this.smsCode
-        if (!smsCode.disabled) {
+        if (!smsCode.sent) {
           this.$zzz.toast.text('请先获取验证码')
+          return
+        }
+        if (smsCode.value.length < 4 && smsCode.value.length > 6) {
+          this.$zzz.toast.text('验证码格式错误')
           return
         }
         if (smsCode.sent && (smsCode.value.length >= 4 && smsCode.value.length <= 6)) {
@@ -94,7 +98,7 @@
                 userInfo.phone = this.smsCode.phone
               }
               userInfo.accessToken = ''
-              window.FJ.setStore('userInfo', userInfo)
+              window.FJ.setStore('walletUserInfo', userInfo)
               this.$router.push({
                 name: 'main'
               })
@@ -103,8 +107,6 @@
               this.$zzz.toast.text(res.message)
             }
           })
-        } else {
-          this.$zzz.toast.text('请先获取验证码')
         }
       },
       /**
@@ -133,6 +135,7 @@
           }
         }).then((res) => {
           console.log(res)
+          this.$zzz.toast.text('短信验证码发送成功')
           // 倒计时验证码时间
           this.smsCode.sent = true
           this.smsCode.disabled = true
