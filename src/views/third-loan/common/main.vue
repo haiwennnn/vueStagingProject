@@ -31,8 +31,8 @@
     data() {
       return {
         loanInfo: {
-          amount: 10000,
-          currentRepayAmount: 5000,
+          amount: 0,
+          currentRepayAmount: 0,
           repayDateStr: '',
           tenorStr: ''
         },
@@ -42,6 +42,16 @@
       }
     },
     methods: {
+      // 获取额度
+      walletShowQuota() {
+        this.$http.post(this.$api.walletShowQuota).then((res) => {
+          if (+res.errorCode === 0) {
+            this.loanInfo.currentRepayAmount = +res.data.loanLimit > 10000 ? 3000 : +res.data.loanLimit
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
+        })
+      },
       // 去实名认证
       goRealAuth() {
         this.$router.push({
@@ -52,6 +62,11 @@
       goAddinfo() {
         this.$router.push({
           name: 'addInfo'
+        })
+      },
+      goWithdrawCash() {
+        this.$router.push({
+          name: 'completeCashInfo'
         })
       },
       /**
@@ -70,13 +85,14 @@
           case 'W05':
             break
           case 'W06':
+            this.goWithdrawCash()
             break
           default:
             break
         }
       },
       getUserWalletStatus() {
-        this.$http.get(this.$api.walletQueryNode).then((res) => {
+        this.$http.post(this.$api.walletQueryNode).then((res) => {
           console.log(res)
           if (+res.errorCode === 0) {
             let node = res.data.node
@@ -97,7 +113,16 @@
                 break
               case 'W06':
                 this.userStatus = node
+                this.walletShowQuota()
                 this.enterBtnText = '去提现'
+                break
+              case 'W07':
+                this.$router.replace({
+                  name: 'loanAssess',
+                  query: {
+                    status: 2
+                  }
+                })
                 break
               default:
                 this.userStatus = node

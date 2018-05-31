@@ -135,6 +135,7 @@ export default {
   },
   post(url, params, config) {
     var vm = window.vm
+    params = params || {}
     config = config || {}
 
     if (config.toast !== false) {
@@ -152,7 +153,7 @@ export default {
         method: 'post',
         url,
         // headers: headers,
-        data: params.data
+        ...params
       }).then(res => {
         let status = res.status
         vm.$zzz.toast.hide()
@@ -205,6 +206,7 @@ export default {
   },
   ykdPost(url, params, config) {
     var vm = window.vm
+    params = params || {}
     config = config || {}
 
     if (config.toast !== false) {

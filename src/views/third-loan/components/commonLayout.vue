@@ -35,6 +35,7 @@
 <script>
   import ZCircle from './circle'
   import ZWave from './wave'
+  import Reg from '@/lib/reg.js'
   export default {
     name: 'common-layout',
     components: {
@@ -47,7 +48,7 @@
         type: Object,
         default: function () {
           return {
-            amount: 10000
+            amount: 5000
           }
         }
       },
@@ -76,10 +77,10 @@
     },
     computed: {
       percent() {
-        if (!this.loanInfo.currentRepayAmount || typeof this.loanInfo.currentRepayAmount !== 'number') {
+        if (!Reg.numberReg.test(this.loanInfo.currentRepayAmount)) {
           return 0
         } else {
-          return (this.loanInfo.currentRepayAmount / this.productInfo.currentRepayAmount) * 100
+          return (+this.loanInfo.currentRepayAmount / this.productInfo.amount) * 100
         }
       }
     },

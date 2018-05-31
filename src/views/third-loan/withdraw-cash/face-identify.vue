@@ -7,9 +7,16 @@
           <div class="demo-1">
             <p>录制一段朗读如下数字的视频</p>
             <ul>
-              <li>请使用<b>前置摄像头</b></li>
-              <li>请用<b>普通话</b>读<b>一遍</b></li>
-              <li>视频时长<b>3-5秒</b></li>
+              <li>请使用
+                <b>前置摄像头</b>
+              </li>
+              <li>请用
+                <b>普通话</b>读
+                <b>一遍</b>
+              </li>
+              <li>视频时长
+                <b>3-5秒</b>
+              </li>
             </ul>
             <div>6659</div>
           </div>
@@ -20,14 +27,18 @@
             </div>
             <div class="demo-2-item">
               <span></span>
-              <p>查看<span>录制须知</span></p>
+              <p>查看
+                <span>录制须知</span>
+              </p>
             </div>
           </div>
         </div>
         <div class="next-btn">
-            <label class="zz-btn zz-btn_default primary">开始验证<input name='video' type='file' id='video-input'
-                           accept='video/*'
-                           capture='camcorder'/></label>
+          <label class="zz-btn zz-btn_default primary">开始验证<input name='video'
+              type='file'
+              id='video-input'
+              accept='video/*'
+              capture='camcorder' /></label>
         </div>
       </div>
     </div>
@@ -48,32 +59,35 @@
     width: 6.5rem;
     height: 4.48rem;
     margin: 0.6rem auto;
-    border: .10rem solid #EAEAEA;
-    border-radius: .40rem;
-    background-color: #FDFDFD;
-    font-size: .32rem;
+    border: 0.1rem solid #eaeaea;
+    border-radius: 0.4rem;
+    background-color: #fdfdfd;
+    font-size: 0.32rem;
     color: #525252;
 
-    p{
+    p {
       line-height: 3em;
       text-align: center;
     }
-    ul{
-      margin-left: 3.30rem; 
-      color: #7A7A7A;
+    ul {
+      padding-left: 3.3rem;
+      color: #7a7a7a;
       line-height: 1.8em;
-
-      b{
-        color: #E9646B;
+      background-image: url("../../../assets/withdraw-cash/face-id-demo-01.png");
+      background-size: auto 100%;
+      background-repeat: no-repeat;
+      background-position: 20% 50%;
+      b {
+        color: #e9646b;
       }
     }
-    &>div{
+    & > div {
       text-align: center;
-      font-size: 1.50rem;
+      font-size: 1.5rem;
       line-height: 1.2em;
       font-family: Arial;
       font-weight: 600;
-      letter-spacing: .10rem;
+      letter-spacing: 0.1rem;
       color: #444;
     }
   }
@@ -86,16 +100,16 @@
     }
   }
   .next-btn {
-    padding: .30rem 1rem;
-    height: .84rem;
-    margin-top: .8rem;
+    padding: 0.3rem 1rem;
+    height: 0.84rem;
+    margin-top: 0.8rem;
     .zz-btn {
       height: 100%;
       border-radius: 2em;
-      background-color: #F9CA1A;
+      background-color: #f9ca1a;
       color: #444444;
 
-      input{
+      input {
         display: none;
       }
     }

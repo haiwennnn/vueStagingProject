@@ -93,8 +93,8 @@
     },
     created() {
       let query = this.$route.query
-      this.amountProgressStatus = +query
-      if (query === 3) {
+      this.amountProgressStatus = +query.status
+      if (this.amountProgressStatus === 3) {
         this.walletShowQuota()
       }
     }

@@ -207,8 +207,15 @@
         ).then((res) => {
           console.log(res)
           if (+res.errorCode === 0) {
-            this.$zzz.toast.text('银行卡绑定成功')
-            this.$router.back()
+            this.$zzz.toast.show({
+              text: '绑卡成功',
+              type: 'done',
+              position: 'middle',
+              isShowMask: true
+            })
+            setTimeout(() => {
+              this.$router.back()
+            }, 2000)
           } else {
             this.$zzz.toast.text(res.message)
           }

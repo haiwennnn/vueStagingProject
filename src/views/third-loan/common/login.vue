@@ -66,6 +66,49 @@
       }
     },
     methods: {
+      findUserYkdIdInfo() {
+        this.$http.ykdPost(this.$api.getUserInfo).then((res) => {
+          console.log(res)
+          // TODO:处理用户信息
+          if (+res.errorCode === 0) {
+            let userInfo = window.FJ.getStore('walletUserInfo')
+            let realInfo = res.data.realNameAuthentication
+            userInfo.idNo = realInfo.identityCardNo
+            window.FJ.setStore('walletUserInfo', userInfo)
+            this.$router.replace({
+              name: 'main'
+            })
+          } else {
+            this.$zzz.toast.text('读取用户基本信息失败')
+          }
+        }, (e) => {
+          this.$zzz.toast.text('读取用户基本信息失败')
+        })
+      },
+      /**
+       * 查询云科贷信息
+       */
+      findUserYkdInfo() {
+        // 根据手机号获取云科贷token,id
+        this.$http.post(
+          this.$api.getYkdData,
+          {
+            data: {
+              mobileNum: this.smsCode.phone
+            }
+          }
+        ).then((res) => {
+          if (+res.errorCode === 0) {
+            let walletUserInfo = window.FJ.getStore('walletUserInfo')
+            walletUserInfo.accessToken = res.data.token
+            walletUserInfo.idFintechUmUser = res.data.fintechUmuserId
+            window.FJ.setStore('walletUserInfo', walletUserInfo)
+            this.findUserYkdIdInfo()
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
+        })
+      },
       /**
        * 开启钱包服务
        */
@@ -99,9 +142,7 @@
               }
               userInfo.accessToken = ''
               window.FJ.setStore('walletUserInfo', userInfo)
-              this.$router.push({
-                name: 'main'
-              })
+              this.findUserYkdInfo()
             } else {
               // 登录失败
               this.$zzz.toast.text(res.message)

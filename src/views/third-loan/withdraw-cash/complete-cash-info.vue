@@ -2,10 +2,15 @@
   <div class="zz-page-body">
     <div class="zz-tab">
       <z-header>信用钱包</z-header>
-      <div class="zz-tab__panel">
-        <input-amount @on-withdraw-cash-event="withdrawCashEvent"></input-amount>
-        <bind-bankcard></bind-bankcard>
-        <confirm-detail></confirm-detail>
+      <div class="zz-tab__panel complete-cash-info">
+        <input-amount :status="completeStatusStep"
+          @on-withdraw-cash-event="withdrawCashEvent"
+          :tenor-list="tenorList"></input-amount>
+        <bind-bankcard :status="completeStatusStep"
+          @on-withdraw-cash-event="withdrawCashEvent"></bind-bankcard>
+        <confirm-detail :status="completeStatusStep"
+          v-if="+completeStatusStep === 3"
+          @on-withdraw-cash-event="withdrawCashEvent"></confirm-detail>
       </div>
     </div>
   </div>
@@ -36,12 +41,23 @@
     data() {
       return {
         /**
+         * 完成步骤状态
+         * 1:输入额度选择期限
+         * 2:选择银行卡
+         */
+        completeStatusStep: 1,
+        /**
          * 额度获取状态
          * 1:获取中
          * 2:获取失败
-         * 3：获取成功
+         * 3:获取成功
          */
-        amountProgressStatus: 3
+        amountProgressStatus: 3,
+        tenorList: [],
+        /**
+         * 提现信息
+         */
+        withdrawCashInfo: {}
       }
     },
     methods: {
@@ -51,10 +67,38 @@
         })
       },
       withdrawCashEvent(data) {
-        this.$router.push({
-          name: 'faceIdentify'
+        // this.$router.push({
+        //   name: 'faceIdentify'
+        // })
+        let type = data.type
+        let withdrawCashInfo = this.withdrawCashInfo || {}
+        if (type === 'inputAmount') {
+          withdrawCashInfo.walletTrialInfo = data.data.walletTrialInfo
+          withdrawCashInfo.userSelectedTenorIndex = data.data.userSelectedTenorIndex
+          withdrawCashInfo.tenor = data.data.tenor
+          this.completeStatusStep = 2
+        } else if (type === 'inputBankcard') {
+          withdrawCashInfo.bankcard = data.data.bankcard
+          this.completeStatusStep = 3
+        } else {
+        }
+        this.withdrawCashInfo = withdrawCashInfo
+      },
+      /**
+       * 获取产品期数
+       */
+      getTenorList() {
+        this.$http.post(this.$api.getTenorList).then((res) => {
+          if (+res.errorCode === 0) {
+            this.tenorList = res.data
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
         })
       }
+    },
+    created() {
+      this.getTenorList()
     }
   }
 </script>

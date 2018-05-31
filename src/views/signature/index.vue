@@ -45,7 +45,9 @@
         signature: '',
         type: '',
         redirectUrl: '',
-        canvasWidth: 300
+        canvasWidth: 300,
+        // 来源 redirect签名结束后进行重定向操作 其他的需要调用接口判断是否成功
+        origin: 'redirect'
       }
     },
     methods: {
@@ -127,7 +129,11 @@
             ).then((res) => {
               if (+res.errorCode === 0) {
                 this.$zzz.toast.text('恭喜完成签名认证', '', '90')
-                location.href = decodeURIComponent(this.redirectUrl)
+                if (this.origin === 'redirect') {
+                  location.href = decodeURIComponent(this.redirectUrl)
+                } else {
+                  this.findSignatureStatus()
+                }
               } else {
                 this.$zzz.toast.text(res.message, '', '90')
               }
@@ -146,10 +152,20 @@
             // })
           }
         })
+      },
+      findSignatureStatus() {
+        this.$http.post(this.$api.findSignatureStatus).then((res) => {
+          if (+res.errorCode === 0) {
+            // 签名成功
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
+        })
       }
     },
     created() {
       this.redirectUrl = this.$route.query.redirect || ''
+      this.origin = this.$route.query.origin || 'redirect'
       console.log(this.redirectUrl)
     },
     mounted() {

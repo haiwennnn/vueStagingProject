@@ -25,6 +25,14 @@ const urls = {
    */
   walletLogin: Server.path.gw + 'wallet/datapush/login',
   /**
+   * 获取云科贷登录信息
+   * @param {String} mobileNum 需要查询的手机号
+   * @return {String} data.fintechUmuserId 用户id
+   * @return {String} data.token 用户token
+   * @return {String} data.url 重定向url
+   */
+  getYkdData: Server.path.gw + 'wallet/authorize/getYkdData',
+  /**
    * 获取用户状态节点
    * @method get
    * @return {
@@ -104,6 +112,8 @@ const urls = {
   walletDecisionTienocardevent: Server.path.gw + 'wallet/decision/tienocardevent',
   /**
    * 当前获取的额度信息及额度获取状态
+   * @return {String} data.loanLimit 额度
+   * @return {String} data.status 2成功，1失败，-1未获取，0获取中
    */
   walletShowQuota: Server.path.gw + 'wallet/quota/showQuota',
   /**
@@ -118,10 +128,58 @@ const urls = {
    * 绑定银行卡到用户上
    */
   walletBindBandcardSave: Server.path.gw + 'wallet/withdraw/bankCard/saveNew',
+
+  /**
+   * 获取期限列表
+   */
+  getTenorList: Server.path.gw + 'wallet/datapush/getTenorList',
   /**
    * 还款试算
+   * @method post
+   * @param {String} term 贷款期限
+   * @param {String} loanMoney 贷款金额
    */
-  walletTrial: Server.path.gw + 'wallet/withdraw/trial'
+  walletTrial: Server.path.gw + 'wallet/withdraw/trial',
+
+  /**
+   * 提现环节，确认订单生成loanId后调用
+   */
+  tienocardevent: Server.path.gw + 'wallet/decision/tienocardevent',
+  /**
+   * 确认借款接口
+   * @param {String} receiveBankName 银行名称
+   * @param {String} receiveAcct 银行卡号
+   * @param {String} receiveAcctName 用户名
+   * @param {String} applyMoney 贷款金额
+   * @param {String} tenor 期数
+   * @return {String} data.loanId
+   */
+  confirmLoan: Server.path.gw + 'wallet/datapush/confirmLoan',
+  /**
+   * 查询签名状态
+   */
+  findSignatureStatus: Server.path.gw + 'wallet/authorize/signature',
+  /**
+   * 获取人脸识别随机数
+   * @param {} loanId
+   */
+  getFaceRandom: Server.path.gw + 'wallet/openview/getrandom',
+  /**
+   * 上传人脸识别视频
+   * @param {} loanId
+   * @param {} biz_no 获取随机数接口返回的参数
+   * @param {} token_random_number 获取随机数接口返回的参数
+   * @param {} video_content 视频base64码，控制在20m内
+   */
+  uploadFaceVideo: Server.path.gw + 'wallet/openview/upvideo',
+  /**
+   * 获取人脸识别结果
+   * @param {} loanId
+   * @param {} biz_no 上传视频接口返回的参数
+   * @param {} token_video 上传视频接口返回的参数
+   */
+  getFaceResult: Server.path.gw + 'wallet/openview/getresult'
+
 }
 
 export default urls

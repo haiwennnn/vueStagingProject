@@ -154,7 +154,7 @@
         if (!this.requiredInputStatus) {
           return
         }
-        this.$http.get(this.$api.walletDecisionApplyEvent).then((res) => {
+        this.$http.post(this.$api.walletDecisionApplyEvent).then((res) => {
           let errorCode = +res.errorCode
           if (errorCode === 0) {
             this.doDecisionTwo()
@@ -182,7 +182,7 @@
         })
       },
       doDecisionTwo() {
-        this.$http.get(this.$api.walletDecisionApproveEvent).then((res) => {
+        this.$http.post(this.$api.walletDecisionApproveEvent).then((res) => {
           let errorCode = +res.errorCode
           if (errorCode === 0) {
             this.$router.push({
