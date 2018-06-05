@@ -11,6 +11,11 @@ import GridItem from './grid/grid-item.vue'
 // import Cells from './cell/cells.vue'
 import ZCellCom from './cell/index.js'
 
+import Picker from './picker'
+import PickerVux from './picker-vux'
+import PopupPicker from './popup-picker-vux'
+import ZFormInput from './z-form-input'
+
 import Flexbox from './flexbox/flexbox.vue'
 import FlexboxItem from './flexbox/flexbox-item.vue'
 
@@ -30,6 +35,10 @@ const components = {
   Grid,
   GridItem,
   ...ZCellCom,
+  Picker,
+  PickerVux,
+  PopupPicker,
+  ZFormInput,
   Flexbox,
   FlexboxItem,
   ...ZFormCom,

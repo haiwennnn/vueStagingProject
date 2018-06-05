@@ -2,6 +2,7 @@
   <input :type="type || 'text'"
     v-model="currentValue"
     :placeholder="placeholder"
+    :style="inputStyle"
     class="zz-input">
 </template>
 
@@ -11,9 +12,25 @@
     props: {
       value: [String, Number],
       type: String,
-      placeholder: String
+      placeholder: String,
+      valueTextAlign: {
+        type: String,
+        default: 'right'
+      }
+    },
+    computed: {
+      inputStyle() {
+        return {
+          'textAlign': this.valueTextAlign
+        }
+      }
     },
     watch: {
+      value(newVal) {
+        if (newVal !== this.currentValue) {
+          this.currentValue = newVal || ''
+        }
+      },
       currentValue(newVal) {
         this.$emit('input', newVal)
         this.$emit('on-change', newVal)
@@ -25,7 +42,6 @@
       }
     },
     created() {
-      console.log(this.value)
       this.currentValue = this.value || ''
     }
   }

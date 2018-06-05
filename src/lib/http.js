@@ -42,14 +42,14 @@ ykdInstance.interceptors.request.use((config) => {
   config.headers.idFintechUmUser = userInfo.idFintechUmUser || ''
   config.headers.timeStamp = (new Date()).getTime() + ''
 
-  config.headers.osVersion = 'web-repay'
-  config.headers.appVersion = 'web-repay'
-  config.headers.terminalNo = 'web-repay'
-  config.headers.appKey = 'web-repay'
-  config.headers.channelName = 'web-repay'
-  config.headers.MAC = 'web-repay'
-  config.headers.IMEI = 'web-repay'
-  config.headers.brand = 'web-repay'
+  config.headers.osVersion = 'wallet'
+  config.headers.appVersion = 'wallet'
+  config.headers.terminalNo = 'wallet'
+  config.headers.appKey = 'wallet'
+  config.headers.channelName = 'wallet'
+  config.headers.MAC = 'wallet'
+  config.headers.IMEI = 'wallet'
+  config.headers.brand = 'wallet'
 
   return config
 }, (error) => {
@@ -62,6 +62,38 @@ ykdInstance.interceptors.response.use((res) => {
   return Promise.reject(error)
 })
 
+/**
+ * 处理异常状态码
+ */
+function disposeExceptionErrorCode(config) {
+  if (config.from === 'wallet') {
+    if (+config.errorCode === -2) {
+      // 处理用户登录信息失效
+      // 跳转到login页面
+      redirectLogin()
+    }
+  } else {
+    if (+config.errorCode === 8888 || +config.errorCode === 9999) {
+      redirectLogin()
+    }
+  }
+}
+
+function redirectLogin() {
+  let vm = window.vm
+  window.FJ.removeStore('walletUserInfo')
+  window.FJ.removeStore('walletLoanInfo')
+  vm.$router.push({
+    name: 'login',
+    query: {
+      type: 'relogin'
+    }
+  })
+}
+
+/**
+ * 处理异步调用异常
+ */
 function catchAjaxError(err) {
   console.log(err)
   let vm = window.vm
@@ -121,8 +153,17 @@ export default {
         vm.$zzz.toast.hide()
         let status = res.status
         if (status === 200) {
-          // TODO:统一事件处理 [未登录，登录失效，维护等]
-          resolve(res.data)
+          // 统一事件处理 [未登录，登录失效，维护等]
+          let afreshErrorCodeArray = ['-2']
+          if (afreshErrorCodeArray.indexOf(res.data.errorCode) >= 0) {
+            disposeExceptionErrorCode({
+              errorCode: res.data.errorCode,
+              from: 'wallet',
+              method: 'get'
+            })
+          } else {
+            resolve(res.data)
+          }
         } else {
           vm.$zzz.toast.text('错误')
         }
@@ -140,7 +181,7 @@ export default {
 
     if (config.toast !== false) {
       vm.$zzz.toast.show({
-        text: '正在请求',
+        text: config.toastText || '正在请求',
         type: 'loading',
         position: 'middle',
         time: 0,
@@ -158,8 +199,17 @@ export default {
         let status = res.status
         vm.$zzz.toast.hide()
         if (status === 200) {
-          // TODO:统一事件处理 [未登录，登录失效，维护等]
-          resolve(res.data)
+          // 统一事件处理 [未登录，登录失效，维护等]
+          let afreshErrorCodeArray = ['-2']
+          if (afreshErrorCodeArray.indexOf(res.data.errorCode) >= 0) {
+            disposeExceptionErrorCode({
+              errorCode: res.data.errorCode,
+              from: 'wallet',
+              method: 'post'
+            })
+          } else {
+            resolve(res.data)
+          }
         } else {
         }
       }).catch(err => {
@@ -192,10 +242,19 @@ export default {
         vm.$zzz.toast.hide()
         let status = res.status
         if (status === 200) {
-          // TODO:统一事件处理 [未登录，登录失效，维护等]
-          resolve(res.data)
+          // 统一事件处理 [未登录，登录失效，维护等]
+          let afreshErrorCodeArray = ['8888', '9999', '-7777']
+          if (afreshErrorCodeArray.indexOf(res.data.errorCode) >= 0) {
+            disposeExceptionErrorCode({
+              errorCode: res.data.errorCode,
+              from: 'wallet',
+              method: 'get'
+            })
+          } else {
+            resolve(res.data)
+          }
         } else {
-          vm.$zzz.toast.text('错误')
+
         }
       }).catch(err => {
         console.log(`---get 请求异常---`)
@@ -231,8 +290,17 @@ export default {
         vm.$zzz.toast.hide()
 
         if (status === 200) {
-          // TODO:统一事件处理 [未登录，登录失效，维护等]
-          resolve(res.data)
+          // 统一事件处理 [未登录，登录失效，维护等]
+          let afreshErrorCodeArray = ['8888', '9999', '-7777']
+          if (afreshErrorCodeArray.indexOf(res.data.errorCode) >= 0) {
+            disposeExceptionErrorCode({
+              errorCode: res.data.errorCode,
+              from: 'wallet',
+              method: 'post'
+            })
+          } else {
+            resolve(res.data)
+          }
         } else {
         }
       }).catch(err => {

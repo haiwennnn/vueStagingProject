@@ -1,25 +1,26 @@
 <template>
-  <div class="zz-form-item">
-    <div class="zz-form__hd">
-      <label class="zz-form-label"
+  <div class="zz-cell">
+    <div class="zz-cell__hd">
+      <label class="zz-cell-label"
         :style="styles"
         v-if="label">{{label}}</label>
     </div>
-    <div class="zz-form__bd">
+    <div class="zz-cell__bd">
       <slot></slot>
     </div>
-    <div class="zz-form__ft">
+    <div class="zz-cell__ft">
       <div class="input-clear-all"
-        v-if="clearAllBtn">
+        v-if="clearAllBtn"
+        @click="handleClearAllEvent">
         <span class="zz-close"></span>
       </div>
       <div class="input-error-tip"
-        v-if="errorTipBtn">
+        v-if="errorTipBtn"
+        @click="handleClickErrorTipEvent">
         <span class="ionicons ion-ios-information"></span>
       </div>
       <slot name="ft"></slot>
     </div>
-
   </div>
 </template>
 <script>
@@ -44,7 +45,9 @@
       },
       rules: {
         type: Array
-      }
+      },
+      clearAllBtn: Boolean,
+      errorTipBtn: Boolean
     },
     computed: {
       styles() {
@@ -56,8 +59,16 @@
     },
     data() {
       return {
-        clearAllBtn: false,
-        errorTipBtn: false
+
+      }
+    },
+    methods: {
+      handleClearAllEvent() {
+        this.$emit('on-clear-all')
+      },
+      handleClickErrorTipEvent() {
+        console.log('on-click-error-tip')
+        this.$emit('on-click-error-tip')
       }
     }
   }

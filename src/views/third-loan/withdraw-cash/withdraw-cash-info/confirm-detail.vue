@@ -63,6 +63,23 @@
       }
     },
     methods: {
+      walletDecisionTienocardevent() {
+        this.$http.post(this.$api.walletDecisionTienocardevent).then((res) => {
+          if (+res.errorCode === 0) {
+            this.$zzz.toast.text('订单创建成功')
+          } else {
+            this.$zzz.toast.text(res.message)
+            setTimeout(() => {
+              this.$router.replace({
+                name: 'loanAssess',
+                query: {
+                  status: 2
+                }
+              })
+            }, 1000)
+          }
+        })
+      },
       confirmLoan() {
         this.$http.post(this.$api.confirmLoan, {
           data: {
@@ -74,12 +91,13 @@
           }
         }).then((res) => {
           if (+res.errorCode === 0) {
-            this.$zzz.toast.text('保存信息成功')
-            setTimeout(() => {
-              this.$router.replace({
-                name: 'xxx'
-              })
-            }, 1000)
+            this.walletDecisionTienocardevent()
+            // this.$zzz.toast.text('订单创建成功')
+            // setTimeout(() => {
+            //   this.$router.replace({
+            //     name: 'xxx'
+            //   })
+            // }, 1000)
           } else {
             this.$zzz.toast.text(res.message)
           }

@@ -140,11 +140,6 @@ const urls = {
    * @param {String} loanMoney 贷款金额
    */
   walletTrial: Server.path.gw + 'wallet/withdraw/trial',
-
-  /**
-   * 提现环节，确认订单生成loanId后调用
-   */
-  tienocardevent: Server.path.gw + 'wallet/decision/tienocardevent',
   /**
    * 确认借款接口
    * @param {String} receiveBankName 银行名称
@@ -155,6 +150,11 @@ const urls = {
    * @return {String} data.loanId
    */
   confirmLoan: Server.path.gw + 'wallet/datapush/confirmLoan',
+
+  /**
+   * 获取钱包提现信息
+   */
+  getWalletLoanInfo: Server.path.gw + 'wallet/datapush/getLoanInfo',
   /**
    * 查询签名状态
    */
@@ -162,6 +162,12 @@ const urls = {
   /**
    * 获取人脸识别随机数
    * @param {} loanId
+   * @return {} data.request_id 用于区分每一次请求的唯一的字符串
+   * @return {} data.time_used 整个请求所花费的时间，单位为毫秒
+   * @return {} data.biz_no 作为上传视频接口的传入参数
+   * @return {} data.token_random_number 作为上传视频接口的传入参数
+   * @return {} data.random_number 用于活体验证朗读时的四位随机数
+   * @return {} data.error_message 当请求失败时才会返回此字符串
    */
   getFaceRandom: Server.path.gw + 'wallet/openview/getrandom',
   /**
@@ -170,6 +176,11 @@ const urls = {
    * @param {} biz_no 获取随机数接口返回的参数
    * @param {} token_random_number 获取随机数接口返回的参数
    * @param {} video_content 视频base64码，控制在20m内
+   * @return {} data.token_video 本字段仅调用成功才返回,作为查询结果传入参数
+   * @return {} data.request_id 用于区分每一次请求的唯一的字符串
+   * @return {} data.time_used 整个请求所花费的时间，单位为毫秒
+   * @return {} data.biz_no 作为查询结果传入参数
+   * @return {} data.error_message 当请求失败时才会返回此字符串
    */
   uploadFaceVideo: Server.path.gw + 'wallet/openview/upvideo',
   /**

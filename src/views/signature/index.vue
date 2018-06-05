@@ -16,7 +16,9 @@
       </div>
       <div class="signature__tool"
         ref="signatureTool">
-        <!-- <div class="back">后退</div> -->
+        <div class="back" v-if="origin !== 'redirect'" @click="$router.back()">
+          <i class="ion ion-ios-arrow-back"></i>
+        </div>
         <div class="refresh"
           @click="clear">重签</div>
         <div class="confirm-sign"
@@ -277,7 +279,8 @@
         width: 0.9rem;
         height: 0.64rem;
         line-height: 0.64rem;
-        font-size: 0.3rem;
+        font-size: 0.48rem;
+        text-align: center;
       }
       .refresh {
         position: absolute;

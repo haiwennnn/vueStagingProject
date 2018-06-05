@@ -42,6 +42,19 @@
       }
     },
     methods: {
+      /**
+       * 获取钱包贷款信息
+       */
+      getWalletLoanInfo() {
+        this.$http.post(this.$api.getWalletLoanInfo).then((res) => {
+          if (+res.errorCode === 0) {
+            let walletLoanInfo = res.data
+            window.FJ.setStore('walletLoanInfo', walletLoanInfo)
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
+        })
+      },
       // 获取额度
       walletShowQuota() {
         this.$http.post(this.$api.walletShowQuota).then((res) => {
@@ -70,6 +83,18 @@
         })
       },
       /**
+       * 去签名
+       */
+      goSign() {
+        this.$router.push({
+          // name: 'signature',
+          name: 'faceIdentify',
+          query: {
+            origin: 'wallet'
+          }
+        })
+      },
+      /**
        * 入口按钮事件
        */
       enterBtnEvent() {
@@ -87,10 +112,16 @@
           case 'W06':
             this.goWithdrawCash()
             break
+          case 'W08':
+            this.goSign()
+            break
           default:
             break
         }
       },
+      /**
+       * 获取用户钱包进度状态
+       */
       getUserWalletStatus() {
         this.$http.post(this.$api.walletQueryNode).then((res) => {
           console.log(res)
@@ -123,6 +154,12 @@
                     status: 2
                   }
                 })
+                break
+              case 'W08':
+                this.userStatus = node
+                this.walletShowQuota()
+                this.getWalletLoanInfo()
+                this.enterBtnText = '去签名'
                 break
               default:
                 this.userStatus = node

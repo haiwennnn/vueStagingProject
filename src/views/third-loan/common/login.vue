@@ -1,7 +1,7 @@
 <template>
   <div class="zz-page-body">
     <div class="zz-tab">
-      <z-header>信用钱包</z-header>
+      <z-header :has-back="headerHasBackStatus">{{headerHasBackStatus}}信用钱包</z-header>
       <div class="zz-tab__panel">
         <common-layout>
           <div class="sms-code-panel"
@@ -54,7 +54,8 @@
           sent: false,
           disabled: false,
           resend: 15
-        }
+        },
+        type: ''
       }
     },
     computed: {
@@ -63,21 +64,56 @@
         return {
           'disabled': !(smsCode.sent && (smsCode.value.length >= 4 && smsCode.value.length <= 6))
         }
+      },
+      /**
+       * 头部是否存在返回状态
+       */
+      headerHasBackStatus() {
+        if (this.type) {
+          return false
+        }
+        return true
       }
     },
     methods: {
+      finishLogin() {
+        if (this.type === 'relogin') {
+          this.$router.back()
+        } else {
+          this.$router.replace({
+            name: 'main'
+          })
+        }
+      },
+      /**
+       * 获取钱包贷款信息
+       */
+      getWalletLoanInfo() {
+        this.$http.post(this.$api.getWalletLoanInfo).then((res) => {
+          if (+res.errorCode === 0) {
+            let walletLoanInfo = res.data
+            window.FJ.setStore('walletLoanInfo', walletLoanInfo)
+            this.finishLogin()
+          } else {
+            // this.$zzz.toast.text(res.message)
+            this.finishLogin()
+          }
+        })
+      },
+      /**
+       * 根据云科贷token查询用户信息
+       */
       findUserYkdIdInfo() {
         this.$http.ykdPost(this.$api.getUserInfo).then((res) => {
-          console.log(res)
-          // TODO:处理用户信息
           if (+res.errorCode === 0) {
             let userInfo = window.FJ.getStore('walletUserInfo')
             let realInfo = res.data.realNameAuthentication
+            // 存一个身份证号
             userInfo.idNo = realInfo.identityCardNo
+            // 存一个时间戳
+            userInfo.ts = new Date().getTime()
             window.FJ.setStore('walletUserInfo', userInfo)
-            this.$router.replace({
-              name: 'main'
-            })
+            this.getWalletLoanInfo()
           } else {
             this.$zzz.toast.text('读取用户基本信息失败')
           }
@@ -86,10 +122,9 @@
         })
       },
       /**
-       * 查询云科贷信息
+       * 根据手机号获取云科贷token,id
        */
       findUserYkdInfo() {
-        // 根据手机号获取云科贷token,id
         this.$http.post(
           this.$api.getYkdData,
           {
@@ -197,14 +232,38 @@
         setTimeout(() => {
           this.coldDown(t - 1)
         }, 1000)
+      },
+      /**
+       * 完成本地校验
+       */
+      completeLocalCheck() {
+        this.smsCode.phone = this.$route.query.phone || '13076965109'
+        // TODO:增加自动获取验证码开关
+        if (this.smsCode.phone) {
+          // 存在手机号自动调用获取验证码接口
+          // this.getSmsCode()
+        }
       }
     },
     created() {
-      this.smsCode.phone = this.$route.query.phone || '13076965109'
-      // TODO:增加自动获取验证码开关
-      if (this.smsCode.phone) {
-        // 存在手机号自动调用获取验证码接口
-        // this.getSmsCode()
+      // 读取本地登录信息判断是否包含已经登录的信息
+      this.type = this.$route.query.type || ''
+      let walletUserInfo = window.FJ.getStore('walletUserInfo')
+      if (!walletUserInfo) {
+        // 不存在本地用户信息
+        this.completeLocalCheck()
+      } else {
+        // 调用接口判断当前本地信息是否过期
+        let nowTs = new Date().getTime()
+        let timeDiff = nowTs - (walletUserInfo.ts || nowTs)
+        if (timeDiff > 60 * 60 * 1000) {
+          // 时间超过1小时，登录状态失效
+          this.completeLocalCheck()
+          return
+        }
+        this.$router.replace({
+          name: 'main'
+        })
       }
     }
   }

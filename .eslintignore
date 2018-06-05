@@ -3,3 +3,13 @@
 /dist/
 /*.js
 /src/lib/signature-pad.js
+/src/components/picker/scroller.js
+/src/components/picker/animate.js
+/src/components/picker/render.js
+
+/src/components/picker-vux/scroller.js
+/src/components/picker-vux/animate.js
+/src/components/picker-vux/render.js
+
+
+/src/data/chinaRegion.json

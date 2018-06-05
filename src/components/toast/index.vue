@@ -89,6 +89,14 @@
             this.$emit('on-hide')
           }, val)
         }
+      },
+      text(val) {
+        clearTimeout(this.timeout)
+        this.timeout = setTimeout(() => {
+          this.show = false
+          this.$emit('input', false)
+          this.$emit('on-hide')
+        }, this.time)
       }
     },
     created() {

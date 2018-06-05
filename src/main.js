@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import FastClick from 'fastclick'
-import VConsole from 'vconsole'
+// import VConsole from 'vconsole'
 import Api from './api'
 import Zui from '@/components/index.js'
 
@@ -28,7 +28,7 @@ Vue.config.productionTip = false
 
 // let env = process.env.NODE_ENV
 /* eslint-disable no-new */
-new VConsole()
+// new VConsole()
 // if (env !== 'production') {
 //   /* eslint-disable no-new */
 //   new VConsole()
