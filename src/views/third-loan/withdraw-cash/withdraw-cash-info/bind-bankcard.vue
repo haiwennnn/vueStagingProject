@@ -17,6 +17,11 @@
           </div>
         </cell>
       </cells>
+      <!-- <z-form>
+        <popup-picker v-model="userSelectedTenorIndex"
+          valueTextAlign="center"
+          :data="tenorListData"></popup-picker>
+      </z-form> -->
       <p class="descript"
         style="padding-left:.6rem;">&nbsp;
         <span class="show-support-bank">查看支持银行</span>

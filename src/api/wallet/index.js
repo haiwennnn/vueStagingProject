@@ -156,6 +156,10 @@ const urls = {
    */
   getWalletLoanInfo: Server.path.gw + 'wallet/datapush/getLoanInfo',
   /**
+   * 签名接口
+   */
+  walletSignature: Server.path.gw + 'wallet/quota/client/signature',
+  /**
    * 查询签名状态
    */
   findSignatureStatus: Server.path.gw + 'wallet/authorize/signature',

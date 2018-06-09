@@ -1,7 +1,7 @@
 <template>
   <div class="zz-page-body">
     <div class="zz-tab">
-      <z-header :has-back="headerHasBackStatus">{{headerHasBackStatus}}信用钱包</z-header>
+      <z-header :has-back="headerHasBackStatus">信用钱包</z-header>
       <div class="zz-tab__panel">
         <common-layout>
           <div class="sms-code-panel"
@@ -10,13 +10,13 @@
             <div class="phone"
               style="padding-top:.15rem;font-size: .54rem;color: #444;text-align: center;">{{smsCode.phone}}</div>
             <div class="sms-code">
-              <z-form>
+              <z-form style="background-color: transparent;"
+                :no-top-line="true">
                 <form-item label="短信验证码"
-                  :labelWidth="175"
-                  style="background-color:transparent;border-bottom-color:#444;">
+                  :labelWidth="175">
                   <input type="text"
                     class="zz-input"
-                    placeholder="请输入短信验证码"
+                    placeholder="请输入验证码"
                     v-model.trim="smsCode.value">
                   <div slot="ft"
                     class="sms-code-btn"
@@ -292,6 +292,9 @@
     &.disabled {
       opacity: 0.5;
     }
+  }
+  .zz-cell:after {
+    border-bottom-color: #444;
   }
 </style>
 

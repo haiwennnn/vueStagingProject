@@ -16,7 +16,9 @@
       </div>
       <div class="signature__tool"
         ref="signatureTool">
-        <div class="back" v-if="origin !== 'redirect'" @click="$router.back()">
+        <div class="back"
+          v-if="origin !== 'redirect'"
+          @click="$router.back()">
           <i class="ion ion-ios-arrow-back"></i>
         </div>
         <div class="refresh"
@@ -115,9 +117,12 @@
               _d.push(-1)
               _d.push(0)
             })
-
-            this.$http.ykdPost(
-              this.$api.signature,
+            let signApiUrl = this.$api.signature
+            if (this.origin === 'wallet') {
+              signApiUrl = this.$api.walletSignature
+            }
+            this.$http.post(
+              signApiUrl,
               {
                 data: {
                   pictureBase64: this.signature.split(',')[1],

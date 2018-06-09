@@ -31,7 +31,10 @@
   export default {
     name: 'z-header',
     props: {
-      hasBack: Boolean
+      hasBack: {
+        type: Boolean,
+        default: true
+      }
     },
     data() {
       return {

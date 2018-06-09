@@ -23,7 +23,7 @@
     </div>
     <div class="select-loan-periods-area"
       v-if="isInputAmount">
-      <cells>
+      <!-- <cells>
         <cell is-arrow
           @on-cell-item-click="chooseLoanPeriods"
           style="padding-left:.6rem;">
@@ -32,7 +32,13 @@
             <p style="text-align:center;">{{tenorText}}</p>
           </div>
         </cell>
-      </cells>
+      </cells> -->
+      <z-form>
+        <popup-picker v-model="userSelectedTenorIndex"
+          label="贷款期数"
+          valueTextAlign="center"
+          :data="tenorListData"></popup-picker>
+      </z-form>
     </div>
     <div class="repay-info-area"
       v-if="isInputAmount && isWalletTrial">
@@ -82,10 +88,16 @@
     },
     data() {
       return {
+        walletUserInfo: null,
         // 用户输入额度
         amount: '',
+        placeholder: '',
+        // 期数picker数据源
+        tenorListData: [],
         // 用户已选期限 默认第一期？还是默认不选需要用户选择？
-        userSelectedTenorIndex: 0,
+        userSelectedTenorIndexArr: [],
+        // 用户已选期限 默认第一期？还是默认不选需要用户选择？
+        userSelectedTenorIndex: [],
         walletTrialSt: null,
         isInputAmountStatus: false,
         isWalletTrialStatus: false,
@@ -94,18 +106,17 @@
       }
     },
     computed: {
-      tenorText() {
-        if (!this.tenorList || this.tenorList.length === 0) {
-          return '请选择期数'
-        }
-        return `${this.tenorList[this.userSelectedTenorIndex].tenor}个月`
-      },
+      // tenorText() {
+      //   if (!this.tenorList || this.tenorList.length === 0) {
+      //     return '请选择期数'
+      //   }
+      //   return `${this.tenorList[this.userSelectedTenorIndex].tenor}个月`
+      // },
       /**
        * 判断是否输入了额度
        */
       isInputAmount() {
-        // if(this.amount && )
-        if (Reg.numberReg.test(this.amount)) {
+        if (Reg.numberReg.test(this.amount) && this.amount !== '') {
           return true
         }
         return false
@@ -119,19 +130,36 @@
     },
     watch: {
       amount(newVal) {
-        if (!Reg.numberReg.test(this.amount)) {
+        this.check()
+      },
+      userSelectedTenorIndex(newVal) {
+        this.check()
+      },
+      tenorList(newVal) {
+        this.setTenorList(newVal)
+      }
+    },
+    methods: {
+      check() {
+        let status = this.checkAmount()
+        if (status !== 0) {
           this.isWalletTrialStatus = false
           if (this.walletTrialSt) {
             clearTimeout(this.walletTrialSt)
           }
+          if (status === -2) {
+            this.$zzz.toast.text(`最高输入${this.walletUserInfo.loanLimit}元`)
+          }
           return
         }
-        if (!this.tenorList || this.tenorList.length === 0) {
+        let tenorStatus = this.checkTenor()
+        if (tenorStatus !== 0) {
           if (this.walletTrialSt) {
             clearTimeout(this.walletTrialSt)
           }
           return
         }
+
         if (this.walletTrialSt) {
           clearTimeout(this.walletTrialSt)
         }
@@ -140,21 +168,30 @@
           this.walletTrial()
         }, 500)
       },
-      userSelectedTenorIndex(newVal) {
-        if (!this.tenorList || this.tenorList.length === 0) {
-          return
+      // 校验金额
+      checkAmount() {
+        if (!this.amount || !Reg.numberReg.test(this.amount)) {
+          // 金额错误
+          return -1
         }
-        if (this.amount) {
-          this.walletTrial()
+        if (+this.amount > this.walletUserInfo.loanLimit) {
+          // 金额超过上限
+          return -2
         }
-      }
-    },
-    methods: {
+        return 0
+      },
+      // 校验期数
+      checkTenor() {
+        if (!this.tenorList || this.tenorList.length === 0 || !this.userSelectedTenorIndex) {
+          return -1
+        }
+        return 0
+      },
       // 还款试算
       walletTrial() {
         this.$http.post(this.$api.walletTrial, {
           data: {
-            term: this.tenorList[this.userSelectedTenorIndex].tenor,
+            term: this.userSelectedTenorIndex[0],
             loanMoney: this.amount
           }
         }).then((res) => {
@@ -181,7 +218,28 @@
             tenor: this.tenorList[this.userSelectedTenorIndex]
           }
         })
+      },
+      setTenorList(tenorList) {
+        tenorList = tenorList || []
+        let tenorListData = []
+        tenorListData = tenorList.map((item, index) => {
+          return {
+            name: `${item.tenor}个月`,
+            value: item.tenor
+          }
+        })
+        if (tenorListData.length > 0) {
+          this.userSelectedTenorIndex = [tenorListData[0].value]
+        }
+        this.tenorListData = tenorListData
       }
+    },
+    created() {
+      this.walletUserInfo = window.FJ.getStore('walletUserInfo')
+      if (this.walletUserInfo.loanLimit) {
+        this.placeholder = `最高输入${this.walletUserInfo.loanLimit}元`
+      }
+      this.setTenorList(this.tenorList)
     }
   }
 </script>
@@ -252,6 +310,9 @@
 </style>
 <style lang="less">
   .select-loan-periods-area {
+    .zz-cell {
+      padding-left: 0.6rem;
+    }
   }
 </style>
 

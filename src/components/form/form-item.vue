@@ -43,9 +43,6 @@
         type: String,
         default: 'left'
       },
-      rules: {
-        type: Array
-      },
       clearAllBtn: Boolean,
       errorTipBtn: Boolean
     },
@@ -67,7 +64,6 @@
         this.$emit('on-clear-all')
       },
       handleClickErrorTipEvent() {
-        console.log('on-click-error-tip')
         this.$emit('on-click-error-tip')
       }
     }

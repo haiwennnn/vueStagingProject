@@ -7,7 +7,7 @@
         :style="contentStyle">{{placeholder}}</p>
       <p v-else
         :style="contentStyle">
-        {{currentValue | value2name(data)}}
+        {{currentValue | value2name(data,delimiter)}}
       </p>
     </form-item>
     <popup v-model="showValue"
@@ -76,6 +76,8 @@
       disabled: false,
       // picker列表数据
       data: Array,
+      nameKey: [String, Array],
+      valueKey: [Array],
       // 列数
       columns: {
         type: Number,
@@ -89,13 +91,14 @@
     data() {
       return {
         // 初始化传入的数据
-        currentData: JSON.stringify(this.data),
+        currentData: JSON.parse(JSON.stringify(this.data)),
         // 是否展示，内部与popup双向绑定
         showValue: false,
         // 缓存值，用来跟picker双向绑定
         tempValue: getObject(this.value),
         // 初始化选中的值
-        currentValue: this.value || []
+        currentValue: this.value || [],
+        delimiter: '-'
       }
     },
     computed: {
@@ -116,7 +119,6 @@
         this.showValue = newVal
       },
       showValue(newVal) {
-        console.log(`--${newVal}--`)
         this.$emit('update:show', newVal)
       }
     },
@@ -134,14 +136,21 @@
       onPopupPickerConfirm() {
         this.currentValue = getObject(this.tempValue)
         this.showValue = false
+        let value2name = this.$options.filters['value2name']
         this.$emit('input', this.currentValue)
-        this.$emit('on-confirm', this.currentValue)
+        this.$emit('on-confirm', {
+          value: this.currentValue,
+          name: value2name(this.currentValue, this.currentData, this.delimiter).split(this.delimiter),
+          nameKey: this.nameKey,
+          valueKey: this.valueKey
+        })
       }
     },
     created() {
       if (typeof this.show !== 'undefined') {
         this.showValue = this.show
       }
+      // console.log(this.$options.filters)
     }
   }
 </script>

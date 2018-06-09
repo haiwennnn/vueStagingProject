@@ -103,9 +103,13 @@
       }
     },
     methods: {
+      /**
+       * 必填项点击事件
+       * 状态属性 1完成
+       */
       requiredInputItemEvent(item) {
         let currentInputValue = this.currentInputValue
-        if (currentInputValue[item.key] === '1') {
+        if (currentInputValue[item.key] !== '1') {
           return
         }
         switch (item.key) {

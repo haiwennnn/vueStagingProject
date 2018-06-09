@@ -32,7 +32,7 @@
       return {
         loanInfo: {
           amount: 0,
-          currentRepayAmount: 0,
+          currentRepayAmount: 5000,
           repayDateStr: '',
           tenorStr: ''
         },
@@ -59,7 +59,10 @@
       walletShowQuota() {
         this.$http.post(this.$api.walletShowQuota).then((res) => {
           if (+res.errorCode === 0) {
-            this.loanInfo.currentRepayAmount = +res.data.loanLimit > 10000 ? 3000 : +res.data.loanLimit
+            this.loanInfo.currentRepayAmount = +res.data.loanLimit > 10000 ? 5000 : +res.data.loanLimit
+            let walletUserInfo = window.FJ.getStore('walletUserInfo')
+            walletUserInfo.loanLimit = this.loanInfo.currentRepayAmount
+            window.FJ.setStore('walletUserInfo', walletUserInfo)
           } else {
             this.$zzz.toast.text(res.message)
           }
@@ -87,8 +90,8 @@
        */
       goSign() {
         this.$router.push({
-          // name: 'signature',
-          name: 'faceIdentify',
+          name: 'signature',
+          // name: 'faceIdentify',
           query: {
             origin: 'wallet'
           }
@@ -115,6 +118,7 @@
           case 'W08':
             this.goSign()
             break
+          case 'W10':
           default:
             break
         }
@@ -160,6 +164,17 @@
                 this.walletShowQuota()
                 this.getWalletLoanInfo()
                 this.enterBtnText = '去签名'
+                break
+              case 'W10':
+                this.userStatus = node
+                this.walletShowQuota()
+                this.getWalletLoanInfo()
+                this.$router.replace({
+                  name: 'loanAssess',
+                  query: {
+                    status: 2
+                  }
+                })
                 break
               default:
                 this.userStatus = node

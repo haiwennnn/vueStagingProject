@@ -25,7 +25,6 @@
         this.testBtnTest = '被更改啦'
       },
       expFn() {
-        console.log('111')
       }
     }
   }

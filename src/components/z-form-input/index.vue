@@ -1,6 +1,7 @@
 <template>
   <form-item :label="label"
-    :errorTipBtn="errorTipBtn"
+    :error-tip-btn="errorTipBtn"
+    :label-width="labelWidth"
     @on-click-error-tip="onClickErrorTip">
     <z-input v-if="type === 'text'"
       :placeholder="'请输入'"
@@ -30,6 +31,9 @@
         type: String,
         default: '请选择'
       },
+      labelWidth: {
+        type: Number
+      },
       // 是否禁用选择
       disabled: false,
       valueTextAlign: {
@@ -40,8 +44,8 @@
     data() {
       return {
         currentValue: this.value || '',
-        rule: (this.$parent.rules && this.$parent.rules[this.prop]) || [],
-        validator: '',
+        rule: [],
+        validator: null,
         errorTipBtn: false,
         errorMessage: ''
       }
@@ -55,21 +59,18 @@
       value(newVal) {
         let d = {}
         d[this.prop] = newVal
-        this.validator.validate(d, (errors, fields) => {
-          // console.log(errors)
-          if (errors) {
-            // validation failed, errors is an array of all errors
-            // fields is an object keyed by field name with an array of
-            // errors per field
-            // return handleErrors(errors, fields);
-            if (errors.length > 0) {
-              this.errorTipBtn = true
-              this.errorMessage = errors[0].message
+        if (this.validator) {
+          this.validator.validate(d, (errors, fields) => {
+            if (errors) {
+              if (errors.length > 0) {
+                this.errorTipBtn = true
+                this.errorMessage = errors[0].message
+              }
+            } else {
+              this.errorTipBtn = false
             }
-          } else {
-            this.errorTipBtn = false
-          }
-        })
+          })
+        }
         if (newVal !== this.currentValue) {
           this.currentValue = newVal || ''
         }
@@ -77,15 +78,16 @@
     },
     methods: {
       onClickErrorTip() {
-        console.log('on-click-error-tip11')
         this.$zzz.toast.text(this.errorMessage)
       }
     },
     created() {
-      console.log(this.rule)
-      if (this.rule) {
-        this.validator = new Schema(this.$parent.rules)
+      if (this.$parent.$parent.rules && this.$parent.$parent.rules[this.prop]) {
+        this.rule = this.$parent.$parent.rules[this.prop]
+        this.validator = new Schema(this.$parent.$parent.rules)
       }
+    },
+    mounted() {
     }
   }
 </script>

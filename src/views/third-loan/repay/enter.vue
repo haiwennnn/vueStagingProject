@@ -8,8 +8,8 @@
     },
     created() {
       let query = this.$route.query
-      let accessToken = query.accessToken
-      let idFintechUmUser = query.idFintechUmUser
+      let accessToken = query.token
+      let idFintechUmUser = query.fintechUmuserId
       let walletUserInfo = {}
       console.log(accessToken)
       console.log(idFintechUmUser)
@@ -23,12 +23,23 @@
         }
         window.FJ.setStore('walletUserInfo', walletUserInfo)
         // 需要增加获取详细用户信息操作
-        this.$router.replace({
-          name: 'thirdRepayIndex'
-        })
+
+        setTimeout(() => {
+          this.$router.replace({
+            name: 'thirdRepayIndex'
+          })
+        }, 500)
       } else {
         // go 404
       }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        let hideHeader = this.$route.query['hide-header'] || 't'
+        if (hideHeader === 't') {
+          document.getElementById('app').setAttribute('class', 'hide-header')
+        }
+      })
     }
   }
 </script>

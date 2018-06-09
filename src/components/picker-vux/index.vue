@@ -78,7 +78,6 @@
           if (!document.querySelector(_this.getId(i))) {
             return
           }
-
           _this.scroller[i] && _this.scroller[i].destroy()
           _this.scroller[i] = new Scroller(_this.getId(i), {
             data: data[i],
