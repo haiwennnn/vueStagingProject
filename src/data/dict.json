@@ -1,0 +1,162 @@
+{
+  "EDU_LEVEL": [
+    {
+      "value": "3",
+      "name": "大学本科"
+    },
+    {
+      "value": "2",
+      "name": "硕士及以上"
+    },
+    {
+      "value": "1",
+      "name": "博士以上"
+    },
+    {
+      "value": "4",
+      "name": "大学专科"
+    },
+    {
+      "value": "5",
+      "name": "高中及以下"
+    }
+  ],
+  "MARITAL_STS": [
+    {
+      "value": "1",
+      "name": "未婚"
+    },
+    {
+      "value": "2",
+      "name": "已婚"
+    },
+    {
+      "value": "5",
+      "name": "其他"
+    }
+  ],
+  "HAS_CHILD": [
+    {
+      "value": "0",
+      "name": "无"
+    },
+    {
+      "value": "1",
+      "name": "有"
+    }
+  ],
+  "APP_CUSTTYPE": [
+    {
+      "value": "0",
+      "name": "上班族"
+    },
+    {
+      "value": "1",
+      "name": "企业主"
+    },
+    {
+      "value": "2",
+      "name": "自由职业"
+    }
+  ],
+  "LIVE_TYPE": [
+    {
+      "value": "A009",
+      "name": "自有住房"
+    },
+    {
+      "value": "A007",
+      "name": "租赁住房"
+    }
+  ],
+  "COMPANY_TYPE": [
+    {
+      "value": "ct0001",
+      "name": "个体"
+    },
+    {
+      "value": "ct0002",
+      "name": "私企"
+    },
+    {
+      "value": "ct0003",
+      "name": "国企"
+    },
+    {
+      "value": "ct0004",
+      "name": "事业单位"
+    },
+    {
+      "value": "ct0005",
+      "name": "外资"
+    },
+    {
+      "value": "ct0006",
+      "name": "其他"
+    }
+  ],
+  "JOB_TYPE": [
+    {
+      "value": "jt0001",
+      "name": "普通员工"
+    },
+    {
+      "value": "jt0002",
+      "name": "管理人员"
+    },
+    {
+      "value": "jt0003",
+      "name": "其他"
+    }
+  ],
+  "RELATION": [
+    {
+      "value": "09",
+      "name": "配偶"
+    },
+    {
+      "value": "01",
+      "name": "父亲"
+    },
+    {
+      "value": "02",
+      "name": "母亲"
+    },
+    {
+      "value": "03",
+      "name": "儿子"
+    },
+    {
+      "value": "04",
+      "name": "女儿"
+    },
+    {
+      "value": "05",
+      "name": "哥哥"
+    },
+    {
+      "value": "06",
+      "name": "弟弟"
+    },
+    {
+      "value": "07",
+      "name": "姐姐"
+    },
+    {
+      "value": "08",
+      "name": "妹妹"
+    },
+    {
+      "value": "11",
+      "name": "朋友"
+    },
+    {
+      "value": "12",
+      "name": "同事"
+    },
+    {
+      "value": "13",
+      "name": "同学"
+    }
+  ]
+}
