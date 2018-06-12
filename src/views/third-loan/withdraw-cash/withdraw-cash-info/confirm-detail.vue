@@ -67,6 +67,12 @@
         this.$http.post(this.$api.walletDecisionTienocardevent).then((res) => {
           if (+res.errorCode === 0) {
             this.$zzz.toast.text('订单创建成功')
+            // 创建订单成功，进行签名
+            setTimeout(() => {
+              this.$router.replace({
+                name: 'signature'
+              })
+            }, 1500)
           } else {
             this.$zzz.toast.text(res.message)
             setTimeout(() => {

@@ -1,6 +1,7 @@
 <template>
   <div class="zz-page-body signature-page">
-    <div class="signature-panel">
+    <div class="signature-panel"
+      v-if="pageStatus">
       <div class="signature__main"
         ref="signatureMain">
         <div class="signature-drawing-bg"
@@ -17,7 +18,7 @@
       <div class="signature__tool"
         ref="signatureTool">
         <div class="back"
-          v-if="origin !== 'redirect'"
+          v-if="origin !== 'kaniu'"
           @click="$router.back()">
           <i class="ion ion-ios-arrow-back"></i>
         </div>
@@ -39,8 +40,10 @@
   </div>
 </template>
 <script>
+  import reBindBankcardMixins from '@/mixins/reBindBankcard.js'
   var sp = require('@/lib/signature-pad.js')
   export default {
+    mixins: [reBindBankcardMixins],
     data() {
       return {
         mounted: false,
@@ -51,7 +54,16 @@
         redirectUrl: '',
         canvasWidth: 300,
         // 来源 redirect签名结束后进行重定向操作 其他的需要调用接口判断是否成功
-        origin: 'redirect'
+        origin: 'kaniu'
+      }
+    },
+    watch: {
+      pageStatus(val) {
+        if (val) {
+          setTimeout(() => {
+            this.initDrawBoard()
+          }, 600)
+        }
       }
     },
     methods: {
@@ -117,67 +129,81 @@
               _d.push(-1)
               _d.push(0)
             })
-            let signApiUrl = this.$api.signature
+            // let signApiUrl = this.$api.signature
             if (this.origin === 'wallet') {
-              signApiUrl = this.$api.walletSignature
+              // signApiUrl = this.$api.walletSignature
+              this.signInWallet(this.signature, _d)
+            } else {
+              this.signInKaniu(this.signature, _d)
             }
-            this.$http.post(
-              signApiUrl,
-              {
-                data: {
-                  pictureBase64: this.signature.split(',')[1],
-                  trajectoryData: _d.toString()
-                }
-              },
-              {
-                toastText: '正在校验签名',
-                direction: '90'
-              }
-            ).then((res) => {
-              if (+res.errorCode === 0) {
-                this.$zzz.toast.text('恭喜完成签名认证', '', '90')
-                if (this.origin === 'redirect') {
-                  location.href = decodeURIComponent(this.redirectUrl)
-                } else {
-                  this.findSignatureStatus()
-                }
-              } else {
-                this.$zzz.toast.text(res.message, '', '90')
-              }
-            })
-            // this.$api.signature({
-            //   pictureBase64: this.signature.split(',')[1],
-            //   trajectoryData: _d.toString()
-            // }).then((res) => {
-            //   if (+res.errorCode !== 0) {
-            //     this.$zzz.toast.text(res.message, '', '90')
-            //   }
-            //   if (+res.errorCode === 0) {
-            //     this.$zzz.toast.text('恭喜完成签名认证', '', '90')
-            //     location.href = decodeURIComponent(this.redirectUrl)
-            //   }
-            // })
+          }
+        })
+      },
+      /**
+       * 在卡牛中签名
+       */
+      signInKaniu(signData, signPath) {
+        let signApiUrl = this.$api.signature
+        this.$http.ykdPost(
+          signApiUrl,
+          {
+            data: {
+              pictureBase64: signData.split(',')[1],
+              trajectoryData: signPath.toString()
+            }
+          },
+          {
+            toastText: '正在校验签名',
+            direction: '90'
+          }
+        ).then((res) => {
+          if (+res.errorCode === 0) {
+            this.$zzz.toast.text('恭喜完成签名认证', '', '90')
+            location.href = decodeURIComponent(this.redirectUrl)
+          } else {
+            this.$zzz.toast.text(res.message, '', '90')
+          }
+        })
+      },
+      /**
+       * 在钱包中签名
+       */
+      signInWallet(signData, signPath) {
+        let signApiUrl = this.$api.walletSignature
+        this.$http.post(
+          signApiUrl,
+          {
+            data: {
+              pictureBase64: signData.split(',')[1],
+              trajectoryData: signPath.toString()
+            }
+          },
+          {
+            toastText: '正在校验签名',
+            direction: '90'
+          }
+        ).then((res) => {
+          if (+res.errorCode === 0) {
+            this.$zzz.toast.text('恭喜完成签名认证', '', '90')
+            this.findSignatureStatus()
+          } else {
+            this.$zzz.toast.text(res.message, '', '90')
           }
         })
       },
       findSignatureStatus() {
         this.$http.post(this.$api.findSignatureStatus).then((res) => {
           if (+res.errorCode === 0) {
-            // 签名成功
+            // 签名成功，进行人脸识别
+            this.$router.replace({
+              name: 'faceIdentify'
+            })
           } else {
             this.$zzz.toast.text(res.message)
           }
         })
-      }
-    },
-    created() {
-      this.redirectUrl = this.$route.query.redirect || ''
-      this.origin = this.$route.query.origin || 'redirect'
-      console.log(this.redirectUrl)
-    },
-    mounted() {
-      document.getElementsByTagName('title')[0].innerText = '签名'
-      this.$nextTick(() => {
+      },
+      initDrawBoard() {
         let signatureMain, drawingBg, drawingBoard, signatureTool, signatureMainStyle
 
         signatureMain = this.$refs.signatureMain
@@ -211,6 +237,18 @@
             boardColor: 'transparent'
           })
         }, 500)
+      }
+    },
+    created() {
+      this.redirectUrl = this.$route.query.redirect || ''
+      this.origin = this.$route.query.origin || 'kaniu'
+    },
+    mounted() {
+      document.getElementsByTagName('title')[0].innerText = '签名'
+      this.$nextTick(() => {
+        if (this.pageStatus) {
+          this.initDrawBoard()
+        }
       })
     }
   }

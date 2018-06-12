@@ -94,7 +94,7 @@
                 <div class="zz-picker-item">选项三</div>
               </div>
             </div>
-            
+
             <div class="zz-picker-group">
               <div class="zz-picker-mask"></div>
               <div class="zz-picker-indicator"></div>
@@ -599,14 +599,14 @@
       //   time: 0,
       //   isShowMask: true
       // })
-      // this.$zzz.toast.show({
-      //   text: '签名成功',
-      //   type: 'done',
-      //   position: 'middle',
-      //   time: 0,
-      //   isShowMask: true
-      // })
-
+      this.$zzz.toast.show({
+        text: '我的我的无多无多无无无无',
+        // type: 'done',
+        // position: 'middle',
+        time: 0,
+        isShowMask: true
+      })
+      // this.$zzz.toast.text('我的我的无多无多无无无无')
     },
     mounted() {
       this.$nextTick(() => {

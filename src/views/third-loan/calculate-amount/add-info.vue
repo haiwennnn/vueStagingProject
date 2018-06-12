@@ -109,7 +109,7 @@
        */
       requiredInputItemEvent(item) {
         let currentInputValue = this.currentInputValue
-        if (currentInputValue[item.key] !== '1') {
+        if (currentInputValue[item.key] === '1') {
           return
         }
         switch (item.key) {
@@ -189,7 +189,7 @@
         this.$http.post(this.$api.walletDecisionApproveEvent).then((res) => {
           let errorCode = +res.errorCode
           if (errorCode === 0) {
-            this.$router.push({
+            this.$router.replace({
               name: 'loanAssess',
               query: {
                 status: 3
@@ -201,7 +201,7 @@
             this.$zzz.toast.text('您的个人资料尚未完成，请补充个人资料')
           } else if (errorCode === -7) {
             // 决策拒绝，跳转到失败页面
-            this.$router.push({
+            this.$router.replace({
               name: 'loanAssess',
               query: {
                 status: 2

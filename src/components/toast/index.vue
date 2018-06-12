@@ -63,6 +63,7 @@
     },
     watch: {
       show(val) {
+        console.log(`toast in show-${val}`)
         if (val) {
           this.$emit('input', true)
           this.$emit('on-show')
@@ -77,12 +78,13 @@
         }
       },
       value(val) {
+        console.log(`toast in value-${val}`)
         this.show = val
       },
       time(val) {
+        console.log(`toast in time-${val}`)
         clearTimeout(this.timeout)
-        if (val <= 0) {
-        } else {
+        if (val > 0) {
           this.timeout = setTimeout(() => {
             this.show = false
             this.$emit('input', false)
@@ -91,12 +93,15 @@
         }
       },
       text(val) {
+        console.log(`toast in text-${val}`)
         clearTimeout(this.timeout)
-        this.timeout = setTimeout(() => {
-          this.show = false
-          this.$emit('input', false)
-          this.$emit('on-hide')
-        }, this.time)
+        if (this.time > 0) {
+          this.timeout = setTimeout(() => {
+            this.show = false
+            this.$emit('input', false)
+            this.$emit('on-hide')
+          }, this.time)
+        }
       }
     },
     created() {

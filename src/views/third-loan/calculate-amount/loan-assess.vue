@@ -9,14 +9,6 @@
             class="main-enter-btn"
             @click="goRealAuth">测试额度</div> -->
           <div slot="bd"
-            v-if="amountProgressStatus === 2"
-            class="loan-assess-result-panel refuse">
-            <p>尊敬的客户您好，很抱歉的通知您的测试未通过 您还可以通过我们的app选择其他的借款产品</p>
-            <z-button mini
-              type="primary"
-              style="width:2.5rem;height:.96rem;margin-top:.6rem;margin-right:0;">前往APP</z-button>
-          </div>
-          <div slot="bd"
             v-if="amountProgressStatus === 1"
             class="loan-assess-result-panel in-progress">
             <div class="loading-img"></div>
@@ -24,12 +16,29 @@
             <p>请耐心等待额度测试</p>
           </div>
           <div slot="bd"
+            v-if="amountProgressStatus === 2"
+            class="loan-assess-result-panel refuse">
+            <p>尊敬的客户您好，很抱歉的通知您的测试未通过 您还可以通过我们的app选择其他的借款产品</p>
+            <z-button mini
+              type="primary"
+              style="width:2.5rem;height:.96rem;margin-top:.6rem;margin-right:0;">前往APP</z-button>
+          </div>
+
+          <div slot="bd"
             v-if="amountProgressStatus === 3"
             class="loan-assess-result-panel success">
             <z-button mini
               type="primary"
               @click.native="goCash"
               style="width:2.5rem;height:.96rem;margin-top:.6rem;margin-right:0;">前往提现</z-button>
+          </div>
+          <div slot="bd"
+            v-if="amountProgressStatus === 4"
+            class="loan-assess-result-panel in-progress">
+            <!-- <div class="loading-img"></div> -->
+            <p style="padding:.2rem 0;font-size: .3rem;color: #222;">等待放款</p>
+            <p>恭喜您提现成功</p>
+            <p>银行审批通过后金额将放入您的账户，请耐心等待</p>
           </div>
         </common-layout>
       </div>
@@ -43,6 +52,7 @@
    *  |-审核中
    *  |-审核失败
    *  |-审核成功
+   *  |-等待放款
    */
   import commonLayout from '../components/commonLayout'
   export default {
@@ -56,6 +66,8 @@
          * 1:获取中
          * 2:获取失败
          * 3:获取成功
+         * 4:提现成功，等待放款
+         * 5:提现失败
          */
         loanInfo: {
           amount: 10000,

@@ -91,10 +91,17 @@
       goSign() {
         this.$router.push({
           name: 'signature',
-          // name: 'faceIdentify',
           query: {
             origin: 'wallet'
           }
+        })
+      },
+      /**
+       * 去人脸识别
+       */
+      goFaceId() {
+        this.$router.push({
+          name: 'faceIdentify'
         })
       },
       /**
@@ -118,6 +125,10 @@
           case 'W08':
             this.goSign()
             break
+          case 'W09':
+            // this.goSign()
+            this.goFaceId()
+            break
           case 'W10':
           default:
             break
@@ -127,7 +138,8 @@
        * 获取用户钱包进度状态
        */
       getUserWalletStatus() {
-        this.$http.post(this.$api.walletQueryNode).then((res) => {
+        this.$http.post(this.$api.walletQueryNode, null, {
+        }).then((res) => {
           console.log(res)
           if (+res.errorCode === 0) {
             let node = res.data.node
@@ -164,6 +176,12 @@
                 this.walletShowQuota()
                 this.getWalletLoanInfo()
                 this.enterBtnText = '去签名'
+                break
+              case 'W09':
+                this.userStatus = node
+                this.walletShowQuota()
+                this.getWalletLoanInfo()
+                this.enterBtnText = '去人脸识别'
                 break
               case 'W10':
                 this.userStatus = node

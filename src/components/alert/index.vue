@@ -17,54 +17,53 @@
   </z-dialog>
 </template>
 <script>
-import Zdialog from '../z-dialog'
-export default {
-  name: 'alert',
-  components: {
-    Zdialog
-  },
-  data() {
-    return {
-      show: false
-    }
-  },
-  props: {
-    value: Boolean,
-    mask: {
-      type: Boolean,
-      default: true
+  import Zdialog from '../z-dialog'
+  export default {
+    name: 'alert',
+    components: {
+      Zdialog
     },
-    title: {
-      type: String,
-      default: '提示'
+    data() {
+      return {
+        show: false
+      }
     },
-    content: {
-      type: String,
-      default: ''
+    props: {
+      value: Boolean,
+      mask: {
+        type: Boolean,
+        default: true
+      },
+      title: {
+        type: String,
+        default: '提示'
+      },
+      content: {
+        type: String,
+        default: ''
+      },
+      buttonText: {
+        type: String,
+        default: '确定'
+      }
     },
-    buttonText: {
-      type: String,
-      default: '确定'
-    }
-  },
-  computed: {
+    computed: {
 
-  },
-  watch: {
-    value(val) {
-      this.show = val
     },
-    show(val) {
-      this.$emit('input', val)
-    }
-  },
-  methods: {
-    alertOnHide() {
-      this.show = false
+    watch: {
+      value(val) {
+        this.show = val
+      },
+      show(val) {
+        this.$emit('input', val)
+      }
+    },
+    methods: {
+      alertOnHide() {
+        this.show = false
+      }
     }
   }
-}
 </script>
 <style lang="less" scoped>
-
 </style>

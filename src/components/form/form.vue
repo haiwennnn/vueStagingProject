@@ -49,6 +49,7 @@
           cb && cb(status)
         } else {
           var validator = new Schema(this.rules)
+          console.log(this.value)
           validator.validate(this.value, (errors, fields) => {
             if (errors) {
               status = false

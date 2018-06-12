@@ -91,11 +91,11 @@
         let reader = new FileReader()
         reader.onload = function (e) {
           vm.$refs.uploadVideoInput.value = ''
-          console.log(e.target)
-          // console.log(e.target.result)
           vm.uploadFaceVideo(e.target.result)
         }
-        reader.readAsDataURL(files[0])
+        setTimeout(() => {
+          reader.readAsDataURL(files[0])
+        }, 500)
       },
       /**
        * 获取人脸识别随机数
@@ -156,7 +156,7 @@
               this.getFaceResult()
             }, 1000)
           } else {
-            this.$zzz.toast.text('实名认证失败，请重新认证')
+            this.$zzz.toast.text('实名认证失败,请重新认证')
           }
         })
       },
@@ -170,8 +170,16 @@
         }).then((res) => {
           if (+res.errorCode === 0) {
             this.$zzz.toast.text('恭喜人脸识别成功')
+            setTimeout(() => {
+              this.$router.replace({
+                name: 'loanAssess',
+                query: {
+                  status: 4
+                }
+              })
+            }, 1500)
           } else {
-            this.$zzz.toast.text(res.message)
+            this.$zzz.toast.text(res.message || '实名认证失败,请重新认证')
           }
         })
       }

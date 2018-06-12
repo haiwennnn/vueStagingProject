@@ -2,7 +2,7 @@ import { BANKCARDDICT } from '@/lib/dict'
 export default {
   data() {
     return {
-      bankcardTypeMap: BANKCARDDICT.typeMap
+      _BankcardTypeMap: BANKCARDDICT.typeMap
     }
   },
   methods: {
@@ -15,7 +15,7 @@ export default {
     filterBankcard(list, type) {
       let _list = []
       list = Array.isArray(list) ? list : []
-      let bankcardTypeMap = this.bankcardTypeMap
+      let bankcardTypeMap = this._BankcardTypeMap
       _list = list.filter((item, index) => {
         if (bankcardTypeMap[item.bankCardType] === type) {
           return true

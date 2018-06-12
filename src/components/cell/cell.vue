@@ -19,6 +19,7 @@
     name: 'Cell',
     props: {
       isArrow: Boolean,
+      noBottomLine: Boolean,
       value: {
         type: String,
         default: ''
@@ -27,7 +28,8 @@
     computed: {
       className() {
         return {
-          'zz-cell_access': this.isArrow
+          'zz-cell_access': this.isArrow,
+          'zz-cell_no-bottom-line': this.noBottomLine
         }
       }
     },

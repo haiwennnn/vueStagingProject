@@ -31,15 +31,21 @@
   &:after {
     .setBottomLine();
   }
-  &:last-child{
-    &:after{
+  &:last-child {
+    &:after {
       display: none;
     }
   }
-  &:nth-child(1){
-    &:after{
+  &:nth-child(1) {
+    &:after {
       display: block;
     }
+  }
+}
+
+.zz-cell.zz-cell_no-bottom-line {
+  &:after {
+    display: none;
   }
 }
 

@@ -134,7 +134,7 @@ export default {
     // }
     if (config.toast !== false) {
       vm.$zzz.toast.show({
-        text: '正在请求',
+        text: config.toastText || '正在请求',
         type: 'loading',
         position: 'middle',
         time: 0,
@@ -178,7 +178,6 @@ export default {
     var vm = window.vm
     params = params || {}
     config = config || {}
-
     if (config.toast !== false) {
       vm.$zzz.toast.show({
         text: config.toastText || '正在请求',
@@ -270,7 +269,7 @@ export default {
 
     if (config.toast !== false) {
       vm.$zzz.toast.show({
-        text: config.toastText || '正在请求...',
+        text: config.toastText || '正在请求',
         type: 'loading',
         position: 'middle',
         time: 0,

@@ -192,6 +192,7 @@
         let smsCode = this.smsCode
         if (smsCode.phone === '') {
           this.$zzz.toast.text('请输入手机号')
+          return
         }
         if (!Reg.phoneReg.test(smsCode.phone)) {
           this.$zzz.toast.text('请输入正确的手机号码')
@@ -210,12 +211,15 @@
             mobileNo: this.smsCode.phone
           }
         }).then((res) => {
-          console.log(res)
-          this.$zzz.toast.text('短信验证码发送成功')
-          // 倒计时验证码时间
-          this.smsCode.sent = true
-          this.smsCode.disabled = true
-          this.coldDown(this.smsCode.resend)
+          if (+res.errorCode === 0) {
+            this.$zzz.toast.text('短信验证码发送成功')
+            // 倒计时验证码时间
+            this.smsCode.sent = true
+            this.smsCode.disabled = true
+            this.coldDown(this.smsCode.resend)
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
         })
       },
 

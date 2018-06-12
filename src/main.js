@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import FastClick from 'fastclick'
-// import VConsole from 'vconsole'
+import VConsole from 'vconsole'
 import Api from './api'
 import Zui from '@/components/index.js'
 
@@ -26,13 +26,13 @@ if ('addEventListener' in document) {
 Vue.prototype.test = 11
 Vue.config.productionTip = false
 
-// let env = process.env.NODE_ENV
+let env = process.env.NODE_ENV
 /* eslint-disable no-new */
 // new VConsole()
-// if (env !== 'production') {
-//   /* eslint-disable no-new */
-//   new VConsole()
-// }
+if (env !== 'production') {
+  /* eslint-disable no-new */
+  new VConsole()
+}
 
 Vue.use(Zui)
 Vue.use(Api)

@@ -2,7 +2,7 @@
   <div class="zz-page-body signature-page">
     <div class="zz-page-body">
       <div class="zz-tab">
-        <z-header>第三方贷款入口</z-header>
+        <z-header>第三方入口</z-header>
         <div class="zz-tab__panel zz-tab__panel_hastabbar"></div>
       </div>
     </div>
@@ -20,8 +20,14 @@
       }
     },
     created() {
-      this.ssjLoanId = this.$route.query.sid || 'N153521352658220'
+      this.ssjLoanId = this.$route.query.sid || ''
       this.rurl = this.$route.query.rurl
+      if (!this.ssjLoanId) {
+        this.$zzz.alert.show({
+          content: '信息错误'
+        })
+        return
+      }
       this.$http.ykdPost(
         this.$api.getToken,
         {
@@ -44,9 +50,10 @@
           })
           setTimeout(() => {
             this.$zzz.toast.hide()
-            this.$router.push({
+            this.$router.replace({
               name: 'signature',
               query: {
+                origin: 'kaniu',
                 redirect: this.rurl
               }
             })
@@ -69,6 +76,9 @@
         iframe = null
       }
       call(`cardniu://app/webview/config?isCanPullRefresh=${bol}`)
+      this.$nextTick(() => {
+        document.getElementById('app').setAttribute('class', 'hide-header')
+      })
     }
   }
 </script>

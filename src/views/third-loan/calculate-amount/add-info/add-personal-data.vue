@@ -89,22 +89,44 @@
               prop="workYearsName"
               v-model="walletWorkInfo.workYearsName"></form-input>
           </z-form>
-          <form-title>亲属联系人</form-title>
-          <z-form ref="walletContactInfoList"
+
+          <div v-for="(item,index) in walletContactInfoList"
+            :key="index">
+            <form-title v-if="index===0">主要联系人</form-title>
+            <form-title v-else>补充联系人</form-title>
+            <z-form :ref="`walletContactInfoList-${index}`"
+              :rules="ruleValidate"
+              v-model="walletContactInfoList[index]">
+              <popup-picker v-model="walletContactInfoList[index].relationId"
+                label="关系"
+                placeholder="请选择"
+                :name-key="`walletContactInfoList.${index}.relation`"
+                @on-confirm="confirmPicker"
+                :data="DICT[formDictMap['relationId']]"></popup-picker>
+              <form-input label="真实姓名"
+                prop="realName"
+                v-model="walletContactInfoList[index].realName"></form-input>
+              <form-input label="手机号码"
+                prop="mobileno"
+                v-model="walletContactInfoList[index].mobileno"></form-input>
+            </z-form>
+          </div>
+
+          <!-- <z-form ref="walletContactInfoList-1"
             :rules="ruleValidate"
-            v-model="walletContactInfoList">
-            <popup-picker v-model="walletContactInfoList.crelationId"
+            v-model="walletContactInfoList[1]">
+            <popup-picker v-model="walletContactInfoList[1].crelationId"
               label="关系"
               placeholder="请选择"
               @on-confirm="confirmPicker"
               :data="DICT[formDictMap['crelationId']]"></popup-picker>
             <form-input label="真实姓名"
               prop="crealname"
-              v-model="walletWorkInfo.crealname"></form-input>
+              v-model="walletContactInfoList[1].crealname"></form-input>
             <form-input label="手机号码"
               prop="cmobileno"
-              v-model="walletWorkInfo.cmobileno"></form-input>
-          </z-form>
+              v-model="walletContactInfoList[1].cmobileno"></form-input>
+          </z-form> -->
         </div>
         <div class="next-btn">
           <z-button type="primary"
@@ -139,12 +161,18 @@
           companyAddress: 'REGION',
           companyTypeId: 'COMPANY_TYPE',
           positionTypeId: 'JOB_TYPE',
-          crelationId: 'RELATION'
+          relationId: 'RELATION'
         },
         // 表单数据类型map,保存数据时需要遍历一次所以key值，根据此map判断是否需要转换数据类型
         formTypeMap: {
+          contactType: 'Number',
+          id: 'Number',
           hasChild: 'Number',
           childNumber: 'Number'
+        },
+        contactTypeIndexMap: {
+          '1': 0,
+          '2': 1
         },
         // 基本信息
         walletUser: {
@@ -185,11 +213,22 @@
           positionType: '',
           workYearsName: ''
         },
-        walletContactInfoList: {
-          crealname: '',
-          cmobileno: '',
-          crelationId: []
-        },
+        walletContactInfoList: [
+          {
+            id: '',
+            contactType: '1',
+            realName: '',
+            mobileno: '',
+            relationId: []
+          },
+          {
+            id: '',
+            contactType: '2',
+            realName: '',
+            mobileno: '',
+            relationId: []
+          }
+        ],
         ruleValidate: {
           age: [
             { type: 'string', message: '请输入正确的年龄', pattern: Reg.numberReg }
@@ -206,10 +245,10 @@
           childNumber: [
             { type: 'string', message: '请输入正确的年龄', pattern: Reg.numberReg }
           ],
-          crealname: [
+          realName: [
             { type: 'string', message: '请输入2-10位中文', pattern: Reg.nameReg }
           ],
-          cmobileno: [
+          mobileno: [
             { type: 'string', message: '请输入正确的手机号', pattern: Reg.phoneReg }
           ],
           workYearsName: [
@@ -224,8 +263,11 @@
         let walletUserStatus = false
         let walletWorkInfo = this.$refs.walletWorkInfo
         let walletWorkInfoStatus = false
-        let walletContactInfoList = this.$refs.walletContactInfoList
-        let walletContactInfoListStatus = false
+        let walletContactInfoListStatus = []
+        let walletContactInfoList = this.walletContactInfoList.map((item, index) => {
+          walletContactInfoListStatus[index] = false
+          return this.$refs[`walletContactInfoList-${index}`]
+        })
         walletUser.validate((d) => {
           if (d) {
             walletUserStatus = true
@@ -236,13 +278,14 @@
             walletWorkInfoStatus = true
           }
         })
-        walletContactInfoList.validate((d) => {
-          if (d) {
-            walletContactInfoListStatus = true
-          }
+        walletContactInfoList.forEach((item, index) => {
+          item[0].validate((d) => {
+            if (d) {
+              walletContactInfoListStatus[index] = true
+            }
+          })
         })
-        if (walletUserStatus && walletWorkInfoStatus && walletContactInfoListStatus) {
-          // this.$zzz.toast.text('调用接口！！！！')
+        if (walletUserStatus && walletWorkInfoStatus && walletContactInfoListStatus.toString().indexOf('false') < 0) {
           this.walletSavePersonalData()
         } else {
           this.$zzz.toast.text('请修改带有错误提示的录入项')
@@ -252,7 +295,12 @@
         console.log(data)
         if (data && data.nameKey) {
           if (typeof data.nameKey === 'string') {
-            this.setPickerToData(data.nameKey, data.name[0])
+            if (data.nameKey.indexOf('.') >= 0) {
+              let nameKeySplit = data.nameKey.split('.')
+              this.setPickerToData(nameKeySplit, data.name[0])
+            } else {
+              this.setPickerToData(data.nameKey, data.name[0])
+            }
           } else {
             data.nameKey.forEach((key, index) => {
               this.setPickerToData(key, data.name[index])
@@ -272,123 +320,41 @@
       /**
        * 设置picker返回的值 对应到用户信息中
        */
-      setPickerToData(nameKey, value) {
+      setPickerToData(nameKey, value, target) {
+        if (nameKey === null) {
+          return
+        }
+        if (nameKey instanceof Array) {
+          target = target || this
+          if (nameKey.length === 1) {
+            target[nameKey] = value
+            this.setPickerToData(null)
+            return
+          } else {
+            let key = nameKey.shift()
+            this.setPickerToData(nameKey, value, target[key])
+            return
+          }
+        }
         if (nameKey in this.walletUser) {
           this.walletUser[nameKey] = value
         }
         if (nameKey in this.walletWorkInfo) {
           this.walletWorkInfo[nameKey] = value
         }
-        if (nameKey in this.walletUser) {
-
-        }
       },
       getUserInfo() {
-        // let data = {
-        //   'createdBy': null,
-        //   'createdDate': null,
-        //   'updatedBy': null,
-        //   'updatedDate': null,
-        //   'walletUser': {
-        //     'createdBy': null,
-        //     'createdDate': null,
-        //     'updatedBy': null,
-        //     'updatedDate': null,
-        //     'id': 1,
-        //     'userId': 135,
-        //     'userName': '晏海文',
-        //     'mobileNo': '13076965109',
-        //     'cardNo': '460300199109010337',
-        //     'walletCode': 'O695534HRuuf',
-        //     'walletName': '点米钱包',
-        //     'loanLimit': 100000000.00,
-        //     'freezeLimit': 3000.00,
-        //     'educationId': '1',
-        //     'education': '1',
-        //     'marryId': '2',
-        //     'marry': '2',
-        //     'employeeTypeId': '2',
-        //     'employeeType': '2',
-        //     'liveType': '2',
-        //     'liveTypeName': '2',
-        //     'addr': '1',
-        //     'provinceId': '440000',
-        //     'provinceName': '1',
-        //     'cityId': '440300',
-        //     'cityName': '1',
-        //     'areaId': '440304',
-        //     'areaName': '1',
-        //     'addrDetail': '1',
-        //     'hasChild': 1,
-        //     'childNumber': 1,
-        //     'supportNumber': 1,
-        //     'idFintechUmUser': null,
-        //     'accessToken': null,
-        //     'walletToken': null,
-        //     'loanId': null
-        //   },
-        //   'walletWorkInfo': {
-        //     'createdBy': null,
-        //     'createdDate': null,
-        //     'updatedBy': null,
-        //     'updatedDate': null,
-        //     'id': 1,
-        //     'walletUserId': 1,
-        //     'registedAssets': '300',
-        //     'companyType': '1',
-        //     'companyName': '1',
-        //     'workTel': '1',
-        //     'companyProvinceId': '440000',
-        //     'companyProvinceName': '1',
-        //     'companyCityId': '440300',
-        //     'companyCityName': '1',
-        //     'companyAreaId': '440305',
-        //     'companyAreaName': '1',
-        //     'workAddr': '1',
-        //     'positionType': '1',
-        //     'positionTypeId': '1',
-        //     'workYearsName': '1',
-        //     'companyRegisterTime': 1527238100000,
-        //     'shareholdingRatio': 1.00,
-        //     'companyTypeId': '1'
-        //   },
-        //   'walletContactInfoList': [
-        //     {
-        //       'createdBy': null,
-        //       'createdDate': null,
-        //       'updatedBy': null,
-        //       'updatedDate': null,
-        //       'id': 1,
-        //       'walletUserId': 1,
-        //       'relationId': '1',
-        //       'relation': '1',
-        //       'mobileno': '18818881888',
-        //       'realName': '1'
-        //     },
-        //     {
-        //       'createdBy': null,
-        //       'createdDate': null,
-        //       'updatedBy': null,
-        //       'updatedDate': null,
-        //       'id': 2,
-        //       'walletUserId': 1,
-        //       'relationId': '1',
-        //       'relation': '1',
-        //       'mobileno': '18818881888',
-        //       'realName': '1'
-        //     }
-        //   ]
-        // }
         this.$http.post(this.$api.walletQueryPersonalData).then((res) => {
           let data = res.data
           let walletUser = {}
           let walletWorkInfo = {}
+          let walletContactInfoList = this.walletContactInfoList
           let walletUserKeys = Object.keys(this.walletUser)
           let walletWorkInfoKeys = Object.keys(this.walletWorkInfo)
           let formDictMap = this.formDictMap
           walletUserKeys.forEach((key, index) => {
             if (formDictMap[key]) {
-              walletUser[key] = data.walletUser[key] ? [data.walletUser[key] + ''] : []
+              walletUser[key] = data.walletUser[key] + '' ? [data.walletUser[key] + ''] : []
             } else {
               walletUser[key] = data.walletUser[key] + '' || ''
             }
@@ -412,8 +378,35 @@
           } else {
             walletWorkInfo.companyAddress = [walletWorkInfo.companyProvinceId + '', walletWorkInfo.companyCityId + '', walletWorkInfo.companyAreaId + '']
           }
+
+          // 处理联系人信息
+          let walletContactInfoListData = res.data.walletContactInfoList
+          walletContactInfoListData.forEach((item, index) => {
+            walletContactInfoList[this.contactTypeIndexMap[item.contactType + '']] = {
+              contactType: item.contactType + '',
+              id: item.id || '',
+              realName: item.realName || '',
+              mobileno: item.mobileno || '',
+              relation: item.relation || '',
+              relationId: item.relationId + '' ? [item.relationId + ''] : []
+            }
+          })
+          // this.walletContactInfoList.forEach((item, index) => {
+          //   if (walletContactInfoListData[index]) {
+          //     walletContactInfoList[index] = {
+          //       id: walletContactInfoListData[index].id || '',
+          //       realName: walletContactInfoListData[index].realName || '',
+          //       mobileno: walletContactInfoListData[index].mobileno || '',
+          //       relation: walletContactInfoListData[index].relation || '',
+          //       relationId: walletContactInfoListData[index].relationId + '' ? [walletContactInfoListData[index].relationId + ''] : []
+          //     }
+          //   } else {
+          //     walletContactInfoList[index] = item
+          //   }
+          // })
           this.walletUser = walletUser
           this.walletWorkInfo = walletWorkInfo
+          this.walletContactInfoList = JSON.parse(JSON.stringify(walletContactInfoList))
         })
       },
       /**
@@ -424,7 +417,10 @@
         let walletUserKeys = Object.keys(walletUser)
         let walletWorkInfo = JSON.parse(JSON.stringify(this.walletWorkInfo))
         let walletWorkInfoKeys = Object.keys(walletWorkInfo)
+        let walletContactInfoList = JSON.parse(JSON.stringify(this.walletContactInfoList))
+        let walletContactInfoListData = []
         let formTypeMap = this.formTypeMap
+
         // 处理保存的数据
         // 数组项目变成字符串
         // 判断类型是否需要转换成数字
@@ -447,34 +443,71 @@
           }
         })
 
+        walletContactInfoList.forEach((item, index) => {
+          let contactItemKey = Object.keys(item)
+          let status = true
+          contactItemKey.forEach((key, index) => {
+            // 将picker数据转成字符串保存到服务器
+            if (Object.prototype.toString.call(item[key]) === '[object Array]') {
+              item[key] = item[key].toString()
+            }
+            // 判断当前联系人数据内是否存在未填写项目，未完成填写不予保存
+            if (key !== 'id' && item[key] === '') {
+              status = false
+            }
+            // 某些字段后台接受为数字类型
+            if (formTypeMap[key] === 'Number') {
+              item[key] = parseInt(item[key])
+            }
+          })
+          if (status) {
+            walletContactInfoListData.push(JSON.parse(JSON.stringify(item)))
+          }
+        })
+
+        console.log(walletContactInfoListData)
+        // return
         this.$http.post(this.$api.walletSavePersonalData,
           {
             data: {
               walletUser,
               walletWorkInfo,
-              'walletContactInfoList': [
-                {
-                  'id': 1,
-                  'relationId': '1',
-                  'relation': '1',
-                  'mobileno': '18818881888',
-                  'realName': '1'
-                },
-                {
-                  'id': 2,
-                  'relationId': '1',
-                  'relation': '1',
-                  'mobileno': '18818881888',
-                  'realName': '1'
-                }
-              ]
+              walletContactInfoList: walletContactInfoListData
+              // 'walletContactInfoList': [
+              //   {
+              //     'id': 1,
+              //     'relationId': '1',
+              //     'relation': '1',
+              //     'mobileno': '18818881888',
+              //     'realName': '1'
+              //   },
+              //   {
+              //     'id': 2,
+              //     'relationId': '1',
+              //     'relation': '1',
+              //     'mobileno': '18818881888',
+              //     'realName': '1'
+              //   }
+              // ]
             }
           },
           {
             toastText: '正在保存用户信息'
           }
         ).then((res) => {
-
+          if (+res.errorCode === 0) {
+            this.$zzz.toast.show({
+              text: '保存成功',
+              type: 'done',
+              position: 'center',
+              isShowMask: true
+            })
+            setTimeout(() => {
+              this.$router.back()
+            }, 1500)
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
         })
       }
     },

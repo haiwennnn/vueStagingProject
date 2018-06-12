@@ -59,11 +59,11 @@ const urls = {
    * @param {String} loanId 业务Id
    * @param {String} bankCardNum 银行卡号
    * @param {String} bankCardType 银行卡类型 e.g:借记卡
-   * @param {String} bankCode 银行编码 e.g:101
    * @param {String} bankName 银行名称 e.g:平安银行
+   * @param {String} mobileNum 用户手机号  ---以上为重新绑卡填写项---
+   * @param {String} bankCode 银行编码 e.g:101
    * @param {Base64Str} bankCardImg 正面图片base64
    * @param {Base64Str} bankCardImgVerso 背面图片base64
-   * @param {String} mobileNum 用户手机号
    * @param {String} checkCode 信用卡背面3位数号码，此字段已废弃传空字符串
    * @param {String} expiredDate 过期时间，此字段已废弃传空字符串
    * @param {String} validCode 验证码
