@@ -1,5 +1,5 @@
 <template>
-  <div>第三方贷款入口</div>
+  <div></div>
 </template>
 <script>
   /**
@@ -21,7 +21,7 @@
         this.$http.post(this.$api.walletEnterTokenValidator, {
           data: {
             token: query.token || '',
-            mobileNum: query.mobileNum || '',
+            mobileNo: query.mobileNo || '',
             fjChnlCode: query.fjChnlCode || '',
             sign: query.sign || '',
             timestamp: query.timestamp || ''
@@ -31,7 +31,7 @@
             this.$router.push({
               name: 'login',
               query: {
-                phone: query.phone || '13076965109'
+                phone: query.mobileNo
               }
             })
           } else {
