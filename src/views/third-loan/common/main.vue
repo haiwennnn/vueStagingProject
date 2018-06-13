@@ -190,7 +190,7 @@
                 this.$router.replace({
                   name: 'loanAssess',
                   query: {
-                    status: 2
+                    status: 4
                   }
                 })
                 break
