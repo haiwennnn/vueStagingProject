@@ -1,8 +1,6 @@
 <template>
   <div id="app">
     <div class="zz-page">
-      <div class="test-class">
-      </div>
       <router-view/>
       <!-- <div class="zz-page-body">
         <div class="zz-tab">

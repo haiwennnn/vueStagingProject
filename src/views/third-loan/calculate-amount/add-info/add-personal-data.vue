@@ -349,8 +349,8 @@
           let walletUser = {}
           let walletWorkInfo = {}
           let walletContactInfoList = this.walletContactInfoList
-          let walletUserKeys = Object.keys(this.walletUser)
-          let walletWorkInfoKeys = Object.keys(this.walletWorkInfo)
+          let walletUserKeys = Object.keys(this.walletUser || {})
+          let walletWorkInfoKeys = Object.keys(this.walletWorkInfo || {})
           let formDictMap = this.formDictMap
           walletUserKeys.forEach((key, index) => {
             if (formDictMap[key]) {

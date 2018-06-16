@@ -15,6 +15,8 @@ const ThirdLoanEnter = r => require.ensure([], () => r(require('@/views/thirdLoa
 
 const Signature = r => require.ensure([], () => r(require('@/views/signature')), 'signature')
 
+const Signature1 = r => require.ensure([], () => r(require('@/views/signature/index1')), 'signature')
+
 const Ui = r => require.ensure([], () => r(require('@/views/ui')), 'ui')
 
 const RepayIndex = r => require.ensure([], () => r(require('@/views/repay')), 'repay')
@@ -34,6 +36,11 @@ export default new Router({
       path: '/signature',
       name: 'signature',
       component: Signature
+    },
+    {
+      path: '/auth/signature',
+      name: 'authSignature1',
+      component: Signature1
     },
     {
       path: '/ui',

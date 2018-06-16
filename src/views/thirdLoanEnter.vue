@@ -11,6 +11,7 @@
 <script>
   /**
    * 第三方贷款入口页面
+   * @query {String} hide-header 是否隐藏头部
    */
   export default {
     data() {

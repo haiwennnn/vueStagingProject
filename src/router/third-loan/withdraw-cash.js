@@ -1,5 +1,7 @@
 // 完成提现信息
 const CompleteCashInfo = r => require.ensure([], () => r(require('@/views/third-loan/withdraw-cash/complete-cash-info')), 'third-loan-withdraw-cash')
+// 签名
+const Signature = r => require.ensure([], () => r(require('@/views/third-loan/withdraw-cash/signature')), 'third-loan-withdraw-cash')
 // 人脸识别
 const FaceIdentify = r => require.ensure([], () => r(require('@/views/third-loan/withdraw-cash/face-identify')), 'third-loan-withdraw-cash')
 // 人脸识别成功后提现结果页面
@@ -10,6 +12,11 @@ export default [
     path: '/third-loan/withdraw-cash/complete-cash-info',
     name: 'completeCashInfo',
     component: CompleteCashInfo
+  },
+  {
+    path: '/third-loan/withdraw-cash/signature',
+    name: 'signature',
+    component: Signature
   },
   {
     path: '/third-loan/withdraw-cash/face-identify',
