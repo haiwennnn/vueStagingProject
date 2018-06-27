@@ -7,6 +7,9 @@ export default {
     /**
      * 在非h5钱包中签字
      * 此接口部署在云科贷中，目测卡牛、返利网都会调用此接口回调中应该会进行一个重定向
+     * @param {String} signData picBas64签名图片数据
+     * @param {Array} signPath 签名路径数据
+     * @param {Function} callback 回调方法
      */
     signInThirdLoan(signData, signPath, callback) {
       let signApiUrl = this.$api.signature
@@ -32,7 +35,11 @@ export default {
       })
     },
     /**
-     * 在h5钱包中签名
+     * 在h5钱包中签名，接口部署在钱包项目中
+     * 不同的签名接口
+     * @param {pictureBase64} signData 签名图片数据
+     * @param {Array} signPath 签名路径数据
+     * @param {Function} callback 回调方法
      */
     signInH5Wallet(signData, signPath, callback) {
       let signApiUrl = this.$api.walletSignature

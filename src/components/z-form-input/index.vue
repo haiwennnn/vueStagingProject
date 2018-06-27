@@ -1,14 +1,18 @@
 <template>
   <form-item :label="label"
     :error-tip-btn="errorTipBtn"
+    :clear-all-btn="clearAllBtnStatus"
     :label-width="labelWidth"
+    @on-clear-all="onClearAll"
     @on-click-error-tip="onClickErrorTip">
     <z-input v-if="type === 'text'"
+      ref="textInput"
       :placeholder="'请输入'"
       v-model="currentValue"
       :value-text-align="valueTextAlign"></z-input>
     <z-input v-if="type === 'number'"
       :type="type"
+      ref="numberInput"
       :placeholder="'请输入'"
       v-model.number="currentValue"
       :value-text-align="valueTextAlign"></z-input>
@@ -34,6 +38,7 @@
       labelWidth: {
         type: Number
       },
+      clearAllBtn: false,
       // 是否禁用选择
       disabled: false,
       valueTextAlign: {
@@ -48,6 +53,14 @@
         validator: null,
         errorTipBtn: false,
         errorMessage: ''
+      }
+    },
+    computed: {
+      clearAllBtnStatus() {
+        if (this.clearAllBtn && this.currentValue) {
+          return true
+        }
+        return false
       }
     },
     watch: {
@@ -79,6 +92,13 @@
     methods: {
       onClickErrorTip() {
         this.$zzz.toast.text(this.errorMessage)
+      },
+      onClearAll() {
+        this.currentValue = ''
+        // let refs = this.$refs
+        // this.$nextTick(() => {
+        // console.log(this)
+        // })
       }
     },
     created() {

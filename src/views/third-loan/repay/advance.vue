@@ -88,7 +88,8 @@
         // 当前选中还款卡索引
         currentRepayBankcardIndex: -1,
         // 获取银行卡列表状态
-        getBankcardStatus: false
+        getBankcardStatus: false,
+        _BankcardTypeMap: null
       }
     },
     methods: {
@@ -159,46 +160,51 @@
       }
     },
     created() {
-      // 获取还款信息
-      let userRepayInfo = window.FJ.getStore('userRepayInfo')
-      this.userRepayInfo = userRepayInfo
-      // 获取还款类型 还当期  还全部
-      this.repayType = this.$route.query.repayType
-      let currentRepayInfo = this.currentRepayInfo
-      if (this.userRepayInfo) {
-        // 处理当前还款详情
-        // currentRepayInfo.amount = this.userRepayInfo.currentReturnMoney || this.userRepayInfo.nextPeriodsReturnMoney
-        if (this.userRepayInfo.currentReturnMoney) {
-          currentRepayInfo.amount = this.userRepayInfo.currentReturnMoney
-        } else {
-          currentRepayInfo.type = 'A005'
-          currentRepayInfo.amount = this.userRepayInfo.nextPeriodsReturnMoney
-        }
-        if (this.repayType === 'all') {
-          // 当前还款为提前结清
-          currentRepayInfo.amount = userRepayInfo.earlySettlement
-          currentRepayInfo.text = '提前结清'
-          currentRepayInfo.tradeName = '提前结清'
-          currentRepayInfo.type = 'A003'
-        }
-        this.currentRepayInfo = currentRepayInfo
-        // 获取银行卡列表
-        this.getBankcardList({
-          loanId: this.userRepayInfo.src_case_id
-        }).then((res) => {
-          if (+res.errorCode === 0) {
-            this.bankcardList = this.filterBankcard(res.data, 1)
-            this.bankcardList.forEach((item, index) => {
-              if (item.bankCardNo === userRepayInfo.repay_acct) {
-                this.currentRepayBankcardIndex = index
-              }
-            })
-            console.log(this.bankcardList)
+
+    },
+    mounted() {
+      this.$nextTick(() => {
+        // 获取还款信息
+        let userRepayInfo = window.FJ.getStore('userRepayInfo')
+        this.userRepayInfo = userRepayInfo
+        // 获取还款类型 还当期或还全部
+        this.repayType = this.$route.query.repayType
+        let currentRepayInfo = this.currentRepayInfo
+        if (this.userRepayInfo) {
+          // 处理当前还款详情
+          // currentRepayInfo.amount = this.userRepayInfo.currentReturnMoney || this.userRepayInfo.nextPeriodsReturnMoney
+          if (this.userRepayInfo.currentReturnMoney) {
+            currentRepayInfo.amount = this.userRepayInfo.currentReturnMoney
           } else {
-            this.$zzz.taost.text(res.message)
+            currentRepayInfo.type = 'A005'
+            currentRepayInfo.amount = this.userRepayInfo.nextPeriodsReturnMoney
           }
-        })
-      }
+          if (this.repayType === 'all') {
+            // 当前还款为提前结清
+            currentRepayInfo.amount = userRepayInfo.earlySettlement
+            currentRepayInfo.text = '提前结清'
+            currentRepayInfo.tradeName = '提前结清'
+            currentRepayInfo.type = 'A003'
+          }
+          this.currentRepayInfo = currentRepayInfo
+          // 获取银行卡列表
+          this.getBankcardList({
+            loanId: this.userRepayInfo.src_case_id
+          }).then((res) => {
+            if (+res.errorCode === 0) {
+              this.bankcardList = this.filterBankcard(res.data, 1)
+              this.bankcardList.forEach((item, index) => {
+                if (item.bankCardNo === userRepayInfo.repay_acct) {
+                  this.currentRepayBankcardIndex = index
+                }
+              })
+              console.log(this.bankcardList)
+            } else {
+              this.$zzz.toast.text(res.message)
+            }
+          })
+        }
+      })
     }
   }
 </script>

@@ -15,7 +15,7 @@ export default [
   },
   {
     path: '/third-loan/withdraw-cash/signature',
-    name: 'signature',
+    name: 'withdrawCashSignature',
     component: Signature
   },
   {

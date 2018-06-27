@@ -9,11 +9,12 @@
    */
   import signaturePad from '../components/signature'
   import signatureMixins from '@/mixins/signature'
+  import reBindbankcardMixins from '@/mixins/reBindbankcard'
   export default {
     components: {
       signaturePad
     },
-    mixins: [signatureMixins],
+    mixins: [signatureMixins, reBindbankcardMixins],
     data() {
       return {}
     },
@@ -39,6 +40,10 @@
           }
         })
       }
+    },
+    created() {
+      this.reBindBankcardType = 'wallet'
+      this.checkNeedReBindBankcard(this.reBindBankcardType)
     }
   }
 </script>

@@ -90,9 +90,9 @@
        */
       goSign() {
         this.$router.push({
-          name: 'signature',
+          name: 'withdrawCashSignature',
           query: {
-            origin: 'wallet'
+            // origin: 'wallet'
           }
         })
       },

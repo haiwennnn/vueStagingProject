@@ -8,26 +8,36 @@
           <div class="bankcard-info">
             <cells>
               <cell :noBottomLine="true">
-                <p style="width:1.4rem;padding-right:.6rem;"
+                <p style="width:1.4rem;padding-right:.25rem;"
                   slot="hd">银行卡号</p>
                 <p slot="bd">{{bankcardInfo.bankName}}({{bankcardInfo.bankCardNo | bankcard4No}})</p>
               </cell>
               <cell :noBottomLine="true">
-                <p style="width:1.4rem;padding-right:.6rem;"
+                <p style="width:1.4rem;padding-right:.25rem;"
                   slot="hd">本人姓名</p>
                 <p slot="bd">{{userInfo.username}}</p>
               </cell>
               <cell :noBottomLine="true">
-                <p style="width:1.4rem;padding-right:.6rem;"
+                <p style="width:1.4rem;padding-right:.25rem;"
                   slot="hd">手机号码</p>
                 <p slot="bd">{{userInfo.phone}}</p>
               </cell>
             </cells>
+            <!-- <z-form ref="reBindBankcardPhone"
+              :rules="ruleValidate"
+              v-model="userInfo"
+              :no-top-line="true">
+              <form-input label="手机号码"
+                :clear-all-btn="true"
+                value-text-align="left"
+                prop="phone"
+                v-model="userInfo.phone"></form-input>
+            </z-form> -->
             <br />
             <z-form>
               <form-item class="input-sms-code"
                 label="验证码"
-                :labelWidth="160">
+                :labelWidth="165">
                 <input type="text"
                   class="zz-input"
                   placeholder="请输入短信验证码"
@@ -51,6 +61,7 @@
 <script>
   import smsCodeMixins from '@/mixins/smsCode.js'
   import bankcardMixins from '@/mixins/bankcard.js'
+  import Reg from '@/lib/reg'
   export default {
     mixins: [smsCodeMixins, bankcardMixins],
     data() {
@@ -66,12 +77,32 @@
           bankCode: ''
         },
         userInfo: {
-          mobileNum: '',
+          phone: '',
           userName: ''
+        },
+        ruleValidate: {
+          phone: [
+            { type: 'string', message: '请输入正确的手机号', pattern: Reg.phoneReg }
+          ]
         }
       }
     },
     methods: {
+      /**
+       * 提交数据前置校验
+       */
+      submitCheck() {
+        let reBindBankcardPhone = this.$refs.reBindBankcardPhone
+        let reBindBankcardPhoneStatus = false
+        reBindBankcardPhone.validate((d) => {
+          if (d) {
+            reBindBankcardPhoneStatus = true
+          } else {
+            this.$zzz.toast.text('请输入正确的手机号')
+          }
+        })
+        return reBindBankcardPhoneStatus
+      },
       getSmsCode() {
         if (this.checkSmsPhone()) {
           this.getBindBankcardSmsCode()

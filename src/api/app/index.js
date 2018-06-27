@@ -15,7 +15,12 @@ const urls = {
    * @param {Array} trajectoryData 笔记轨迹
    * @param {String} type 区分不同签名场景
    */
-  signature: Server.path.ykdGw + 'yzy/client/signature'
+  signature: Server.path.ykdGw + 'yzy/client/signature',
+  /**
+   * 获取合同列表
+   * @param {String} type 查询合同类型
+   */
+  getContractList: Server.path.ykdGw + 'yzy/contract/list'
 }
 
 // /**

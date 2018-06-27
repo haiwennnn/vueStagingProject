@@ -10,12 +10,14 @@ import ThirdLoanCalAmount from './third-loan/cal-amount'
 import ThirdLoanWithDrawCash from './third-loan/withdraw-cash'
 // 第三方贷款还款
 import ThirdLoanRepayRouter from './third-loan/repay'
+// 第三方服务
+import ThirdLoanServicesRouter from './third-loan/services'
 
-const ThirdLoanEnter = r => require.ensure([], () => r(require('@/views/thirdLoanEnter.vue')), 'third')
+// const ThirdLoanEnter = r => require.ensure([], () => r(require('@/views/thirdLoanEnter.vue')), 'third')
 
-const Signature = r => require.ensure([], () => r(require('@/views/signature')), 'signature')
+// const Signature = r => require.ensure([], () => r(require('@/views/signature')), 'signature')
 
-const Signature1 = r => require.ensure([], () => r(require('@/views/signature/index1')), 'signature')
+// const Signature1 = r => require.ensure([], () => r(require('@/views/signature/index1')), 'signature')
 
 const Ui = r => require.ensure([], () => r(require('@/views/ui')), 'ui')
 
@@ -32,16 +34,16 @@ export default new Router({
       name: 'helloWorld',
       component: HelloWorld
     },
-    {
-      path: '/signature',
-      name: 'signature',
-      component: Signature
-    },
-    {
-      path: '/auth/signature',
-      name: 'authSignature1',
-      component: Signature1
-    },
+    // {
+    //   path: '/signature',
+    //   name: 'signature',
+    //   component: Signature
+    // },
+    // {
+    //   path: '/auth/signature',
+    //   name: 'authSignature1',
+    //   component: Signature1
+    // },
     {
       path: '/ui',
       name: 'ui',
@@ -52,11 +54,11 @@ export default new Router({
       name: 'repay',
       component: RepayIndex
     },
-    {
-      path: '/third-loan-enter',
-      name: 'third-loan-enter',
-      component: ThirdLoanEnter
-    },
+    // {
+    //   path: '/third-loan-enter',
+    //   name: 'third-loan-enter',
+    //   component: ThirdLoanEnter
+    // },
     {
       path: '/form',
       name: 'form',
@@ -65,6 +67,7 @@ export default new Router({
     ...ThirdLoanCommon,
     ...ThirdLoanCalAmount,
     ...ThirdLoanWithDrawCash,
-    ...ThirdLoanRepayRouter
+    ...ThirdLoanRepayRouter,
+    ...ThirdLoanServicesRouter
   ]
 })

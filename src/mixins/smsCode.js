@@ -8,7 +8,7 @@ export default {
         text: '获取验证码',
         sent: false,
         disabled: false,
-        resend: 10
+        resend: 60
       }
     }
   },

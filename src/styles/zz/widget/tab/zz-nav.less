@@ -20,8 +20,7 @@
 
 .zz-nav__panel {
   position: relative;
-  height: 100%;
-  // &:after {
+  height: 100%; // &:after {
   //   position: absolute;
   //   left: 0;
   //   bottom: 0;
@@ -82,8 +81,12 @@
   font-size: .34rem;
   text-align: center;
   color: @navTitleColor;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  
   span {
     display: inline-block;
-    vertical-align: top; // .ellipsisLn(1);
+    vertical-align: top; 
+    .ellipsisLn(1);
   }
 }

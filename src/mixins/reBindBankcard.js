@@ -3,33 +3,33 @@ export default {
     return {
       // 页面加载状态
       // 签名页面需要查询是否需要重新绑定银行卡
-      pageStatus: false,
+      reBindBankcardPageStatus: false,
       // 校验类型 [kaniu,wallet]
-      type: 'kaniu'
+      reBindBankcardType: 'wallet'
     }
   },
   methods: {
     checkNeedReBindBankcard(type) {
-      this.$http.ykdPost(this.$api.checkNeedReBindBankcard + this.type).then((res) => {
+      this.$http.ykdPost(this.$api.checkNeedReBindBankcard + type).then((res) => {
         if (+res.errorCode === 0) {
           if (+res.data.isNeedAgainBindCard !== 1) {
             // 不需要进行银行卡绑定
-            this.pageStatus = true
+            this.reBindBankcardPageStatus = true
           } else {
             // 保存重新认证的银行卡信息
             // 判断查询类型，读取不同的数据源
             let walletReBindBankcardInfo
             window.FJ.removeStore('walletReBindBankcardInfo')
-            if (this.type === 'kaniu') {
-              walletReBindBankcardInfo = {
-                bankCardNo: res.data.bankCardNo,
-                loanId: res.data.loanId
-              }
-            } else {
+            if (type === 'wallet') {
               let walletLoanInfo = window.FJ.getStore('walletLoanInfo')
               walletReBindBankcardInfo = {
                 bankCardNo: walletLoanInfo.receiveAcct,
                 loanId: walletLoanInfo.loanId
+              }
+            } else {
+              walletReBindBankcardInfo = {
+                bankCardNo: res.data.bankCardNo,
+                loanId: res.data.loanId
               }
             }
 
@@ -58,8 +58,7 @@ export default {
     }
   },
   created() {
-    let type = this.$route.query.origin || 'kaniu'
-    this.type = type
-    this.checkNeedReBindBankcard()
+    // this.reBindBankcardType = this.$route.query.origin || 'kaniu'
+    // this.checkNeedReBindBankcard()
   }
 }

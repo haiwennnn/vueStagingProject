@@ -62,7 +62,7 @@
   export default {
     data() {
       return {
-        loanId: '18060111091345500',
+        loanId: '',
         showFaceDemo: false,
         faceInfo: {
           randomCode: {

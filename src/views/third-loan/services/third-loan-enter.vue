@@ -17,7 +17,8 @@
     data() {
       return {
         ssjLoanId: '',
-        rurl: ''
+        rurl: '',
+        channelCode: ''
       }
     },
     methods: {
@@ -38,10 +39,11 @@
       // 初始化用户登录信息
       initUserInfo() {
         this.ssjLoanId = this.$route.query.sid || ''
+        this.channelCode = this.$route.query['channel-code'] || ''
         this.rurl = this.$route.query.rurl
         if (!this.ssjLoanId) {
           this.$zzz.alert.show({
-            content: '信息错误'
+            content: '用户信息缺失'
           })
           return
         }
@@ -70,8 +72,7 @@
               this.$router.replace({
                 name: 'signature',
                 query: {
-                  origin: 'kaniu',
-                  type: 'redirect',
+                  // origin: 'kaniu',
                   redirect: this.rurl
                 }
               })
