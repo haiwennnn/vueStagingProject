@@ -39,10 +39,10 @@
     data() {
       return {
         contractList: [
-          {
-            fileName: '合同11合同11合同11合同11合同',
-            fileLocation: 'http://test-app.chinacreditech.com/gateway/html/18062114555660712/11'
-          }
+          // {
+          //   fileName: '合同11合同11合同11合同11合同',
+          //   fileLocation: 'http://test-app.chinacreditech.com/gateway/html/18062114555660712/11'
+          // }
         ]
       }
     },
@@ -51,7 +51,9 @@
         this.$http.ykdPost(
           this.$api.getContractList,
           {
-            type: ''
+            data: {
+              type: ''
+            }
           }
         ).then((res) => {
           if (+res.errorCode === 0) {
@@ -81,7 +83,7 @@
       }
     },
     created() {
-
+      this.getContractList()
     }
   }
 </script>

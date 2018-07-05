@@ -5,7 +5,7 @@
       <div class="zz-tab__panel">
         <div class="user-operator-panel">
           <div class="user-operator-phone">
-            手机号: 13076965109
+            手机号: {{phone}}
           </div>
           <z-form>
             <form-item label="服务密码"
@@ -62,7 +62,8 @@
         smsCode: '',
         imgCode: '',
         imgCodeSrc: '',
-        btnText: '下一步'
+        btnText: '下一步',
+        phone: window.FJ.getStore('walletUserInfo').phone
       }
     },
     methods: {

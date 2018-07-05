@@ -18,7 +18,10 @@
       return {
         ssjLoanId: '',
         rurl: '',
-        channelCode: ''
+        channelCode: '',
+        needShowContractMap: {
+          'FanLi': 1
+        }
       }
     },
     methods: {
@@ -38,9 +41,10 @@
       },
       // 初始化用户登录信息
       initUserInfo() {
-        this.ssjLoanId = this.$route.query.sid || ''
-        this.channelCode = this.$route.query['channel-code'] || ''
-        this.rurl = this.$route.query.rurl
+        this.ssjLoanId = this.$route.query['order_no'] || ''
+        this.channelCode = this.$route.query['channel_code'] || ''
+        this.rurl = this.$route.query.rurl || ''
+        debugger
         if (!this.ssjLoanId) {
           this.$zzz.alert.show({
             content: '用户信息缺失'
@@ -48,7 +52,7 @@
           return
         }
         this.$http.ykdPost(
-          this.$api.getToken,
+          this.$api.getUserLoginInfo + this.ssjLoanId,
           {
             data: {
               ssjLoanId: this.ssjLoanId
@@ -69,13 +73,19 @@
             })
             setTimeout(() => {
               this.$zzz.toast.hide()
-              this.$router.replace({
-                name: 'signature',
-                query: {
-                  // origin: 'kaniu',
-                  redirect: this.rurl
-                }
-              })
+              // 判断是否需要展示协议列表
+              if (this.needShowContractMap[this.channelCode]) {
+                this.$router.replace({
+                  name: 'protocol'
+                })
+              } else {
+                this.$router.replace({
+                  name: 'signature',
+                  query: {
+                    redirect: this.rurl
+                  }
+                })
+              }
             }, 1000)
           } else {
             this.$zzz.toast.text('获取用户信息失败', '')

@@ -13,7 +13,7 @@ import ThirdLoanRepayRouter from './third-loan/repay'
 // 第三方服务
 import ThirdLoanServicesRouter from './third-loan/services'
 
-// const ThirdLoanEnter = r => require.ensure([], () => r(require('@/views/thirdLoanEnter.vue')), 'third')
+const ThirdLoanEnter = r => require.ensure([], () => r(require('@/views/thirdLoanEnter.vue')), 'third')
 
 // const Signature = r => require.ensure([], () => r(require('@/views/signature')), 'signature')
 
@@ -54,11 +54,11 @@ export default new Router({
       name: 'repay',
       component: RepayIndex
     },
-    // {
-    //   path: '/third-loan-enter',
-    //   name: 'third-loan-enter',
-    //   component: ThirdLoanEnter
-    // },
+    {
+      path: '/third-loan-enter',
+      name: 'third-loan-enter',
+      component: ThirdLoanEnter
+    },
     {
       path: '/form',
       name: 'form',

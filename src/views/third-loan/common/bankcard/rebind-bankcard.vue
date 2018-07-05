@@ -17,13 +17,13 @@
                   slot="hd">本人姓名</p>
                 <p slot="bd">{{userInfo.username}}</p>
               </cell>
-              <cell :noBottomLine="true">
+              <!-- <cell :noBottomLine="true">
                 <p style="width:1.4rem;padding-right:.25rem;"
                   slot="hd">手机号码</p>
                 <p slot="bd">{{userInfo.phone}}</p>
-              </cell>
+              </cell> -->
             </cells>
-            <!-- <z-form ref="reBindBankcardPhone"
+            <z-form ref="reBindBankcardPhone"
               :rules="ruleValidate"
               v-model="userInfo"
               :no-top-line="true">
@@ -32,7 +32,7 @@
                 value-text-align="left"
                 prop="phone"
                 v-model="userInfo.phone"></form-input>
-            </z-form> -->
+            </z-form>
             <br />
             <z-form>
               <form-item class="input-sms-code"
@@ -80,9 +80,11 @@
           phone: '',
           userName: ''
         },
+        // 用户获取验证码手机号
+        userGetSmsCodePhone: '',
         ruleValidate: {
           phone: [
-            { type: 'string', message: '请输入正确的手机号', pattern: Reg.phoneReg }
+            { type: 'string', message: '请输入正确的手机号', required: true, pattern: Reg.phoneReg }
           ]
         }
       }
@@ -104,7 +106,7 @@
         return reBindBankcardPhoneStatus
       },
       getSmsCode() {
-        if (this.checkSmsPhone()) {
+        if (this.submitCheck() && this.checkSmsPhone()) {
           this.getBindBankcardSmsCode()
         }
       },
@@ -131,6 +133,8 @@
             this.smsCode.disabled = true
             this.smsCode.value = ''
             this.coldDown(this.smsCode.resend)
+            // 保存用户成功获取验证码的手机号
+            this.userGetSmsCodePhone = this.userInfo.phone
             this.$zzz.toast.text('验证码获取成功')
           } else {
             this.$zzz.toast.text(res.message)
@@ -147,7 +151,7 @@
                 bankCardNum: this.bankcardInfo.bankCardNo || '',
                 bankCardType: this.bankcardInfo.bankCardType || '',
                 bankName: this.bankcardInfo.bankName || '',
-                mobileNum: this.userInfo.phone,
+                mobileNum: this.userGetSmsCodePhone,
                 bankCardImg: '',
                 bankCardImgVerso: '',
                 checkCode: '',
