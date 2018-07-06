@@ -118,7 +118,7 @@
             let _d = []
             d.forEach(function (d1, index) {
               d1.forEach(function (point, index) {
-                if (index % (5 * window.devicePixelRatio) === 0) {
+                if (index % (8) === 0) {
                   _d.push(parseInt(point.y))
                   _d.push(parseInt(vm.canvasWidth - point.x))
                 } else if (index === d1.length - 1) {
@@ -329,7 +329,7 @@
         position: absolute;
         right: 2rem;
         top: 0.15rem;
-        width: 0.9rem;
+        width: 1rem;
         height: 0.64rem;
         line-height: 0.64rem;
         padding: 0 0.15rem;
@@ -338,6 +338,7 @@
         background-image: url("../../assets/sign/refresh.png");
         background-repeat: no-repeat;
         background-position: 90% 50%;
+        background-size: auto .3rem;
       }
       .confirm-sign {
         position: absolute;

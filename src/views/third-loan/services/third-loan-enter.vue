@@ -16,7 +16,7 @@
   export default {
     data() {
       return {
-        ssjLoanId: '',
+        orderNo: '',
         rurl: '',
         channelCode: '',
         needShowContractMap: {
@@ -41,21 +41,20 @@
       },
       // 初始化用户登录信息
       initUserInfo() {
-        this.ssjLoanId = this.$route.query['order_no'] || ''
+        this.orderNo = this.$route.query['order_no'] || ''
         this.channelCode = this.$route.query['channel_code'] || ''
         this.rurl = this.$route.query.rurl || ''
-        debugger
-        if (!this.ssjLoanId) {
+        if (!this.orderNo) {
           this.$zzz.alert.show({
             content: '用户信息缺失'
           })
           return
         }
         this.$http.ykdPost(
-          this.$api.getUserLoginInfo + this.ssjLoanId,
+          this.$api.getUserLoginInfo + this.orderNo,
           {
             data: {
-              ssjLoanId: this.ssjLoanId
+              ssjLoanId: this.orderNo
             }
           },
           {
@@ -69,14 +68,18 @@
               idFintechUmUser: data.idFintechUmUser,
               phone: '',
               token: '',
-              username: ''
+              username: '',
+              orderNo: this.orderNo
             })
             setTimeout(() => {
               this.$zzz.toast.hide()
               // 判断是否需要展示协议列表
               if (this.needShowContractMap[this.channelCode]) {
                 this.$router.replace({
-                  name: 'protocol'
+                  name: 'protocol',
+                  query: {
+                    redirect: this.rurl
+                  }
                 })
               } else {
                 this.$router.replace({

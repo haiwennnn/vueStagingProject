@@ -23,9 +23,25 @@
        * 签名确认回调
        */
       signComplete(signInfo) {
-        console.log(signInfo)
         this.signInThirdLoan(signInfo.signImg, signInfo.signTrack, () => {
-          location.href = decodeURIComponent(this.redirectUrl)
+          let walletUserInfo = window.FJ.getStore('walletUserInfo')
+          this.$http.ykdGet(
+            this.$api.signSuccessCall + walletUserInfo.orderNo
+          ).then((res) => {
+            this.$zzz.toast.text('签字成功')
+            setTimeout(() => {
+              // 返利网重定向的特殊处理
+              let urls = this.redirectUrl.split('target')
+              let url = decodeURIComponent(urls[0]) + 'target' + urls[1]
+              location.href = decodeURIComponent(url)
+              // location.href = decodeURIComponent(this.redirectUrl)
+              // if (+res.errorCode === 0) {
+
+              // } else {
+              //   location.href = decodeURIComponent(this.redirectUrl)
+              // }
+            }, 1000)
+          })
         })
       }
     },

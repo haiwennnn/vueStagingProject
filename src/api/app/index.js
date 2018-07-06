@@ -3,12 +3,13 @@ import Server from '@/api-server'
 const urls = {
 
   /**
-   * 获取ykdtoken
+   * 获取ykd token
    * @method post
    * @param {String} ssjLoanId 第三方loanId
    */
   getToken: Server.path.ykdGw + 'third/getToken',
   /**
+   * 获取返利网用户信息 by order_no
    * @path {String} order_no 用户订单号
    */
   getUserLoginInfo: Server.path.ykdGw + 'yunkd/fl/getToken/',
@@ -24,7 +25,13 @@ const urls = {
    * @method post
    * @param {String} type 查询合同类型
    */
-  getContractList: Server.path.ykdGw + 'yzy/contract/list'
+  getContractList: Server.path.ykdGw + 'yzy/contract/list',
+  /**
+   * 成功签字后通知后端接口
+   * @path (String) order_no 跳转过来时 传递的订单id
+   */
+  signSuccessCall: Server.path.ykdGw + 'yunkd/fl/callSignSuccess/'
+
 }
 
 export default urls

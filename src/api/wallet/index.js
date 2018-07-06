@@ -99,17 +99,29 @@ const urls = {
    * 录入资料完成后点击下一步调用此接口
    * 此接口会产生运营商数据未获取成功需等待的情况，一旦调用成功接着调用决策接口2结果一定即时返回
    */
-  walletDecisionApplyEvent: Server.path.gw + 'wallet/decision/applyevent',
+  // walletDecisionApplyEvent: Server.path.gw + 'wallet/decision/applyevent',
+  walletDecisionApplyEvent: Server.path.gw + 'wallet/decision/bmapplyevent',
   /**
    * 钱包申请决策2
    * 决策1调用成功后调用决策2
    * 决策审批事件
    */
-  walletDecisionApproveEvent: Server.path.gw + 'wallet/decision/kangaroojumpevent',
+  // walletDecisionApproveEvent: Server.path.gw + 'wallet/decision/kangaroojumpevent',
+  walletDecisionApproveEvent: Server.path.gw + 'wallet/decision/bmkangaroojumpevent',
   /**
    * 提现环节，绑卡后
+   * 百米暂不需要调用
    */
-  walletDecisionTienocardevent: Server.path.gw + 'wallet/decision/tienocardevent',
+  // walletDecisionTienocardevent: Server.path.gw + 'wallet/decision/tienocardevent',
+  walletDecisionTienocardevent: Server.path.gw + 'wallet/decision/bmtienocardevent',
+
+  /**
+   * 提现环节
+   * 在人脸识别之前调用？？？
+   * 百米不需要调用
+   */
+  walletDecisionCashevent: Server.path.gw + 'wallet/decision/bmgetcashevent',
+
   /**
    * 当前获取的额度信息及额度获取状态
    * @return {String} data.loanLimit 额度
@@ -193,7 +205,22 @@ const urls = {
    * @param {} biz_no 上传视频接口返回的参数
    * @param {} token_video 上传视频接口返回的参数
    */
-  getFaceResult: Server.path.gw + 'wallet/openview/getresult'
+  getFaceResult: Server.path.gw + 'wallet/openview/getresult',
+
+  /**
+   * 提现设备反欺诈
+   * 在提现之前调用
+   */
+  getCashAntiFraud: Server.path.gw + 'wallet/equipment/cashFacilityInformation',
+  /**
+   * 借款设备反欺诈
+   * 借款之前？？
+   */
+  getLoanAntiFraud: Server.path.gw + 'wallet/equipment/loanFacilityInformationReport',
+  /**
+   * 设备反欺诈所有接口
+   */
+  getAllAntiFraud: Server.path.gw + 'wallet/equipment/allFacilityInformationReport'
 
 }
 

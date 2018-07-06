@@ -38,6 +38,7 @@
   export default {
     data() {
       return {
+        redirect: '',
         contractList: [
           // {
           //   fileName: '合同11合同11合同11合同11合同',
@@ -77,12 +78,13 @@
           name: 'signature',
           query: {
             type: 'redirect',
-            redirect: 'https://www.baidu.com'
+            redirect: this.redirect
           }
         })
       }
     },
     created() {
+      this.redirect = this.$route.query.redirect || ''
       this.getContractList()
     }
   }

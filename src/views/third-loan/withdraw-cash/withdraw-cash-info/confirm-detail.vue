@@ -97,7 +97,15 @@
           }
         }).then((res) => {
           if (+res.errorCode === 0) {
-            this.walletDecisionTienocardevent()
+            // 调用决策当前百米产品不需要调用
+            // this.walletDecisionTienocardevent()
+            this.$zzz.toast.text('订单创建成功')
+            // 创建订单成功，进行签名
+            setTimeout(() => {
+              this.$router.replace({
+                name: 'signature'
+              })
+            }, 1500)
             // this.$zzz.toast.text('订单创建成功')
             // setTimeout(() => {
             //   this.$router.replace({
