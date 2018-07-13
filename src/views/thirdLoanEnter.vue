@@ -63,7 +63,7 @@
               idFintechUmUser: data.idFintechUmUser,
               phone: '',
               token: '',
-              username: ''
+              userName: ''
             })
             setTimeout(() => {
               this.$zzz.toast.hide()

@@ -70,7 +70,7 @@
               <div class="scan-result-label"
                 slot="hd">姓名</div>
               <div slot="bd">
-                <p>{{userInfo.username}}</p>
+                <p>{{userInfo.userName}}</p>
               </div>
             </cell>
             <cell>

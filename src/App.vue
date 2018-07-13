@@ -57,6 +57,15 @@
       // }).catch(err => {
       //   console.log(err)
       // })
+      //  = {
+
+      //   showHead: showHead
+      // }
+      // let query = this.$route.query
+      // window.FJ.setStore('walletAppInfo', walletAppInfo)
+    },
+    mounted() {
+
     }
   }
 </script>

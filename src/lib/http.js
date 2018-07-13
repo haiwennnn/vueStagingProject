@@ -66,27 +66,32 @@ ykdInstance.interceptors.response.use((res) => {
  * 处理异常状态码
  */
 function disposeExceptionErrorCode(config) {
-  if (config.from === 'wallet') {
-    if (+config.errorCode === -2) {
-      // 处理用户登录信息失效
-      // 跳转到login页面
-      redirectLogin()
-    }
-  } else {
-    if (+config.errorCode === 8888 || +config.errorCode === 9999) {
-      redirectLogin()
-    }
+  if (+config.errorCode === 8888 || +config.errorCode === 9999) {
+    redirectLogin()
   }
+  // if (config.from === 'wallet') {
+  //   if (+config.errorCode === -2) {
+  //     // 处理用户登录信息失效
+  //     // 跳转到login页面
+  //     redirectLogin()
+  //   }
+  // } else {
+  //   if (+config.errorCode === 8888 || +config.errorCode === 9999) {
+  //     redirectLogin()
+  //   }
+  // }
 }
 
 function redirectLogin() {
   let vm = window.vm
+  let walletUserInfo = window.FJ.getStore('walletUserInfo')
   window.FJ.removeStore('walletUserInfo')
   window.FJ.removeStore('walletLoanInfo')
   vm.$router.push({
     name: 'login',
     query: {
-      type: 'relogin'
+      type: 'relogin',
+      phone: walletUserInfo.phone
     }
   })
 }
@@ -154,7 +159,7 @@ export default {
         let status = res.status
         if (status === 200) {
           // 统一事件处理 [未登录，登录失效，维护等]
-          let afreshErrorCodeArray = ['-2']
+          let afreshErrorCodeArray = ['8888', '9999', '-7777']
           if (afreshErrorCodeArray.indexOf(res.data.errorCode) >= 0) {
             disposeExceptionErrorCode({
               errorCode: res.data.errorCode,
@@ -199,7 +204,7 @@ export default {
         vm.$zzz.toast.hide()
         if (status === 200) {
           // 统一事件处理 [未登录，登录失效，维护等]
-          let afreshErrorCodeArray = ['-2']
+          let afreshErrorCodeArray = ['8888', '9999', '-7777']
           if (afreshErrorCodeArray.indexOf(res.data.errorCode) >= 0) {
             disposeExceptionErrorCode({
               errorCode: res.data.errorCode,

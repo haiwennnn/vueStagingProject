@@ -15,10 +15,11 @@
                 <b>一遍</b>
               </li>
               <li>视频时长
-                <b>3-5秒</b>
+                <b>1-3秒</b>
               </li>
             </ul>
-            <div>{{faceInfo.randomCode.randomNumber}}</div>
+            <div v-if="!faceInfo.randomCode.randomNumber" style="font-size:.6rem;line-height:1.2rem;" @click="getFaceRandom()">点击获取数字</div>
+            <div v-if="faceInfo.randomCode.randomNumber" @click="getFaceRandom()">{{faceInfo.randomCode.randomNumber}}</div>
           </div>
           <div class="demo-2">
             <div class="demo-2-item">
@@ -89,6 +90,13 @@
         let target = e.target
         let files = target.files
         let reader = new FileReader()
+        this.$zzz.toast.show({
+          text: '正在处理视频',
+          type: 'loading',
+          position: 'middle',
+          time: 0,
+          isShowMask: true
+        })
         reader.onload = function (e) {
           vm.$refs.uploadVideoInput.value = ''
           vm.uploadFaceVideo(e.target.result)
@@ -116,7 +124,18 @@
             randomCodeInfo.errorMessage = data.error_message
             this.$set(this.faceInfo, 'randomCode', randomCodeInfo)
           } else {
-            this.$zzz.toast.text(res.message)
+            if (+res.errorCode === -10) {
+              this.getFaceRandom()
+              //   this.$router.replace({
+              //     name: 'loanAssess',
+              //     query: {
+              //       status: 2
+              //     }
+              //   })
+              //   return
+            } else {
+              this.$zzz.toast.text('获取随机数失败，点击随机数重新获取')
+            }
           }
         })
       },
@@ -130,7 +149,7 @@
               token_random_number: this.faceInfo.randomCode.tokenRandomNumber,
               video_content: videoContent.split(',')[1]
             },
-            timeout: 60000
+            timeout: 80000
           },
           {
             toastText: '正在上传视频'
@@ -157,6 +176,9 @@
             }, 1000)
           } else {
             this.$zzz.toast.text('实名认证失败,请重新认证')
+            setTimeout(() => {
+              this.getFaceRandom()
+            }, 2000)
           }
         })
       },
@@ -179,7 +201,23 @@
               })
             }, 1500)
           } else {
-            this.$zzz.toast.text(res.message || '实名认证失败,请重新认证')
+            // if (+res.errorCode === -10) {
+            //   this.$router.replace({
+            //     name: 'loanAssess',
+            //     query: {
+            //       status: 2
+            //     }
+            //   })
+            //   return
+            // }
+            let msg = res.message || '实名认证失败,请重新认证'
+            if (msg === null || msg === 'null') {
+              msg = '实名认证失败,请重新认证'
+            }
+            this.$zzz.toast.text(msg)
+            setTimeout(() => {
+              this.getFaceRandom()
+            }, 1000)
           }
         })
       }
@@ -187,6 +225,8 @@
     created() {
       let walletLoanInfo = window.FJ.getStore('walletLoanInfo')
       this.loanId = walletLoanInfo.loanId
+    },
+    mounted() {
       this.getFaceRandom()
     }
   }

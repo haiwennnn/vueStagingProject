@@ -4,6 +4,7 @@
       <z-header>信用钱包</z-header>
       <div class="zz-tab__panel">
         <common-layout :uap="true"
+          :total-amount="totalAmount"
           :loan-info="loanInfo">
           <div slot="bd"
             class="main-enter-btn"
@@ -32,36 +33,44 @@
       return {
         loanInfo: {
           amount: 0,
-          currentRepayAmount: 5000,
+          maxAmount: 5000,
+          repayAmount: 0,
           repayDateStr: '',
-          tenorStr: ''
+          desStr: '最高额度'
         },
         // 用户当前状态,
         userStatus: '',
-        enterBtnText: ''
+        enterBtnText: '',
+        totalAmount: 0
       }
     },
     methods: {
       /**
        * 获取钱包贷款信息
+       * 申请额度
        */
       getWalletLoanInfo() {
         this.$http.post(this.$api.getWalletLoanInfo).then((res) => {
           if (+res.errorCode === 0) {
             let walletLoanInfo = res.data
+            // this.totalAmount = res.data.applyMoney
+            this.loanInfo.amount = +res.data.loanLimit || 0
+            this.loanInfo.desStr = '提现金额'
             window.FJ.setStore('walletLoanInfo', walletLoanInfo)
           } else {
             this.$zzz.toast.text(res.message)
           }
         })
       },
-      // 获取额度
+      /**
+       * 获取额度
+       */
       walletShowQuota() {
         this.$http.post(this.$api.walletShowQuota).then((res) => {
           if (+res.errorCode === 0) {
-            this.loanInfo.currentRepayAmount = +res.data.loanLimit > 10000 ? 5000 : +res.data.loanLimit
+            this.loanInfo.maxAmount = +res.data.loanLimit || 0
             let walletUserInfo = window.FJ.getStore('walletUserInfo')
-            walletUserInfo.loanLimit = this.loanInfo.currentRepayAmount
+            walletUserInfo.loanLimit = this.loanInfo.maxAmount
             window.FJ.setStore('walletUserInfo', walletUserInfo)
           } else {
             this.$zzz.toast.text(res.message)
@@ -78,6 +87,14 @@
       goAddinfo() {
         this.$router.push({
           name: 'addInfo'
+        })
+      },
+      goWaitCalAmount() {
+        this.$router.push({
+          name: 'loanAssess',
+          query: {
+            status: 1
+          }
         })
       },
       goWithdrawCash() {
@@ -117,7 +134,10 @@
             this.goAddinfo()
             break
           case 'W04':
+            this.goAddinfo()
+            break
           case 'W05':
+            this.goWaitCalAmount()
             break
           case 'W06':
             this.goWithdrawCash()
@@ -130,6 +150,8 @@
             this.goFaceId()
             break
           case 'W10':
+            break
+          case 'W11':
           default:
             break
         }
@@ -154,6 +176,9 @@
                 this.enterBtnText = '完善个人资料'
                 break
               case 'W04':
+                this.userStatus = node
+                this.enterBtnText = '去获取额度'
+                break
               case 'W05':
                 this.userStatus = node
                 this.enterBtnText = '查看额度'
@@ -194,12 +219,24 @@
                   }
                 })
                 break
+              case 'W11':
+                this.userStatus = node
+                let walletUserInfo = window.FJ.getStore('walletUserInfo')
+                // 放款成功，重定向到还款页面
+                this.$router.replace({
+                  name: 'thirdRepayEnter',
+                  query: {
+                    token: walletUserInfo.accessToken,
+                    fintechUmuserId: walletUserInfo.idFintechUmUser
+                  }
+                })
+                break
               default:
                 this.userStatus = node
                 break
             }
           } else {
-
+            this.$zzz.toast.text(res.message)
           }
         })
       }

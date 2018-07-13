@@ -3,6 +3,8 @@ import Server from '@/api-server'
  * 接口请求地址对象
  */
 const urls = {
+
+  walletTestEnter: Server.path.gw + 'wallet/datapush/getData',
   /**
    * 入口token验证
    * @param {String} token 上面接口返回的token
@@ -35,7 +37,7 @@ const urls = {
   /**
    * 获取用户状态节点
    * @method get
-   * @return {
+   * @return
    *  W01--未实名认证
    *  W02--个人资料未完成
    *  W03--运营商认证未完成
@@ -101,6 +103,7 @@ const urls = {
    */
   // walletDecisionApplyEvent: Server.path.gw + 'wallet/decision/applyevent',
   walletDecisionApplyEvent: Server.path.gw + 'wallet/decision/bmapplyevent',
+  // walletDecisionApplyEvent: 'http://10.0.11.77:8085/malldoor/' + 'wallet/decision/bmapplyevent',
   /**
    * 钱包申请决策2
    * 决策1调用成功后调用决策2
@@ -108,6 +111,7 @@ const urls = {
    */
   // walletDecisionApproveEvent: Server.path.gw + 'wallet/decision/kangaroojumpevent',
   walletDecisionApproveEvent: Server.path.gw + 'wallet/decision/bmkangaroojumpevent',
+  // walletDecisionApproveEvent: 'http://10.0.11.77:8085/malldoor/' + 'wallet/decision/bmkangaroojumpevent',
   /**
    * 提现环节，绑卡后
    * 百米暂不需要调用
@@ -174,7 +178,8 @@ const urls = {
   /**
    * 查询签名状态
    */
-  findSignatureStatus: Server.path.gw + 'wallet/authorize/signature',
+  findSignatureStatus: Server.path.gw + 'wallet/datapush/signature',
+
   /**
    * 获取人脸识别随机数
    * @param {} loanId

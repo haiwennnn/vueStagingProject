@@ -21,6 +21,8 @@ const ThirdLoanEnter = r => require.ensure([], () => r(require('@/views/thirdLoa
 
 const Ui = r => require.ensure([], () => r(require('@/views/ui')), 'ui')
 
+const TestPage = r => require.ensure([], () => r(require('@/views/third-loan/test')), 'repay')
+
 const RepayIndex = r => require.ensure([], () => r(require('@/views/repay')), 'repay')
 
 const Form = r => require.ensure([], () => r(require('@/views/form')), 'form')
@@ -33,6 +35,11 @@ export default new Router({
       path: '/hello-world',
       name: 'helloWorld',
       component: HelloWorld
+    },
+    {
+      path: '/third-loan/test',
+      name: 'test',
+      component: TestPage
     },
     // {
     //   path: '/signature',

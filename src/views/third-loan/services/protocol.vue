@@ -74,17 +74,18 @@
         })
       },
       goSign() {
+        let walletThirdLoanServicesEnterInfo = window.FJ.getStore('walletThirdLoanServicesEnterInfo')
         this.$router.replace({
           name: 'signature',
           query: {
-            type: 'redirect',
-            redirect: this.redirect
+            srurl: walletThirdLoanServicesEnterInfo.srurl,
+            frurl: walletThirdLoanServicesEnterInfo.frurl
           }
         })
       }
     },
     created() {
-      this.redirect = this.$route.query.redirect || ''
+      // this.redirect = this.$route.query.su || ''
       this.getContractList()
     }
   }

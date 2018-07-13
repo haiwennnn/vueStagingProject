@@ -12,8 +12,8 @@
           stroke-color="rgba(44,44,44,1)">
           <div class="amount-detail">
             <span class="rate">{{loanInfo.repayDateStr}}</span>
-            <span class="amount">&yen;{{loanInfo.currentRepayAmount | toFixed2}}</span>
-            <span class="desc">{{loanInfo.tenorStr}}</span>
+            <span class="amount">&yen;{{showAmount | toFixed2}}</span>
+            <span class="desc">{{loanInfo.desStr}}</span>
           </div>
         </z-circle>
         <div v-if="button.length>0">
@@ -44,6 +44,10 @@
     },
     props: {
       uap: Boolean,
+      totalAmount: {
+        type: [String, Number],
+        default: 5000
+      },
       productInfo: {
         type: Object,
         default: function () {
@@ -52,10 +56,24 @@
           }
         }
       },
+      /**
+       * 面板展示信息
+       * maxAmount 最大额度
+       * amount 提现额度
+       * repayAmount 还款额度
+       * desStr: 描述
+       * repayDateStr: 还款日期描述
+       */
       loanInfo: {
         type: Object,
         default: function () {
-          return {}
+          return {
+            amount: 0,
+            maxAmount: 0,
+            repayAmount: 0,
+            desStr: '',
+            repayDateStr: ''
+          }
         }
       },
       text1: {
@@ -76,11 +94,24 @@
       }
     },
     computed: {
-      percent() {
-        if (!Reg.numberReg.test(this.loanInfo.currentRepayAmount)) {
-          return 0
+      showAmount() {
+        if (Reg.numberReg.test(this.loanInfo.amount) && +this.loanInfo.amount > 0) {
+          return this.loanInfo.amount
+        } else if (+this.loanInfo.repayAmount > 0) {
+          return this.loanInfo.repayAmount
         } else {
-          return (+this.loanInfo.currentRepayAmount / this.productInfo.amount) * 100
+          return this.loanInfo.maxAmount
+        }
+      },
+      percent() {
+        if (!Reg.numberReg.test(this.loanInfo.amount)) {
+          // 不存在提现额度
+          return 100
+        } else if (this.loanInfo.amount > 0) {
+          // 存在提现额度，提现额度不为0
+          return (+this.loanInfo.amount / this.loanInfo.maxAmount) * 100
+        } else {
+          return 100
         }
       }
     },

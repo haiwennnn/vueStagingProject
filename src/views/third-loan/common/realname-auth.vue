@@ -87,13 +87,15 @@
   /**
    * 实名认证
    */
+  import front from '@/assets/realname-auth/front.png'
+  import behind from '@/assets/realname-auth/behind.png'
   export default {
     data() {
       return {
         // 正面base64
-        frontIdCardBase64: '',
+        frontIdCardBase64: front,
         // 反面base64
-        backIdCardBase64: '',
+        backIdCardBase64: behind,
         // 扫描类型 [1,2] => [正面,背面]
         currentTriggerType: 0,
         ocrScanInfo: {
@@ -296,7 +298,7 @@
        */
       triggerFileInput() {
         this.$refs.uploadFile.click()
-        this.$refs.uploadFile.click()
+        // this.$refs.uploadFile.click()
       }
     }
   }

@@ -19,7 +19,8 @@ export default {
           data: {
             pictureBase64: signData.split(',')[1],
             trajectoryData: signPath.toString()
-          }
+          },
+          timeout: 60000
         },
         {
           toastText: '正在校验签名',
@@ -49,7 +50,8 @@ export default {
           data: {
             pictureBase64: signData.split(',')[1],
             trajectoryData: signPath.toString()
-          }
+          },
+          timeout: 60000
         },
         {
           toastText: '正在校验签名',

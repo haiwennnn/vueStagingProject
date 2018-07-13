@@ -1,8 +1,9 @@
 <template>
   <div class="zz-page-body">
     <div class="zz-tab">
-      <z-header>信用钱包</z-header>
-      <div class="zz-tab__panel complete-cash-info">
+      <z-header @on-header-back-event="backEvent">信用钱包</z-header>
+      <div class="zz-tab__panel complete-cash-info"
+        ref="completeCashInfo">
         <input-amount :status="completeStatusStep"
           @on-withdraw-cash-event="withdrawCashEvent"
           :tenor-list="tenorList"></input-amount>
@@ -20,7 +21,7 @@
    * 信用钱包
    * 内部流程
    *  |-填写金额
-   *      |-获取试算心细
+   *      |-获取试算明细
    *      |-选择借款期数
    *  |-选择银行卡
    *      |-[增加银行卡]
@@ -57,10 +58,24 @@
         /**
          * 提现信息
          */
-        withdrawCashInfo: {}
+        withdrawCashInfo: {
+          walletTrialInfo: null,
+          userSelectedTenorIndex: null,
+          tenor: null,
+          bankcard: null
+        }
       }
     },
     methods: {
+      backEvent() {
+        if (this.completeStatusStep === 3) {
+          this.completeStatusStep = 2
+        } else if (this.completeStatusStep === 2) {
+          this.completeStatusStep = 1
+        } else {
+          this.$router.back()
+        }
+      },
       goRealAuth() {
         this.$router.push({
           name: 'realnameAuth'
@@ -76,10 +91,19 @@
           withdrawCashInfo.walletTrialInfo = data.data.walletTrialInfo
           withdrawCashInfo.userSelectedTenorIndex = data.data.userSelectedTenorIndex
           withdrawCashInfo.tenor = data.data.tenor
+          // this.$set(this.withdrawCashInfo, 'walletTrialInfo', data.data.walletTrialInfo)
+          // this.$set(this.withdrawCashInfo, 'userSelectedTenorIndex', data.data.userSelectedTenorIndex)
+          // this.$set(this.withdrawCashInfo, 'tenor', data.data.tenor)
           this.completeStatusStep = 2
         } else if (type === 'inputBankcard') {
           withdrawCashInfo.bankcard = data.data.bankcard
+          // this.$set(this.withdrawCashInfo, 'bankcard', data.data.bankcard)
           this.completeStatusStep = 3
+          this.$nextTick(() => {
+            setTimeout(() => {
+              this.$refs.completeCashInfo.scrollTop = this.$refs.completeCashInfo.scrollHeight - this.$refs.completeCashInfo.clientHeight
+            }, 300)
+          })
         } else {
         }
         this.withdrawCashInfo = withdrawCashInfo

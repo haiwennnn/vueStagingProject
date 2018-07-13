@@ -19,7 +19,7 @@
           idFintechUmUser: idFintechUmUser,
           phone: '',
           token: '',
-          username: ''
+          userName: ''
         }
         window.FJ.setStore('walletUserInfo', walletUserInfo)
         // 需要增加获取详细用户信息操作

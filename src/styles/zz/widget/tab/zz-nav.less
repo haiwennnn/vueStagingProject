@@ -81,13 +81,15 @@
   font-size: .34rem;
   text-align: center;
   color: @navTitleColor;
-  text-align: center;
-  // overflow: hidden;
+  text-align: center; // overflow: hidden;
   // text-overflow: ellipsis;
-  
   span {
     display: inline-block;
-    vertical-align: top; 
-    .ellipsisLn(1);
+    vertical-align: top;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; // .ellipsisLn(1);
   }
 }

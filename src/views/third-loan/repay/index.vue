@@ -182,16 +182,17 @@
             let userRepayInfo = res.data[0]
             let tenor = userRepayInfo.tenor ? userRepayInfo.tenor : userRepayInfo.nextTenor
             let loanInfo = {
-              amount: userRepayInfo.applyMoney,
-              currentRepayAmount: 0,
+              amount: 0,
+              maxAmount: 0,
+              repayAmount: 0,
               repayDateStr: this.getRepayDateStr(userRepayInfo) + '应还',
-              tenorStr: `当前第${tenor}期`
+              desStr: `当前第${tenor}期`
             }
             if (userRepayInfo.currentReturnMoney !== 0) {
               // 根据当前还款是否为0判断展示的还款详情是否是当期信息
-              loanInfo.currentRepayAmount = userRepayInfo.currentReturnMoney
+              loanInfo.repayAmount = userRepayInfo.currentReturnMoney
             } else {
-              loanInfo.currentRepayAmount = userRepayInfo.nextPeriodsReturnMoney
+              loanInfo.repayAmount = userRepayInfo.nextPeriodsReturnMoney
             }
             this.loanInfo = loanInfo
             this.userRepayInfo = userRepayInfo
@@ -202,9 +203,10 @@
           } else {
             this.loanInfo = {
               amount: '0',
-              currentRepayAmount: '0',
+              maxAmount: '0',
+              repayAmount: 0,
               repayDateStr: '',
-              tenorStr: ''
+              desStr: ''
             }
           }
         })
@@ -239,7 +241,7 @@
               idFintechUmUser: userInfo.idFintechUmUser,
               phone: user.mobileNo,
               token: '',
-              username: user.realName
+              userName: user.realName
             }
             window.FJ.setStore('walletUserInfo', userInfo)
           } else {

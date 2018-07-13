@@ -1,5 +1,10 @@
 export default {
   init: function (Vue) {
+    /**
+     * 格式化时间
+     * @param {Date} d 传入时间
+     * @param {String} fmt 格式化格式'yyyy-MM-dd hh:mm:ss'
+     */
     Vue.filter('formatTime', function (d, fmt) {
       fmt = fmt || 'yyyy-MM-dd hh:mm:ss'
       if (!d) {

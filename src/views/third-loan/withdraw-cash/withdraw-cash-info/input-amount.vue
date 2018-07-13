@@ -1,5 +1,6 @@
 <template>
-  <div class="input-amount-panel">
+  <div class="input-amount-panel"
+    :class="{'cover':+status !== 1}">
     <div class="input-amount-area">
       <div class="title">
         借款金额
@@ -91,6 +92,7 @@
         walletUserInfo: null,
         // 用户输入额度
         amount: '',
+        minAmount: 1000,
         placeholder: '',
         // 期数picker数据源
         tenorListData: [],
@@ -150,6 +152,9 @@
           if (status === -2) {
             this.$zzz.toast.text(`最高输入${this.walletUserInfo.loanLimit}元`)
           }
+          if (status === -3) {
+            this.$zzz.toast.text(`最低输入${this.minAmount}元`)
+          }
           return
         }
         let tenorStatus = this.checkTenor()
@@ -174,7 +179,11 @@
           // 金额错误
           return -1
         }
-        if (+this.amount > this.walletUserInfo.loanLimit) {
+        if (+this.amount < +this.minAmount) {
+          // 金额小于下限
+          return -3
+        }
+        if (+this.amount > +this.walletUserInfo.loanLimit) {
           // 金额超过上限
           return -2
         }
@@ -207,9 +216,11 @@
         if (+this.status !== 1) {
           // return
         }
-        // TODO:触发选择银行卡
       },
       nextBtnClick() {
+        if (!this.isWalletTrialStatus) {
+          return
+        }
         this.$emit('on-withdraw-cash-event', {
           type: 'inputAmount',
           data: {
@@ -245,7 +256,17 @@
 </script>
 <style lang="less" scoped>
   .input-amount-panel {
+    position: relative;
     background-color: #fff;
+  }
+  .input-amount-panel.cover {
+    &:before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+    }
   }
   .input-amount-area {
     height: 4.5rem;

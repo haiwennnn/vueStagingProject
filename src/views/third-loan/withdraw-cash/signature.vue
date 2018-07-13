@@ -22,7 +22,17 @@
       signComplete(signInfo) {
         console.log(signInfo)
         this.signInH5Wallet(signInfo.signImg, signInfo.signTrack, () => {
-          this.findSignatureStatus()
+          // if (+res.errorCode === 0) {
+          //   // 签名成功，进行人脸识别
+          setTimeout(() => {
+            this.$router.replace({
+              name: 'faceIdentify'
+            })
+          }, 1000)
+          // } else {
+          //   this.$zzz.toast.text(res.message)
+          // }
+          // this.findSignatureStatus()
         })
       },
       /**
@@ -42,8 +52,7 @@
       }
     },
     created() {
-      this.reBindBankcardType = 'wallet'
-      this.checkNeedReBindBankcard(this.reBindBankcardType)
+      this.checkNeedReBindBankcard('wallet')
     }
   }
 </script>

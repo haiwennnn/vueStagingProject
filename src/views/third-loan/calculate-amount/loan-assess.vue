@@ -4,6 +4,7 @@
       <z-header>额度审批</z-header>
       <div class="zz-tab__panel">
         <common-layout :loan-info="loanInfo"
+          :total-amount="totalAmount"
           :uap="true">
           <!-- <div slot="bd"
             class="main-enter-btn"
@@ -23,7 +24,6 @@
               type="primary"
               style="width:2.5rem;height:.96rem;margin-top:.6rem;margin-right:0;">前往APP</z-button>
           </div>
-
           <div slot="bd"
             v-if="amountProgressStatus === 3"
             class="loan-assess-result-panel success">
@@ -70,11 +70,12 @@
          * 5:提现失败
          */
         loanInfo: {
-          amount: 10000,
-          currentRepayAmount: 5000,
+          amount: 0,
+          maxAmount: 5000,
           repayDateStr: '',
-          tenorStr: ''
+          desStr: '最大额度'
         },
+        totalAmount: 0,
         amountProgressStatus: 3
       }
     },
@@ -96,7 +97,23 @@
       walletShowQuota() {
         this.$http.get(this.$api.walletShowQuota).then((res) => {
           if (+res.errorCode === 0) {
-            this.loanInfo.currentRepayAmount = res.data.limitAmount
+            this.totalAmount = res.data.loanLimit
+            this.loanInfo.maxAmount = res.data.loanLimit
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
+        })
+      },
+      /**
+       * 获取钱包提现信息
+       */
+      getWalletLoanInfo() {
+        this.$http.post(this.$api.getWalletLoanInfo).then((res) => {
+          if (+res.errorCode === 0) {
+            let walletLoanInfo = res.data
+            this.loanInfo.amount = walletLoanInfo.applyMoney
+            this.loanInfo.desStr = '提现金额'
+            window.FJ.setStore('walletLoanInfo', walletLoanInfo)
           } else {
             this.$zzz.toast.text(res.message)
           }
@@ -108,6 +125,10 @@
       this.amountProgressStatus = +query.status
       if (this.amountProgressStatus === 3) {
         this.walletShowQuota()
+      }
+      if (this.amountProgressStatus === 4) {
+        this.walletShowQuota()
+        this.getWalletLoanInfo()
       }
     }
   }
@@ -127,9 +148,9 @@
     &.in-progress {
       .loading-img {
         width: 0.9rem;
-        height: 1.1rem;
-        margin: 1.4rem auto 0.4rem;
-        background-color: #ccc;
+        // height: 1.1rem;
+        margin: 1rem auto 0.4rem;
+        // background-color: #ccc;
       }
       p {
         line-height: 0.4rem;

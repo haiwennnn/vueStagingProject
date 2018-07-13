@@ -243,7 +243,7 @@
             { type: 'string', message: '请输入2-10位中文', pattern: Reg.nameReg }
           ],
           childNumber: [
-            { type: 'string', message: '请输入正确的年龄', pattern: Reg.numberReg }
+            { type: 'string', message: '请输入正确的子女数量', pattern: Reg.numberReg }
           ],
           realName: [
             { type: 'string', message: '请输入2-10位中文', pattern: Reg.nameReg }

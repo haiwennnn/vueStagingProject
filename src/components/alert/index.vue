@@ -17,17 +17,28 @@
   </z-dialog>
 </template>
 <script>
+  /**
+   * Alert弹窗组件
+   * @module Alert
+   */
   import Zdialog from '../z-dialog'
   export default {
     name: 'alert',
+    /**
+     * Components 包含子组件
+     * @prop {Component} Zdialog dialog弹窗组件
+     */
     components: {
       Zdialog
     },
-    data() {
-      return {
-        show: false
-      }
-    },
+    /**
+     * Props 接受父组件的传值
+     * @prop {Boolean} value 双向绑定model值
+     * @prop {Boolean} mask 是否展示遮罩
+     * @prop {String} title 标题
+     * @prop {String} content 展示内容
+     * @prop {String} buttonText 按钮文本默认'确定'
+     */
     props: {
       value: Boolean,
       mask: {
@@ -45,6 +56,11 @@
       buttonText: {
         type: String,
         default: '确定'
+      }
+    },
+    data() {
+      return {
+        show: false
       }
     },
     computed: {

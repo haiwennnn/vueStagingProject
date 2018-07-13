@@ -129,7 +129,7 @@
             this.imgCodeSrc = res.data.base64Img
             this.btnText = '校验验证码'
           } else {
-
+            this.$zzz.toast.text(res.message)
           }
         })
       },

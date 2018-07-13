@@ -15,7 +15,7 @@
               <cell :noBottomLine="true">
                 <p style="width:1.4rem;padding-right:.25rem;"
                   slot="hd">本人姓名</p>
-                <p slot="bd">{{userInfo.username}}</p>
+                <p slot="bd">{{userInfo.userName}}</p>
               </cell>
               <!-- <cell :noBottomLine="true">
                 <p style="width:1.4rem;padding-right:.25rem;"
@@ -193,7 +193,7 @@
             // 存一个身份证号
             userInfo.idNo = realInfo.identityCardNo
             userInfo.phone = userData.mobileNo
-            userInfo.username = userData.realName
+            userInfo.userName = userData.realName
             // 存一个时间戳
             userInfo.ts = new Date().getTime()
             window.FJ.setStore('walletUserInfo', userInfo)

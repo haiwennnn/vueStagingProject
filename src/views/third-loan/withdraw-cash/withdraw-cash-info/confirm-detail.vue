@@ -70,7 +70,7 @@
             // 创建订单成功，进行签名
             setTimeout(() => {
               this.$router.replace({
-                name: 'signature'
+                name: 'withdrawCashSignature'
               })
             }, 1500)
           } else {
@@ -103,7 +103,7 @@
             // 创建订单成功，进行签名
             setTimeout(() => {
               this.$router.replace({
-                name: 'signature'
+                name: 'withdrawCashSignature'
               })
             }, 1500)
             // this.$zzz.toast.text('订单创建成功')

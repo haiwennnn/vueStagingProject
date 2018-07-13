@@ -18,12 +18,13 @@
     methods: {
       checkToken() {
         let query = this.query
+        // 验签是否通过
         this.$http.post(this.$api.walletEnterTokenValidator, {
           data: {
             token: query.token || '',
             mobileNo: query.mobileNo || '',
             fjChnlCode: query.fjChnlCode || '',
-            sign: query.sign || '',
+            sign: decodeURIComponent(query.sign) || '',
             timestamp: query.timestamp || ''
           }
         }).then((res) => {
@@ -31,7 +32,8 @@
             this.$router.push({
               name: 'login',
               query: {
-                phone: query.mobileNo
+                phone: query.mobileNo,
+                t: new Date().getTime()
               }
             })
           } else {

@@ -6,7 +6,7 @@
         <common-layout>
           <div class="sms-code-panel"
             slot="hd">
-            <p style="padding-top:.75rem;font-size: .28rem;color: #444;text-align: center;">短信验证码已发送至</p>
+            <p style="padding-top:.75rem;font-size: .28rem;color: #444;text-align: center;">短信验证码发送至</p>
             <div class="phone"
               style="padding-top:.15rem;font-size: .54rem;color: #444;text-align: center;">{{smsCode.phone}}</div>
             <div class="sms-code">
@@ -106,10 +106,14 @@
       findUserYkdIdInfo() {
         this.$http.ykdPost(this.$api.getUserInfo).then((res) => {
           if (+res.errorCode === 0) {
-            let userInfo = window.FJ.getStore('walletUserInfo')
+            let userInfo = window.FJ.getStore('walletUserInfo') || {}
             let realInfo = res.data.realNameAuthentication
-            // 存一个身份证号
-            userInfo.idNo = realInfo.identityCardNo
+            if (realInfo) {
+              // 存一个身份证号
+              userInfo.idNo = realInfo.identityCardNo
+              // 存用户姓名
+              userInfo.userName = realInfo.realName
+            }
             // 存一个时间戳
             userInfo.ts = new Date().getTime()
             window.FJ.setStore('walletUserInfo', userInfo)
@@ -242,6 +246,8 @@
        */
       completeLocalCheck() {
         this.smsCode.phone = this.$route.query.phone || '13076965109'
+        window.FJ.removeStore('walletLoanInfo')
+        window.FJ.removeStore('walletUserInfo')
         // TODO:增加自动获取验证码开关
         if (this.smsCode.phone) {
           // 存在手机号自动调用获取验证码接口
@@ -255,6 +261,9 @@
       let walletUserInfo = window.FJ.getStore('walletUserInfo')
       if (!walletUserInfo) {
         // 不存在本地用户信息
+        this.completeLocalCheck()
+      } else if (walletUserInfo.phone !== this.$route.query.phone) {
+        // 本地用户信息手机号与进入页面手机号不匹配
         this.completeLocalCheck()
       } else {
         // 调用接口判断当前本地信息是否过期
