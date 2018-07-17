@@ -7,13 +7,13 @@
     @on-click-error-tip="onClickErrorTip">
     <z-input v-if="type === 'text'"
       ref="textInput"
-      :placeholder="'请输入'"
+      :placeholder="placeholder || '请输入'"
       v-model="currentValue"
       :value-text-align="valueTextAlign"></z-input>
     <z-input v-if="type === 'number'"
       :type="type"
       ref="numberInput"
-      :placeholder="'请输入'"
+      :placeholder="placeholder || '请输入'"
       v-model.number="currentValue"
       :value-text-align="valueTextAlign"></z-input>
   </form-item>
@@ -33,7 +33,7 @@
       label: String,
       placeholder: {
         type: String,
-        default: '请选择'
+        default: ''
       },
       labelWidth: {
         type: Number

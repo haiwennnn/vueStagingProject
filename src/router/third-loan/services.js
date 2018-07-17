@@ -10,6 +10,8 @@ const Signature = r => require.ensure([], () => r(require('@/views/third-loan/se
 
 const Protocol = r => require.ensure([], () => r(require('@/views/third-loan/services/protocol')), 'services')
 
+const WxLogin = r => require.ensure([], () => r(require('@/views/third-loan/services/wx-login')), 'services')
+
 const Framework = r => require.ensure([], () => r(require('@/views/third-loan/services/framework')), 'services')
 
 export default [
@@ -22,6 +24,11 @@ export default [
     path: '/third-loan/services/third-loan-enter',
     name: 'thirdLoanEnter1',
     component: ThirdLoanEnter
+  },
+  {
+    path: '/third-loan/services/wx-login',
+    name: 'wxLogin',
+    component: WxLogin
   },
   {
     path: '/third-loan/services/signature',
