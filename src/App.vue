@@ -50,6 +50,11 @@
     data() {
       return {}
     },
+    methods: {
+      // test() {
+      //   alert(1)
+      // }
+    },
     created() {
       // console.log(this.$test)
       // this.$api.getToken('N153521352658220').then(res => {
@@ -63,6 +68,13 @@
       // }
       // let query = this.$route.query
       // window.FJ.setStore('walletAppInfo', walletAppInfo)
+      // let vm = this
+      // this.$zzz.alert.show({
+      //   content: '恭喜还款成功',
+      //   onHide() {
+      //     vm.test()
+      //   }
+      // })
     },
     mounted() {
 

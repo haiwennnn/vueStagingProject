@@ -4,7 +4,8 @@
       enter-active-class=""
       leave-active-class="">
       <div class="zz-mask"
-        v-show="mask && show"></div>
+        v-show="mask && show"
+        @click="onClickMask"></div>
     </transition>
     <transition name="zz-dialog"
       enter-active-class="animated zoomIn"
@@ -36,9 +37,18 @@
     watch: {
       show(val) {
         this.$emit(val ? 'on-show' : 'on-hide')
+        this.$emit('input', val)
       },
       value(val) {
         this.show = val
+      }
+    },
+    methods: {
+      /**
+       * 点击遮罩触发时间
+       */
+      onClickMask() {
+        this.show = false
       }
     },
     created() {
@@ -49,7 +59,6 @@
   }
 </script>
 <style lang="less" scoped>
-
 </style>
 
 

@@ -102,6 +102,7 @@
         this.currentRepayBankcardIndex = index
       },
       triggerRepayment() {
+        let vm = this
         let userRepayInfo = this.userRepayInfo
         let currentRepayInfo = this.currentRepayInfo
         let bankcard = this.bankcardList[this.currentRepayBankcardIndex]
@@ -140,7 +141,7 @@
               this.$zzz.alert.show({
                 content: '恭喜还款成功',
                 onHide() {
-                  this.$router.back()
+                  vm.$router.back()
                 }
               })
             } else if (+res.errorCode === 1) {

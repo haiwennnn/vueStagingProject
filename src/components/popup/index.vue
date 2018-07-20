@@ -17,6 +17,9 @@
 <script>
   /**
    * popup定义为弹出层的载体，动画效果在zz-popup中展示
+   * TODO:
+   *  增加popup-dialog位置设置
+   *  增加动画展示方式配置(或者与位置挂钩？？)
    */
   export default {
     name: 'popup',
@@ -71,6 +74,17 @@
     z-index: 300;
   }
   .zz-popup-dialog {
+  }
+  .zz-popup-bottom {
+  }
+  .zz-popup-center {
+    & > div {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80%;
+      transform: translate(-50%, -50%);
+    }
   }
 </style>
 

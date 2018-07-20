@@ -7,6 +7,11 @@ const urls = {
    */
   getRepaymentInfoNew: Server.path.ykdGw + 'clientRepayment/getRepaymentInfoNew',
   /**
+   * 获取钱包还款信息
+   * @method get
+   */
+  getRepaymentInfoWallet: Server.path.gw + 'wallet/repayment/getRepaymentInfo',
+  /**
    * 获取还款列表
    */
   getRecords: Server.path.ykdGw + 'clientRepayment/repay/record',

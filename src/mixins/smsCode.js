@@ -24,7 +24,7 @@ export default {
         return false
       }
       if (!Reg.phoneReg.test(smsCode.phone)) {
-        this.$zzz.toast.text('请输入正确的手机号码')
+        this.$zzz.toast.text('请输入正确的手机号')
         return false
       }
       return true
@@ -43,8 +43,8 @@ export default {
       return true
     },
     /**
-       * 倒计时短信验证码
-       */
+     * 倒计时短信验证码
+     */
     coldDown(t) {
       if (t - 1 <= 0) {
         this.smsCode.disabled = false
@@ -55,6 +55,11 @@ export default {
       setTimeout(() => {
         this.coldDown(t - 1)
       }, 1000)
+    },
+    /**
+     * 重置验证码状态
+     */
+    resetSmsCodeStatus() {
     }
   }
 }

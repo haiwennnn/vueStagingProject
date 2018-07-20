@@ -245,7 +245,7 @@
        * 完成本地校验
        */
       completeLocalCheck() {
-        this.smsCode.phone = this.$route.query.phone || '13076965109'
+        this.smsCode.phone = this.$route.query.phone
         window.FJ.removeStore('walletLoanInfo')
         window.FJ.removeStore('walletUserInfo')
         // TODO:增加自动获取验证码开关

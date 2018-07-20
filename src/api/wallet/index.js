@@ -226,7 +226,6 @@ const urls = {
    * 设备反欺诈所有接口
    */
   getAllAntiFraud: Server.path.gw + 'wallet/equipment/allFacilityInformationReport'
-
 }
 
 export default urls

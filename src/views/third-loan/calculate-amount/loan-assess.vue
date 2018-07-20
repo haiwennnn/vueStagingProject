@@ -10,11 +10,11 @@
             class="main-enter-btn"
             @click="goRealAuth">测试额度</div> -->
           <div slot="bd"
-            v-if="amountProgressStatus === 1"
+            v-if="amountProgressStatus === 1 && isCalljcStatus"
             class="loan-assess-result-panel in-progress">
             <div class="loading-img"></div>
             <p style="font-size: .28rem;color: #222;">审核中</p>
-            <p>请耐心等待额度测试</p>
+            <p>请耐心等待额度测试，请两分钟后再次查看</p>
           </div>
           <div slot="bd"
             v-if="amountProgressStatus === 2"
@@ -22,6 +22,7 @@
             <p>尊敬的客户您好，很抱歉的通知您的测试未通过 您还可以通过我们的app选择其他的借款产品</p>
             <z-button mini
               type="primary"
+              @click="downloadApp"
               style="width:2.5rem;height:.96rem;margin-top:.6rem;margin-right:0;">前往APP</z-button>
           </div>
           <div slot="bd"
@@ -76,10 +77,33 @@
           desStr: '最大额度'
         },
         totalAmount: 0,
-        amountProgressStatus: 3
+        amountProgressStatus: 3,
+        isCalljcStatus: false
       }
     },
     methods: {
+      downloadApp: function () {
+        let u = navigator.userAgent
+        let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+        let isWeXin = /MicroMessenger/i.test(u)
+        console.log(u)
+        console.log(isWeXin)
+        if (isWeXin) {
+          this.noRegisterPopup = false
+          location.href = 'http://wxz.myapp.com/16891/B58153DB95BD03257B745C91A7655150.apk?fsname=com.chinacreditech.client_1.3.33_37.apk'
+          return
+        }
+        if (isAndroid) {
+          this.noRegisterPopup = false
+          location.href = 'http://app.chinacreditech.com/app/download/YunKeDai.apk'
+          return
+        }
+        if (isiOS) {
+          this.noRegisterPopup = false
+          location.href = 'https://itunes.apple.com/us/app/id1230004311?l=zh&ls=1&mt=8'
+        }
+      },
       goRealAuth() {
         this.$router.push({
           name: 'realnameAuth'
@@ -91,14 +115,19 @@
           name: 'completeCashInfo'
         })
       },
+      goAPP() {
+
+      },
       /**
        * 通过决策后获取钱包额度
        */
       walletShowQuota() {
         this.$http.get(this.$api.walletShowQuota).then((res) => {
           if (+res.errorCode === 0) {
-            this.totalAmount = res.data.loanLimit
-            this.loanInfo.maxAmount = res.data.loanLimit
+            this.loanInfo.maxAmount = +res.data.loanLimit || 0
+            let walletUserInfo = window.FJ.getStore('walletUserInfo')
+            walletUserInfo.loanLimit = this.loanInfo.maxAmount
+            window.FJ.setStore('walletUserInfo', walletUserInfo)
           } else {
             this.$zzz.toast.text(res.message)
           }
@@ -118,11 +147,91 @@
             this.$zzz.toast.text(res.message)
           }
         })
+      },
+      /**
+       * 调用决策
+       */
+      doDecisionOne() {
+        this.$http.post(this.$api.walletDecisionApplyEvent).then((res) => {
+          let errorCode = +res.errorCode
+          if (errorCode === 0) {
+            // this.isCalljcStatus = true
+            this.doDecisionTwo()
+          } else if (errorCode === -2) {
+            this.$zzz.toast.text('您尚未登录，请登录')
+          } else if (errorCode === -3) {
+            this.$zzz.toast.text('您的尚未实名认证，请去实名认证')
+          } else if (errorCode === -5) {
+            this.$zzz.toast.text('您的个人资料尚未完成，请补充个人资料')
+          } else if (errorCode === -7) {
+            // 决策拒绝，跳转到失败页面
+            this.isCalljcStatus = true
+            this.amountProgressStatus = 2
+            // this.$router.push({
+            //   name: 'loanAssess',
+            //   query: {
+            //     status: 2
+            //   }
+            // })
+          } else if (errorCode === -1) {
+            this.$zzz.toast.text(res.message)
+          } else if (errorCode === 3) {
+            this.isCalljcStatus = true
+            this.$zzz.toast.text('您的资质正在审批中请稍候重试')
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
+        })
+      },
+      doDecisionTwo() {
+        this.$http.post(
+          this.$api.walletDecisionApproveEvent,
+          {
+            timeout: 60000
+          }
+        ).then((res) => {
+          let errorCode = +res.errorCode
+          if (errorCode === 0) {
+            this.isCalljcStatus = true
+            this.amountProgressStatus = 3
+            this.walletShowQuota()
+            this.getWalletLoanInfo()
+            // this.$router.replace({
+            //   name: 'loanAssess',
+            //   query: {
+            //     status: 3
+            //   }
+            // })
+          } else if (errorCode === -3) {
+            this.$zzz.toast.text('您的尚未实名认证，请去实名认证')
+          } else if (errorCode === -5) {
+            this.$zzz.toast.text('您的个人资料尚未完成，请补充个人资料')
+          } else if (errorCode === -7) {
+            // 决策拒绝，跳转到失败页面
+            this.isCalljcStatus = true
+            this.amountProgressStatus = 2
+            // this.$router.replace({
+            //   name: 'loanAssess',
+            //   query: {
+            //     status: 2
+            //   }
+            // })
+          } else if (errorCode === 3) {
+            this.$zzz.toast.text('您的资质正在审批中请稍候重试')
+          } else if (errorCode === -1) {
+            this.$zzz.toast.text(res.message)
+          } else {
+            this.$zzz.toast.text(res.message)
+          }
+        })
       }
     },
     created() {
       let query = this.$route.query
       this.amountProgressStatus = +query.status
+      if (this.amountProgressStatus === 1) {
+        this.doDecisionOne()
+      }
       if (this.amountProgressStatus === 3) {
         this.walletShowQuota()
       }

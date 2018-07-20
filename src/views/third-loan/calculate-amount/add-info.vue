@@ -191,6 +191,9 @@
             this.$zzz.toast.text(res.message)
           } else if (errorCode === 3) {
             this.$zzz.toast.text('您的资质正在审批中请稍候重试')
+            setTimeout(() => {
+              this.$router.back()
+            }, 1000)
           } else {
             this.$zzz.toast.text(res.message)
           }

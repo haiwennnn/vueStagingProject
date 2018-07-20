@@ -30,7 +30,30 @@ const urls = {
    * 成功签字后通知后端接口
    * @path (String) order_no 跳转过来时 传递的订单id
    */
-  signSuccessCall: Server.path.ykdGw + 'yunkd/fl/callSignSuccess/'
+  signSuccessCall: Server.path.ykdGw + 'yunkd/fl/callSignSuccess/',
+  /**
+   * 查询openId是否被绑定
+   * @method post
+   * @param {String} openId 微信openId
+   */
+  wxCheckBind: Server.path.ykdUm + 'weixin/checkBind',
+  // wxCheckBind: 'http://10.0.11.90:8080/marvel-user-web/weixin/checkBind',
+
+  /**
+   * 微信绑定openId
+   * @method post
+   * @param {String} openId 微信openId
+   * @param {String} mobileNum 手机号
+   * @param {String} validCode 验证码
+   */
+  wxBind: Server.path.ykdUm + 'weixin/bindOpenId',
+  // wxBind: 'http://10.0.11.90:8080/marvel-user-web/weixin/bindOpenId',
+  /**
+   * 微信绑定验证码获取
+   * @method post
+   * @param {String} mobileNo 手机号码
+   */
+  wxBindSmsSend: Server.path.ykdUm + 'public/sms/send'
 
 }
 

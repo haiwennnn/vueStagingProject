@@ -2,9 +2,10 @@
   <div class="zz-page-body">
     <div class="zz-tab">
       <div class="zz-tab__panel">
-        <div class="wx-bind-panel">
+        <div class="wx-bind-panel"
+          v-if="checkWxOpenIdStatus">
           <div class="wx-bind-head">
-            <img src="http://thirdwx.qlogo.cn/mmopen/bxltCGBE4XBCicgXRjUlXHEkOQ4zhiaR6szvDQ4TG2dwuSVoQZmvvEu56QU49SyJv3IRqh2ibvYDJ2CaEpibIsuhhUMVGibDrRTxp/132"
+            <img src="../../../assets/wx-login/wx-login-logo.png"
               alt="">
             <span>云科贷</span>
           </div>
@@ -35,11 +36,26 @@
             </z-form>
           </div>
           <div class="wx-bind-btn">
-            <z-button @click="bindWx">确认绑定</z-button>
+            <z-button type="primary"
+              @click="bindWx">确认绑定</z-button>
           </div>
         </div>
       </div>
     </div>
+    <z-dialog v-model="noRegisterPopup">
+      <div class="user-no-register">
+        <div class="zz-dialog__bd">
+          <div style="text-align:center;">
+            <img style="width:50%;"
+              src="../../../assets/wx-login/h5downloadapp.png">
+            <img style="width:50%;margin-top:.3rem;"
+              src="../../../assets/wx-login/h5downloadappbtn.png"
+              @click="downloadApp">
+            <p>您还不是云科贷用户，赶紧去下载App吧</p>
+          </div>
+        </div>
+      </div>
+    </z-dialog>
   </div>
 </template>
 <script>
@@ -57,6 +73,11 @@
     mixins: [smsCodeMixins],
     data() {
       return {
+        // 是否check openid状态
+        checkWxOpenIdStatus: false,
+        // 未注册遮罩层
+        noRegisterPopup: false,
+        openId: '',
         userInfo: {
           phone: '',
           userName: ''
@@ -87,8 +108,31 @@
       }
     },
     methods: {
+      downloadApp: function () {
+        let u = navigator.userAgent
+        let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+        let isWeXin = /MicroMessenger/i.test(u)
+        console.log(u)
+        console.log(isWeXin)
+        if (isWeXin) {
+          this.noRegisterPopup = false
+          location.href = 'http://wxz.myapp.com/16891/B58153DB95BD03257B745C91A7655150.apk?fsname=com.chinacreditech.client_1.3.33_37.apk'
+          return
+        }
+        if (isAndroid) {
+          this.noRegisterPopup = false
+          location.href = 'http://app.chinacreditech.com/app/download/YunKeDai.apk'
+          return
+        }
+        if (isiOS) {
+          this.noRegisterPopup = false
+          location.href = 'https://itunes.apple.com/us/app/id1230004311?l=zh&ls=1&mt=8'
+        }
+      },
       bindWx() {
         if (this.checkSmsPhone() && this.checkSmsCode()) {
+          this.bindWxOpenId()
         }
       },
       openRepayService() {
@@ -123,15 +167,18 @@
        * 获取短信验证码
        */
       getSmsCode() {
-        let smsCode = this.smsCode
-        if (smsCode.phone === '') {
-          this.$zzz.toast.text('请输入手机号')
+        // let smsCode = this.smsCode
+        if (this.smsCode.disabled) {
+          // 当前验证码无法调用(已经获取)
+          return false
+        }
+        if (!this.checkSmsPhone()) {
           return
         }
-        if (!Reg.phoneReg.test(smsCode.phone)) {
-          this.$zzz.toast.text('请输入正确的手机号码')
-          return
-        }
+        // if (!Reg.phoneReg.test(smsCode.phone)) {
+        //   this.$zzz.toast.text('请输入正确的手机号码')
+        //   return
+        // }
         this.$zzz.toast.show({
           text: '正在获取验证码',
           type: 'loading',
@@ -175,10 +222,85 @@
        * 校验openId是否绑定
        */
       checkOpenId() {
+        this.$http.ykdPost(
+          this.$api.wxCheckBind,
+          {
+            data: {
+              openId: this.openId
+            }
+          },
+          {
+            toastText: '正在校验信息'
+          }
+        ).then((res) => {
+          let errorCode = res.errorCode
+          if (errorCode === '-10017') {
+            // 未绑定，进行绑定
+            this.checkWxOpenIdStatus = true
+            this.$zzz.toast.text('请进行账户绑定')
+            return
+          }
+          if (errorCode === '-10015') {
+            // 已绑定，跳转到还款页面
+            // this.checkWxOpenIdStatus = true
+            this.$router.replace({
+              name: 'thirdRepayEnter',
+              query: {
+                token: res.data.token,
+                fintechUmuserId: res.data.idFintechUm
+              }
+            })
+            return
+          }
+          this.$zzz.toast.text(res.message)
+        })
+      },
+      bindWxOpenId() {
+        this.$http.ykdPost(
+          this.$api.wxBind,
+          {
+            data: {
+              openId: this.openId,
+              mobileNum: this.smsCode.phone,
+              validCode: this.smsCode.value
+            }
+          },
+          {
+            toastText: '正在绑定账号'
+          }
+        ).then((res) => {
+          if (res.errorCode === '-10014') {
+            this.noRegisterPopup = true
+            return
+          }
+          if (res.errorCode === '10000') {
+            // 绑定成功跳转到还款页面
+            this.$zzz.toast.text('恭喜绑定成功')
+            setTimeout(() => {
+              // this.$router.replace({
+              //   name: 'thirdRepayEnter',
+              //   query: {
+              //     token: res.data.token,
+              //     fintechUmuserId: res.data.idFintechUm
+              //   }
+              // })
+              this.checkOpenId()
+            }, 1000)
+            return
+          }
+          if (res.errorCode === '-10015') {
+            // this.noRegisterPopup = true
+            this.$zzz.toast.text('该手机号已绑定过另一个微信号')
+            return
+          }
+          this.$zzz.toast.text(res.message)
+        })
       }
     },
     created() {
+      console.log(location.href)
       // 校验openId是否绑定
+      this.openId = this.$route.query.opid || ''
       this.checkOpenId()
     }
   }
@@ -201,6 +323,14 @@
       line-height: 1;
       margin-top: 0.2rem;
       font-size: 0.32rem;
+    }
+  }
+  .user-no-register {
+    p {
+      line-height: 0.44rem;
+      text-align: center;
+      text-indent: 0;
+      color: #222;
     }
   }
   .wx-bind-user-info {

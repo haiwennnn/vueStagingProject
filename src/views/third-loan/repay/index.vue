@@ -173,43 +173,64 @@
       },
       /**
        * 查询还款信息
+       * Promise.all
        */
       getRepayInfo() {
-        this.$http.ykdGet(this.$api.getRepaymentInfoNew).then((res) => {
-          // console.log(res)
-          if (+res.errorCode === 0) {
-            // TODO:多笔还款的处理
-            let userRepayInfo = res.data[0]
-            let tenor = userRepayInfo.tenor ? userRepayInfo.tenor : userRepayInfo.nextTenor
-            let loanInfo = {
-              amount: 0,
-              maxAmount: 0,
-              repayAmount: 0,
-              repayDateStr: this.getRepayDateStr(userRepayInfo) + '应还',
-              desStr: `当前第${tenor}期`
-            }
-            if (userRepayInfo.currentReturnMoney !== 0) {
-              // 根据当前还款是否为0判断展示的还款详情是否是当期信息
-              loanInfo.repayAmount = userRepayInfo.currentReturnMoney
-            } else {
-              loanInfo.repayAmount = userRepayInfo.nextPeriodsReturnMoney
-            }
-            this.loanInfo = loanInfo
-            this.userRepayInfo = userRepayInfo
-            window.FJ.setStore('userRepayInfo', userRepayInfo)
-            this.getRepayInfoStatus = true
-            // 查到还款信息后获取用户基本信息
-            this.getUserInfo()
-          } else {
-            this.loanInfo = {
-              amount: '0',
-              maxAmount: '0',
-              repayAmount: 0,
-              repayDateStr: '',
-              desStr: ''
-            }
+        Promise.all([this.getYkdRepayInfo(), this.getWalletRepayInfo()]).then((values) => {
+          console.log(values)
+          if (+values[0].errorCode === 0) {
+            this.formatYkdRepayInfo(values[0])
+            return
+          }
+          if (+values[1].errorCode === 0) {
+            this.formatYkdRepayInfo(values[1])
           }
         })
+      },
+      getYkdRepayInfo() {
+        return this.$http.ykdGet(this.$api.getRepaymentInfoNew)
+      },
+      formatYkdRepayInfo(res) {
+        if (+res.errorCode === 0) {
+          // TODO:多笔还款的处理
+          let userRepayInfo = res.data[0]
+          let tenor = userRepayInfo.tenor ? userRepayInfo.tenor : userRepayInfo.nextTenor
+          let loanInfo = {
+            amount: 0,
+            maxAmount: 0,
+            repayAmount: 0,
+            repayDateStr: this.getRepayDateStr(userRepayInfo) + '应还',
+            desStr: `当前第${tenor}期`
+          }
+          if (userRepayInfo.currentReturnMoney !== 0) {
+            // 根据当前还款是否为0判断展示的还款详情是否是当期信息
+            loanInfo.repayAmount = userRepayInfo.currentReturnMoney
+          } else {
+            loanInfo.repayAmount = userRepayInfo.nextPeriodsReturnMoney
+          }
+          this.loanInfo = loanInfo
+          this.userRepayInfo = userRepayInfo
+          window.FJ.setStore('userRepayInfo', userRepayInfo)
+          this.getRepayInfoStatus = true
+          // 查到还款信息后获取用户基本信息
+          this.getUserInfo()
+        } else {
+          this.loanInfo = {
+            amount: '0',
+            maxAmount: '0',
+            repayAmount: 0,
+            repayDateStr: '',
+            desStr: ''
+          }
+        }
+      },
+      formatWalletRepayInfo(res) {
+        if (+res.errorCode === 0) {
+
+        }
+      },
+      getWalletRepayInfo() {
+        return this.$http.get(this.$api.getRepaymentInfoWallet)
       },
       /**
        * 判断是否允许进行主动还款
@@ -231,8 +252,6 @@
        */
       getUserInfo() {
         this.$http.ykdPost(this.$api.getUserInfo).then((res) => {
-          console.log(res)
-          // TODO:处理用户信息
           if (+res.errorCode === 0) {
             let userInfo = window.FJ.getStore('walletUserInfo')
             let user = res.data.user
@@ -254,6 +273,7 @@
     },
     created() {
       this.getRepayInfo()
+      // this.getWalletRepayInfo()
     }
   }
 </script>

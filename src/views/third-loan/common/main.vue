@@ -134,7 +134,7 @@
             this.goAddinfo()
             break
           case 'W04':
-            this.goAddinfo()
+            this.goWaitCalAmount()
             break
           case 'W05':
             this.goWaitCalAmount()
